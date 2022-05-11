@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+
+		<add id="Appseconnect_B2BMage::service" title="Service"
+			 module="Appseconnect_B2BMage" sortOrder="100"
+			 parent="Appseconnect_B2BMage::b2beconnect"
+			 resource="Appseconnect_B2BMage::service"/>
+		<add id="Appseconnect_ServiceRequest::servicerequest" title="Service Request"
+			 module="Appseconnect_ServiceRequest" sortOrder="101" action="servicerequest/listing"
+			 resource="Appseconnect_ServiceRequest::servicerequest"
+			 parent="Appseconnect_B2BMage::service"/>
+		<add id="Appseconnect_ServiceRequest::warrantylist" title="Warranty List"
+			 module="Appseconnect_ServiceRequest" sortOrder="102" action="servicerequest/warrantylisting"
+			 resource="Appseconnect_ServiceRequest::warrantylist"
+			 parent="Appseconnect_B2BMage::service"/>
+		<add id="Appseconnect_ServiceRequest::repairlist" title="Repair Price List"
+			 module="Appseconnect_ServiceRequest" sortOrder="103" action="servicerequest/repairlisting"
+			 resource="Appseconnect_ServiceRequest::repairlist"
+			 parent="Appseconnect_B2BMage::service"/>
+		<add id="Appseconnect_ServiceRequest::serial" title="Product Serial No. List"
+			 module="Appseconnect_ServiceRequest" sortOrder="103" action="servicerequest/serial"
+			 resource="Appseconnect_ServiceRequest::serial"
+			 parent="Appseconnect_B2BMage::service"/>
+   	</menu>
+</config>

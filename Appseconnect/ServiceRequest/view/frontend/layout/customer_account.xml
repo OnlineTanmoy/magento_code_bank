@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <referenceBlock name="customer_account_navigation">
+        <block class="Appseconnect\ServiceRequest\Block\Link\ServiceList" after="appseconnect-new-service" name="appseconnect-my-register-product">
+            <arguments>
+                <argument name="path" xsi:type="string">servicerequest/registerproduct/listing</argument>
+                <argument name="label" xsi:type="string" translate="true">My Registered Products</argument>
+            </arguments>
+        </block>
+        <block class="Appseconnect\ServiceRequest\Block\Link\ServiceList" after="appseconnect-new-service" name="appseconnect-register-new-product">
+            <arguments>
+                <argument name="path" xsi:type="string">servicerequest/registerproduct/newproduct</argument>
+                <argument name="label" xsi:type="string" translate="true">Register New Product</argument>
+            </arguments>
+        </block>
+        <block class="Appseconnect\ServiceRequest\Block\Link\ServiceList" after="appseconnect-new-service" name="appseconnect-my-service-list">
+            <arguments>
+                <argument name="path" xsi:type="string">servicerequest/request/listing</argument>
+                <argument name="label" xsi:type="string" translate="true">My Service Requests</argument>
+            </arguments>
+        </block>
+        <block class="Appseconnect\ServiceRequest\Block\Link\ServiceList" after="appseconnect-new-warranty" name="appseconnect-warranty-status">
+            <arguments>
+                <argument name="path" xsi:type="string">servicerequest/warranty</argument>
+                <argument name="label" xsi:type="string" translate="true">Check Warranty</argument>
+            </arguments>
+        </block>
+        <block class="Appseconnect\ServiceRequest\Block\Link\RepairList" after="appseconnect-new-service" name="appseconnect-my-repairlist-list">
+            <arguments>
+                <argument name="path" xsi:type="string">servicerequest/repair/listing</argument>
+                <argument name="label" xsi:type="string" translate="true">Repair Price List</argument>
+            </arguments>
+        </block>
+    </referenceBlock>
+</page>

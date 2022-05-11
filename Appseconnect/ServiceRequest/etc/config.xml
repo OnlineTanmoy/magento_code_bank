@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <insync_service>
+            <service_document>
+                <service_po_document_path>appseconnect/servicedoc</service_po_document_path>
+                <register_po_document_path>appseconnect/registerdoc</register_po_document_path>
+            </service_document>
+            <service_email>
+                <submited>insync_service_service_email_submited</submited>
+                <in_service>insync_service_service_email_in_service</in_service>
+                <completed>insync_service_service_email_completed</completed>
+            </service_email>
+        </insync_service>
+    </default>
+</config>

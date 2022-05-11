@@ -1,0 +1,94 @@
+<?php
+    $_repairRequests = $block->getRepairRequestList();
+    $priceHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
+    $data = $block->getSearchData();
+?>
+<div class="repair-main">
+<a href="#" class="filterButton <?= (isset($data["model_number"]) || isset($data["product_name"])) ? 'active' : ''; ?>">Filter </a>
+
+<div class="customRepairFilter" <?= (isset($data["model_number"]) || isset($data["product_name"])) ? 'style="display: block;"' : ''; ?>">
+<form action="<?= $block->getOrderSearchUrl() ?>" method="post" id="form-search">
+    <?= $block->getBlockHtml('formkey') ?>
+    <div class="filterInner">
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-3">SKU #</div>
+                    <div class="col-md-9">
+                        <input value="<?php echo (isset($data['model_number'])) ? $data['model_number'] : "" ?>"
+                            type="text" class="form-control" id="model_number" name="model_number">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label><strong class="formLabelSpace">&nbsp;</strong></label>
+                <div class="row">
+                    <div class="col-md-3">Product Description</div>
+                    <div class="col-md-9">
+                        <input type="text" value="<?php echo (isset($data['product_name'])) ? $data['product_name'] : "" ?>"
+                             id="product_name" name="product_name" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12">
+            <div class="form-group">
+                <br/>
+                <button type="button" id="search-button" value="search"
+                        data-mage-init='{"appseconnectRepairSearch": {}}'>Apply Filter
+                </button>
+                <button type="button" id="resetbutton" onclick="resetFilter()">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+
+<?php if ($_repairRequests && !empty($_repairRequests->getData())) { ?>
+    <div class="table-wrapper orders-history">
+        <table class="data table table-order-items history"
+               id="my-orders-table">
+            <caption class="table-caption"><?php /* @noEscape */
+                echo __('Repair Price List') ?></caption>
+            <thead>
+                <tr>
+                    <th scope="col" class="col shipping"><?php echo __('SKU #') ?></th>
+                    <th scope="col" class="col date"><?php echo __('Product Description') ?></th>
+                    <th style="text-align: right" scope="col" class="col shipping"><?php echo __('Repair Cost') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($_repairRequests as $_repairRequest) { ?>
+                <tr>
+                    <td data-th="<?php echo $block->escapeHtml(__('Model Number')) ?>"><?php echo $_repairRequest['sku'] ?></td>
+                    <td data-th="<?php echo $block->escapeHtml(__('Product Description')) ?>"><?php echo $_repairRequest['product_description'] ?></td>
+                    <td style="text-align: right;" data-th="<?php echo $block->escapeHtml(__('Repair Cost')) ?>"><?php echo $priceHelper->currency($_repairRequest['repair_cost'], true, false); ?></td>
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($block->getPagerHtml()) { ?>
+        <div class="order-products-toolbar toolbar bottom">
+            <?php echo $block->getPagerHtml(); ?>
+        </div>
+    <?php } ?>
+<?php } else { ?>
+    <div class="message info empty">
+        <span><?php /* @noEscape */
+            echo __('No repair price list found.'); ?></span>
+    </div>
+<?php } ?>
+<script>
+    function resetFilter() {
+        document.getElementById("form-search").reset();
+        document.getElementById("model_number").value = "";
+        document.getElementById("product_name").value = "";
+        document.getElementById("search-button").click();
+    }
+</script>
+</div>
+

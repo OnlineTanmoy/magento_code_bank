@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+   <!-- Create Warranty -->
+    <route url="/V1/warranty" method="POST">
+        <service class="Appseconnect\ServiceRequest\Api\Warranty\WarrantyRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+
+    <!---Search Warranty Posts -->
+    <route url="/V1/warranty/search" method="GET">
+        <service class="Appseconnect\ServiceRequest\Api\Warranty\WarrantyRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- Create Update Service Post -->
+    <route url="/V1/service/request" method="POST">
+        <service class="Appseconnect\ServiceRequest\Api\Service\ServiceRepositoryInterface" method="saveData"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- get post by entity_id Service Post -->
+    <route url="/V1/service/request/:entityId" method="GET">
+        <service class="Appseconnect\ServiceRequest\Api\Service\ServiceRepositoryInterface" method="getByEntityId"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!---Search Service Posts -->
+    <route url="/V1/service/request/search" method="GET">
+        <service class="Appseconnect\ServiceRequest\Api\Service\ServiceRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+
+    <!-- Create Update Repair Data -->
+    <route url="/V1/service/repair" method="POST">
+        <service class="Appseconnect\ServiceRequest\Api\Repair\RepairRepositoryInterface" method="saveData"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!---Search Repair Data -->
+    <route url="/V1/service/repair/search" method="GET">
+        <service class="Appseconnect\ServiceRequest\Api\Repair\RepairRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+</routes>

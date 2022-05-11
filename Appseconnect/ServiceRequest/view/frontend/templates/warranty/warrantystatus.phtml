@@ -1,0 +1,91 @@
+<?php
+$data = $this->getRequest()->getParams();
+$warrantyData = $block->getIsInWarranty();
+?>
+<div class="warranty-success">
+    <div class="container">
+
+        <?php
+        if (in_array($warrantyData['message'], ["Unable to identify your device.", "Unable to process your service request"])) {
+            ?>
+            <h2>
+                <?php echo __($warrantyData['message']); ?>
+            </h2>
+            <div class="note-block">
+                <p>
+                    <?php echo __('Please contact our customer care for further assistance.'); ?>
+                </p>
+                <button type="button"
+                        onclick="window.location.href='<?php echo $block->getBaseUrl(); ?>';"><?php echo __('Ok'); ?></button>
+            </div>
+
+            <div class="queries-block">For any further queries, you may refer to our FAQ section or contact our customer
+                care at 1800 251 400 (option 5)
+            </div>
+
+        <?php } else if ($warrantyData['message'] == "You are in warranty") { ?>
+            <h2>
+                <?php echo __("Your device is under manufacturer's warranty"); ?>
+            </h2>
+            <div class="note-block">
+                <p class="service-request-question">
+                    <?php echo __('Would you like to submit a service request?'); ?>
+                </p>
+                <button type="button"
+                        onclick="window.location.href='<?php echo $block->getBaseUrl(); ?>servicerequest/form';"><?php echo __('Yes'); ?></button>
+                <button type="button"
+                        onclick="window.location.href='<?php echo $block->getBaseUrl(); ?>';"><?php echo __('No'); ?></button>
+            </div>
+        <?php } else if ($warrantyData['message'] == "Out of warranty go with FPR") { ?>
+            <h2>
+                <?php echo __("Your device is out of Manufacturer's Warranty"); ?>
+            </h2>
+            <div class="note-block">
+                <p>
+                    <?php echo __("Since your product is out of Warranty period an initial repair estimate shall be indicated after thorough check up at the service center. Customer shall be intimated of such revised estimate for approval via letter / telephone / email / SMS at the contact information provided by customer for repair service. An Invoice for the final repair fee will be shared after repair is complete."); ?>
+                </p>
+                <p>
+                    <?php
+                    if(trim($warrantyData['FPR']) != '') {
+                        echo __("Repair tentative cost : $" . $warrantyData['FPR']);
+                    } else {
+                        echo __("Tentative cost will be available once the product is submit for Service");
+                    }
+                    ?>
+                </p>
+                <p>
+                    <?php echo __(" Repair service shall be initiated only on approval of estimate, Customer shall be required to pay normal inspection charges (as applicable) and collect the product immediately if repair estimate is not approved. It is possible that during the course of diagnosis of the initial reported symptom, the set may develop failure not initially reported, We shall not be liable to restore the status quo prevalent at the time of handing over the set."); ?>
+                </p>
+                <p>
+                    <?php echo __("Soundblaze  reserves the right to replace the defective part with an equivalent and/or reconditioned part."); ?><br/>
+                </p>
+                <p>
+                    <?php echo __(" Should a natural failure recur within 90 days of the repair service, labour charges shall be waived off. In case of failure of the same part (s), the spare shall be replaced free of charge. However, should failure be attributable to wrong usage or abuse, accident, lightning, ingress of liquid, external fire damage, natural disaster, improper ventilation, deterioration due to environmental conditions, excessive shock, normal wear and tear or any external cause not attributable to normal product failure the part and labour will be chargeable subject to set being in repairable condition."); ?><br/>
+                </p>
+                <ul>
+                    <li><?php echo __("We reserve the right to decline repair service of products if the product is more than 5 years old or if the product is damaged extensively or the condition has deteriorated such that reliable repair service cannot be guaranteed, If the failure is caused due to lighting, ingress of water, fire, or if the product has attended (repair service or modification) by any unauthorized person or if parts are procured  by customer from any other source."); ?></li>
+                    <li><?php echo __(" We shall not be liable for reliability of the product if it has been attended by any unauthorized person or party."); ?></li>
+                </ul>
+                <p>
+                    <?php echo __("In case the spare part(s) are not available and have to be arranged / sourced afresh, a tentative date for repair service will be indicated and the customer will be required to deposit 100% advance of repair estimate, prior to the sourcing of  the spare part(s)."); ?><br/>
+                </p>
+                <p class="service-request-question">
+                    <?php echo __('Would you like to submit a service request?'); ?>
+                </p>
+                <button type="button"
+                        onclick="window.location.href='<?php echo $block->getBaseUrl(); ?>servicerequest/form';"><?php echo __('Yes'); ?></button>
+                <button type="button"
+                        onclick="window.location.href='<?php echo $block->getBaseUrl(); ?>';"><?php echo __('No'); ?></button>
+                <p>&nbsp;</p>
+            </div>
+
+            <div class="queries-block">For any further queries, you may refer to our FAQ section or contact our customer
+                care at 1800 251 400 (option 5)
+            </div>
+        <?php } ?>
+    </div>
+    <?php if (isset($data['debugMyRequestParam'])) { ?>
+        <p>&nbsp;</p>
+        <pre style="background: #fffcd5"><?php print_r($warrantyData); ?></pre>
+    <?php } ?>
+</div>

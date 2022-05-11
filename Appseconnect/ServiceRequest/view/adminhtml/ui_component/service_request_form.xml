@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">service_request_form.service_request_form_data_source</item>
+            <item name="deps" xsi:type="string">service_request_form.service_request_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Service Request Form</item>
+        <item name="layout" xsi:type="array">
+            <item name="type" xsi:type="string">tabs</item>
+        </item>
+    </argument>
+
+    <dataSource name="listing_form_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Appseconnect\ServiceRequest\Model\Data\Service\DataProvider</argument>
+            <argument name="name" xsi:type="string">service_request_form_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+
+    <fieldset name="service">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Service Request Form</item>
+            </item>
+        </argument>
+
+        <field name="entity_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">service</item>
+                </item>
+            </argument>
+        </field>
+
+        <!--<field name="status">-->
+            <!--<argument name="data" xsi:type="array">-->
+                <!--<item name="options" xsi:type="string">Appseconnect\ServiceRequest\Model\Source\Status</item>-->
+                <!--<item name="config" xsi:type="array">-->
+                    <!--<item name="dataType" xsi:type="string">text</item>-->
+                    <!--<item name="label" translate="true" xsi:type="string">Status</item>-->
+                    <!--<item name="formElement" xsi:type="string">select</item>-->
+                    <!--<item name="source" xsi:type="string">service</item>-->
+                <!--</item>-->
+            <!--</argument>-->
+        <!--</field>-->
+
+        <field name="model_number">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Model Number</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">service</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="product_description">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Product Description</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">service</item>
+                </item>
+            </argument>
+        </field>
+        <field name="serial_number">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">MFR Serial Number</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">service</item>
+                </item>
+            </argument>
+        </field>
+        <field name="copack_serial_number">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Copack Serial Number</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">service</item>
+                </item>
+            </argument>
+        </field>
+    <!--</fieldset>-->
+    <!--<fieldset name="fault_description">-->
+        <!--<argument name="data" xsi:type="array">-->
+            <!--<item name="config" xsi:type="array">-->
+                <!--<item name="label" xsi:type="string" translate="true">Reported Fault Description:</item>-->
+            <!--</item>-->
+        <!--</argument>-->
+        <field name="short_description">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Short Description</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">service</item>
+                </item>
+            </argument>
+        </field>
+        <field name="detailed_description">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Detailed Description</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">service</item>
+                </item>
+            </argument>
+        </field>
+    <!--</fieldset>-->
+    <!--<fieldset name="safety_questions">-->
+        <!--<argument name="data" xsi:type="array">-->
+            <!--<item name="config" xsi:type="array">-->
+                <!--<item name="label" xsi:type="string" translate="true">Safety Questions:</item>-->
+            <!--</item>-->
+        <!--</argument>-->
+        <field name="safety1">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Was the device on the patient at the time of the fault?</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">service</item>
+                </item>
+            </argument>
+        </field>
+        <field name="safety2">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Was there any patient harm or injury reported?</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">service</item>
+                </item>
+            </argument>
+        </field>
+        <field name="safety3">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Was the unit’s alarm sounding?</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">service</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

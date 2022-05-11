@@ -1,0 +1,114 @@
+<?php
+    $_registerProductList = $block->getRegisterProductList();
+    $priceHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
+    $data = $block->getSearchData();
+    $downloadPath = $block->getDownloadDocPath();
+?>
+<div class="registerpro-main">
+<a href="#" class="filterButton <?= (isset($data["sku"]) || isset($data["product_name"])) ? 'active' : ''; ?>">Filter </a>
+
+<div class="customRegisterFilter" <?= (isset($data["sku"]) || isset($data["product_name"])) ? 'style="display: block;"' : ''; ?>">
+<form action="<?= $block->getRegisterProductSearchUrl() ?>" method="post" id="form-search">
+    <?= $block->getBlockHtml('formkey') ?>
+    <div class="filterInner">
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-3">SKU #</div>
+                    <div class="col-md-9">
+                        <input value="<?php echo (isset($data['sku'])) ? $data['sku'] : "" ?>"
+                            type="text" class="form-control" id="sku" name="sku">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label><strong class="formLabelSpace">&nbsp;</strong></label>
+                <div class="row">
+                    <div class="col-md-3">Serial No.</div>
+                    <div class="col-md-9">
+                        <input type="text" value="<?php echo (isset($data['serial_number'])) ? $data['serial_number'] : "" ?>"
+                             id="serial_number" name="serial_number" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12">
+            <div class="form-group">
+                <br/>
+                <button type="button" id="search-button" value="search"
+                        data-mage-init='{"appseconnectRegisterProduct": {}}'>Apply Filter
+                </button>
+                <button type="button" id="resetbutton" onclick="resetFilter()">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+
+<?php if ($_registerProductList && !empty($_registerProductList->getData())) { ?>
+    <div class="table-wrapper orders-history">
+        <table class="data table table-order-items history"
+               id="my-orders-table">
+            <caption class="table-caption"><?php /* @noEscape */
+                echo __('Repair Price List') ?></caption>
+            <thead>
+                <tr>
+                    <th scope="col" class="col shipping"><?php echo __('SKU #') ?></th>
+                    <th scope="col" class="col date"><?php echo __('Serial No.') ?></th>
+                    <th scope="col" class="col date"><?php echo __('Active (Y/N)') ?></th>
+                    <th scope="col" class="col date"><?php echo __('Invoice Doc.') ?></th>
+                    <th scope="col" class="col date"><?php echo __('Purchase Date') ?></th>
+                    <th scope="col" class="col shipping"><?php echo __('Warranty End') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($_registerProductList as $__registerProduct) { ?>
+                <tr>
+                    <td data-th="<?php echo $block->escapeHtml(__('Model Number / SKU')) ?>"><?php echo $__registerProduct['sku'] ?></td>
+                    <td data-th="<?php echo $block->escapeHtml(__('Serial No.')) ?>"><?php echo $__registerProduct['mfr_serial_no'] ?></td>
+                    <td data-th="<?php echo $block->escapeHtml(__('Active (Y/N)')) ?>"><?php echo $__registerProduct['is_active']?"Yes":"No"; ?></td>
+                    <td data-th="<?php echo $block->escapeHtml(__('Invoice Doc.')) ?>">
+                        <a target="_blank" href="<?php echo $downloadPath . $__registerProduct['purchase_order_file']; ?>"><?php echo ltrim($__registerProduct['purchase_order_number'],'/'); ?></a>
+                    </td>
+                    <td data-th="<?php echo $block->escapeHtml(__('Purchase Date')) ?>"><?php echo $block->getFormatDate($__registerProduct['date_of_purchase']); ?></td>
+                    <td data-th="<?php echo $block->escapeHtml(__('Warranty End')) ?>"><?php echo ($__registerProduct['is_active']) ? $block->getFormatDate($__registerProduct['warranty_end_date']):''; ?></td>
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($block->getPagerHtml()) { ?>
+        <div class="order-products-toolbar toolbar bottom">
+            <?php echo $block->getPagerHtml(); ?>
+        </div>
+    <?php } ?>
+<?php } else { ?>
+    <div class="message info empty">
+        <span><?php /* @noEscape */
+            echo __('No register product found.'); ?></span>
+    </div>
+<?php } ?>
+<script>
+    require([
+        'jquery'
+    ], function ($) {
+
+        $(".filterButton").click(function () {
+            $(".customRepairFilter").slideToggle("slow");
+            $(this).toggleClass("active");
+            return false;
+        });
+    });
+
+    function resetFilter() {
+        document.getElementById("form-search").reset();
+        document.getElementById("sku").value = "";
+        document.getElementById("serial_number").value = "";
+        document.getElementById("search-button").click();
+    }
+</script>
+</div>
+

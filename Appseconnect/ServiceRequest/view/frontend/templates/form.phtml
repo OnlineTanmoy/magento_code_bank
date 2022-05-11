@@ -1,0 +1,454 @@
+<?php
+$blockLayout = $this->getLayout()
+    ->createBlock('Magento\Cms\Block\Block');
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->create('\Magento\Customer\Model\Session');
+$serviceRequestObj = $objectManager->create('Appseconnect\ServiceRequest\Model\RequestPostFactory');
+
+$serviceHelper = $this->helper('Appseconnect\ServiceRequest\Helper\ServiceRequest\Data');
+$addressConfig = $objectManager->create('Magento\Customer\Model\Address\Config');
+$addressMapper = $objectManager->create('Magento\Customer\Model\Address\Mapper');
+$renderer = $addressConfig->getFormatByCode('html')->getRenderer();
+$allAddsses = $serviceHelper->getAdditionalAddresses(false, false, true);
+$requestServiceId = $this->getRequest()->getParam('id');
+
+$serviceRequest = null;
+$inWarranty = null;
+$inWarranty = null;
+$mfrserial = null;
+$sku = null;
+$productname = null;
+$shortDescription = null;
+$detailDescription = null;
+$purchaseOrderNumber = null;
+$termsCondition = null;
+$shippingAddressId = 0;
+$safety1 = -1;
+$safety2 = -1;
+$safety3 = -1;
+
+$deviceValidationRequired = true;
+$lockFields = false;
+$fprPrice = '';
+if ($requestServiceId) {
+    // load all data
+    $serviceRequest = $serviceRequestObj->create()->load($requestServiceId);
+    $inWarranty = $serviceRequest->getData('is_warranty');
+    $fprPrice = (!$inWarranty) ? $serviceRequest->getData('fpr_price') : '';
+    $mfrserial = $serviceRequest->getData('serial_number');
+    $sku = $serviceRequest->getData('model_number');
+    $shortDescription = $serviceRequest->getData('short_description');
+    $detailDescription = $serviceRequest->getData('detailed_description');
+    $purchaseOrderNumber = $serviceRequest->getData('purchase_order_number');
+    $termsCondition = $serviceRequest->getData('terms_condition');
+    $shippingAddressId = (is_null($serviceRequest->getData('shipping_address_id'))) ? 0 : $serviceRequest->getData('shipping_address_id');
+    $safety1 = (is_null($serviceRequest->getData('safety1'))) ? -1 : $serviceRequest->getData('safety1');
+    $safety2 = (is_null($serviceRequest->getData('safety2'))) ? -1 : $serviceRequest->getData('safety2');
+    $safety3 = (is_null($serviceRequest->getData('safety3'))) ? -1 : $serviceRequest->getData('safety3');
+    $deviceType = $serviceRequest->getData('device_type');
+    $serviceQuoteRequired = $serviceRequest->getData('service_quote_required');
+    $lockFields = ($serviceRequest->getData('status') == 1) ? false : true;
+    $deviceValidationRequired = false;
+
+    $statusDetail[0] = "";
+    $statusDetail[1] = "Your request is saved as draft for later submission";
+    $statusDetail[2] = "Your service request is submitted successfully and is awaiting Company review";
+    $statusDetail[3] = "Company is awaiting arrival of your faulty device";
+    $statusDetail[4] = "Your device is under repair";
+    $statusDetail[5] = "Repair of your device is on-hold";
+    $statusDetail[6] = "Your device is not repairable and we will get in touch with you";
+    $statusDetail[7] = "Your device is under repair and we awaiting spare parts";
+    $statusDetail[8] = "Your repair is awaiting approval, we will get in touch with you";
+    $statusDetail[9] = "You repair is complete and the device is shipped back to your address";
+    $statusDetail[10] = "Your device is not repairable and the service request is closed without repair";
+    ?>
+    <div class="status-bar">
+        <ul>
+            <li <?php if ($serviceRequest->getStatus() == 1) {
+                echo 'class="active"';
+            } ?>>
+                <label><?php echo __('Draft'); ?></label>
+                <div class="status-number">1</div>
+                <span><?php echo ($draftDate = $serviceRequest->getDraftDate()) ? $block->formatDate($draftDate, \IntlDateFormatter::MEDIUM) : '&nbsp;' ?></span>
+            </li>
+            <li <?php if ($serviceRequest->getStatus() == 2) {
+                echo 'class="active"';
+            } ?>>
+                <label><?php echo __('Submitted'); ?></label>
+                <div class="status-number">2</div>
+                <span><?php echo ($submitDate = $serviceRequest->getSubmitDate()) ? $block->formatDate($submitDate, \IntlDateFormatter::MEDIUM) : '&nbsp;' ?></span>
+            </li>
+            <li <?php if ($serviceRequest->getStatus() == 3) {
+                echo 'class="active"';
+            } ?>>
+                <label><?php echo __('In-transit'); ?></label>
+                <div class="status-number">3</div>
+                <span><?php echo ($transitDate = $serviceRequest->getTransitDate()) ? $block->formatDate($transitDate, \IntlDateFormatter::MEDIUM) : '&nbsp;' ?></span>
+            </li>
+            <li <?php if (in_array($serviceRequest->getStatus(), [4,5,6,7,8]) ) {
+                echo 'class="active"';
+            } ?>>
+                <label><?php echo __('In-service'); ?></label>
+                <div class="status-number">4</div>
+                <span><?php echo ($serviceDate = $serviceRequest->getServiceDate()) ? $block->formatDate($serviceDate, \IntlDateFormatter::MEDIUM) : '&nbsp;' ?></span>
+            </li>
+            <li <?php if (in_array($serviceRequest->getStatus(), [9,10,11])) {
+                echo 'class="active"';
+            } ?>>
+                <label><?php echo __('Completed'); ?></label>
+                <div class="status-number">5</div>
+                <span><?php echo ($completeDate = $serviceRequest->getCompleteDate()) ? $block->formatDate($completeDate, \IntlDateFormatter::MEDIUM) : '&nbsp;' ?></span>
+            </li>
+        </ul>
+        <span class="ServReqMsg"><?php echo($serviceRequest->getStatus() && $statusDetail[$serviceRequest->getStatus()] ? $statusDetail[$serviceRequest->getStatus()] : ''); ?></span>
+    </div>
+    <?php
+} else {
+    $warrantyData = $customerSession->getIsInWarranty();
+    $inWarranty = ($warrantyData['is in warranty'] == 'Yes') ? 1 : 0;
+    $fprPrice = isset($warrantyData['FPR']) ? $warrantyData['FPR'] : '';
+    $mfrserial = $customerSession->getMfrSerial();
+    $sku = $customerSession->getSku();
+    $productname = $customerSession->getProductName();
+    $deviceType = $customerSession->getDeviceType();
+    if ($mfrserial || $sku || $productname) {
+        $deviceValidationRequired = false;
+    }
+}
+
+?>
+
+<div class="service-request">
+    <div class="container">
+        <div class="upper-head">
+            <p><?php echo __('Please complete the service request form below to submit a request for a serialised product.'); ?></p>
+        </div>
+        <div class="note-block">
+            <i><?php echo __("Note: Repaired devices will only be returned to the requester's address"); ?></i>
+        </div>
+        <?php echo $this->getChildHtml('global_messages'); ?>
+
+        <?php if ($lockFields == false || ($serviceRequest->getData('status') > 1 && $serviceQuoteRequired == 1 && $serviceRequest->getData('fpr_price')>0)) { ?>
+        <form name="service_request" method="post"
+              id="service-request"
+              data-mage-init='{"validation": {}}'
+              enctype="multipart/form-data"
+              action="<?php echo $this->getUrl('servicerequest/request/submit') ?>">
+            <?php } ?>
+            <input name="form_key" type="hidden" value="<?php /* @noEscape */
+            echo $block->getFormKey(); ?>">
+            <input name="requestStatus" id="requestStatus" type="hidden" value=""/>
+            <input name="device_type" type="hidden" value="<?php echo $deviceType ?>"/>
+            <input name="is_warranty" type="hidden" value="<?php echo $inWarranty ?>"/>
+            <input name="fpr_price" type="hidden" value="<?php echo $fprPrice ?>"/>
+            <input name="request_service_id" type="hidden" value="<?php echo $requestServiceId ?>"/>
+            <div class="device-details" id="device-details">
+                <?php if($requestServiceId) if ($serviceRequest->getData('status') > 1 && ($serviceQuoteRequired == 1 && $serviceRequest->getData('fpr_price') > 0)) { ?>
+                    <p><br/></p>
+                    <div>Admin update the Service charge for this request</div>
+                    <div class="field-value">
+                        <div class="field-left">
+                            <label><?php echo __('Service/Repair Cost'); ?></label>
+                        </div>
+                        <div class="field-right">
+                            <input type="text" value="<?php echo $serviceRequest->getData('fpr_price'); ?>" readonly/>
+                        </div>
+                    </div>
+                    <div class="field-value-btn">
+                        <input name="customer_accept" type="hidden" value="1"/>
+                        <button type="button" id="submit_request" class="validBtn"
+                                    name="submit_request"><?php echo __('Accept'); ?></button>
+                    </div>
+                <?php } ?>
+
+                <h3><?php echo __('Device Details'); ?>:</h3>
+                <div class="field-value">
+                    <div class="field-left">
+                        <label><?php echo __('Serial #'); ?></label>
+                        <div class="field-note">
+                            <?php echo __('Click'); ?>
+                            <a href="javascript:void(0)" title="here"
+                               id="tooltip-serial-no"><?php echo __('here'); ?></a>
+                            <?php echo __('if you need help to locate the Serial #') ?>
+                        </div>
+                    </div>
+                    <div class="field-right">
+                        <input type="text" class='serial_number' name="serial_number" id="serial_number"
+                               value="<?php echo $mfrserial; ?>" readonly/>
+                    </div>
+                </div>
+
+                <div class="field-value">
+                    <div class="field-left">
+                        <label><?php echo __('Part No./SKU #'); ?></label>
+                        <div class="field-note">
+                            <?php echo __('Click'); ?>
+                            <a href="javascript:void(0)" title="here"
+                               id="tooltip-model-no"><?php echo __('here'); ?></a>
+                            <?php echo __('if you need help to locate the Part No./SKU #'); ?>
+                        </div>
+                    </div>
+                    <div class="field-right">
+                        <input type="text" class='copackserial' name="model_number"
+                               id="product_model" value="<?php echo $sku; ?>" readonly/>
+                    </div>
+                </div>
+
+                <div class="field-value">
+                    <div class="field-left"></div>
+                    <div class="field-right">
+                        <div class="total-error-msg" style="color: red; font-weight: bold;"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="report-fault-details" <?php if ($deviceValidationRequired) { ?> style="display: none" <?php } ?>>
+                <div class="report-fault-details">
+                    <h3><?php echo __('Reported Fault Description'); ?>:</h3>
+                    <div class="field-value">
+                        <div class="field-left">
+                            <label class="label"><?php echo __('Short Description'); ?></label>
+                        </div>
+                        <div class="field-right">
+                                <textarea data-validate="{required:true}" name="short_description" <?php if ($lockFields) echo 'readonly'; ?>
+                                          id="short_description"><?php echo $shortDescription ?></textarea>
+
+                        </div>
+                    </div>
+                    <div class="field-value">
+                        <div class="field-left">
+                            <label class="label"><?php echo __('Detailed Description'); ?></label>
+                        </div>
+                        <div class="field-right">
+                                <textarea name="detailed_description" <?php if ($lockFields) echo 'readonly'; ?>
+                                          id="detailed_description"><?php echo $detailDescription ?></textarea>
+                        </div>
+                    </div>
+                    <div class="field-value">
+                        <div class="field-left">
+                            <label><?php echo __('Attach Supporting Documents'); ?></label>
+                            <br/>Maximum file size limit is 5MB.
+                        </div>
+                        <div class="field-right">
+                            <?php if ($lockFields) { ?>
+                                <a target="_blank"
+                                   href="<?php echo $block->getUrl('pub/media/') . $serviceRequest->getFilePath() ?>"><?php echo substr(strrchr(rtrim($serviceRequest->getFilePath(), '/'), '/'), 1) ?></a>
+                            <?php } else if ($serviceRequest && $serviceRequest->getData('status') == 1) { ?>
+                                <a target="_blank"
+                                   href="<?php echo $block->getUrl('pub/media/') . $serviceRequest->getFilePath() ?>"><?php echo substr(strrchr(rtrim($serviceRequest->getFilePath(), '/'), '/'), 1) ?></a>
+                                <input type="file" id="file_path" name="file_path"/>
+                            <?php } else { ?>
+                                <input type="file" id="file_path" name="file_path"/>
+                            <?php } ?>
+                            <div id="file_path_error1" style="display:none; color:#FF0000;">File type restriction
+                                for .doc, .docx, .xls, .xlsx, .pdf, .jpeg, .jpg, .png only
+                            </div>
+                            <div id="file_path_error2" style="display:none; color:#FF0000;">Maximum File Size Limit is 5MB.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-fault-details" id="address">
+                    <h3><?php echo __('Item Return Address'); ?>:</h3>
+                    <div class="field-value fieldset">
+                        <div class="field-value-btn">
+                            <?php if ($lockFields) { ?>
+                                <?php foreach ($allAddsses as $_address) {
+                                    if ($shippingAddressId == $_address->getId()) {
+                                        echo strip_tags($renderer->renderArray($addressMapper->toFlatArray($_address)));
+                                        break;
+                                    }
+                                } ?>
+                            <?php } else { ?>
+                                <select name="shipping_address_id">
+                                    <?php foreach ($allAddsses as $_address) {?>
+                                        <option value="<?= $_address->getId(); ?>" <?php echo ($shippingAddressId == $_address->getId()) ? "selected" : "" ?> >
+                                            <?= $renderer->renderArray($addressMapper->toFlatArray($_address)) ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+                            <?php } ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-fault-details" id="report_fault_details">
+                    <h3><?php echo __('Safety Questions'); ?>:</h3>
+                    <div class="field-value fieldset">
+                        <div class="field-left field required">
+                            <label><?php echo __('Was the Product exposed to water?'); ?></label>
+
+                        </div>
+                        <div class="field-right">
+                            <ul>
+                                <li><input type="radio" id="safety1"
+                                           name="safety1" <?php if ($lockFields) echo 'onclick="return false"'; ?>
+                                           value="1" <?php echo ($safety1 == 1) ? "checked" : "" ?> data-validate="{'validate-one-required-by-name':true}" />
+                                    <label for="safety1"><?php echo __('Yes'); ?></label></li>
+                                <li><input type="radio" id="safety12"
+                                           name="safety1" <?php if ($lockFields) echo 'onclick="return false"'; ?>
+                                           value="0" <?php echo ($safety1 == 0) ? "checked" : "" ?> data-validate="{'validate-one-required-by-name':true}" />
+                                    <label for="safety12"><?php echo __('No'); ?></label></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="field-value">
+                        <div class="field-left field">
+                            <label><?php echo __('Was the product dropped from a height?'); ?></label>
+
+                        </div>
+                        <div class="field-right">
+                            <ul>
+                                <li><input type="radio" id="safety2"
+                                           name="safety2" <?php if ($lockFields) echo 'onclick="return false"'; ?>
+                                           value="1" <?php echo ($safety2 == 1) ? "checked" : "" ?> data-validate="{'validate-one-required-by-name':true}" />
+                                    <label for="safety2"><?php echo __('Yes'); ?></label></li>
+                                <li><input type="radio" id="safety22"
+                                           name="safety2" <?php if ($lockFields) echo 'onclick="return false"'; ?>
+                                           value="0" <?php echo ($safety2 == 0) ? "checked" : "" ?> data-validate="{'validate-one-required-by-name':true}" />
+                                    <label for="safety22"><?php echo __('No'); ?></label></li>
+
+                            </ul>
+                        </div>
+                        <div class="was_there_any_patient_harm" style="display: none;"><?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('was_there_any_patient_harm')->toHtml();?></div>
+                    </div>
+                    <div class="field-value">
+                        <div class="field-left">
+                            <label><?php echo __("Was the product 's power cord plugged during Lightning storm?"); ?></label>
+
+                        </div>
+                        <div class="field-right">
+                            <ul>
+                                <li><input type="radio" id="safety3"
+                                           name="safety3" <?php if ($lockFields) echo 'onclick="return false"'; ?>
+                                           value="1" <?php echo ($safety3 == 1) ? "checked" : "" ?> data-validate="{'validate-one-required-by-name':true}" />
+                                    <label for="safety3"><?php echo __('Yes'); ?></label></li>
+                                <li><input type="radio" id="safety32"
+                                           name="safety3" <?php if ($lockFields) echo 'onclick="return false"'; ?>
+                                           value="0" <?php echo ($safety3 == 0) ? "checked" : "" ?> data-validate="{'validate-one-required-by-name':true}" />
+                                    <label for="safety32"><?php echo __('No'); ?></label></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <?php if (false) { ?>
+                    <div class="device-details" id="device-details">
+                        <h3><?php echo __('Purchase Order Details'); ?>:</h3>
+                        <div class="field-value fieldset">
+                            <div class="field-left field  required">
+                                <label class="label"><?php echo __('Purchase Order Number'); ?></label>
+                                <?php if ($fprPrice) { ?>
+                                    <div>Repair cost <b>$<?php echo $fprPrice ?> (excluding GST)</b></div>
+                                <?php } ?>
+                            </div>
+                            <div class="field-right">
+                                <input type="text" class='serviceproduct' value="<?php echo $purchaseOrderNumber ?>"
+                                       id="purchase_order_number" name="purchase_order_number" maxlength="20"
+                                       data-validate="{required:true}" <?php if ($lockFields) echo 'readonly'; ?>/>
+                                <div id="purchase_order_numbermessage" style="color:#FF0000;"></div>
+                            </div>
+                        </div>
+
+                        <div class="field-value fieldset">
+                            <div class="field-left field required">
+                                <label class="label"
+                                       style="margin: 0 0 0px"><?php echo __('Attach Purchase Order'); ?></label>
+                                <div>Maximum file size limit is 5MB.</div>
+                            </div>
+                            <div class="field-right">
+                                <?php if ($lockFields) { ?>
+                                    <a target="_blank"
+                                       href="<?php echo $block->getUrl('pub/media/') . $serviceRequest->getPurchaseOrderFile() ?>"><?php echo substr(strrchr(rtrim($serviceRequest->getPurchaseOrderFile(), '/'), '/'), 1) ?></a>
+                                <?php } else if ($serviceRequest && $serviceRequest->getData('status') == 1) { ?>
+                                    <a target="_blank"
+                                       href="<?php echo $block->getUrl('pub/media/') . $serviceRequest->getPurchaseOrderFile() ?>"><?php echo substr(strrchr(rtrim($serviceRequest->getPurchaseOrderFile(), '/'), '/'), 1) ?></a>
+                                    <input type="file" class='serviceproduct required' id="purchase_order_file"
+                                           name="purchase_order_file"
+                                           <?php if (isset($serviceRequest) && !$serviceRequest->getPurchaseOrderFile()) { ?>data-validate="{required:true}"<?php } ?>/>
+                                <?php } else { ?>
+                                    <input type="file" class='serviceproduct required' id="purchase_order_file"
+                                           name="purchase_order_file"
+                                           <?php if (isset($serviceRequest) && !$serviceRequest->getPurchaseOrderFile()) { ?>data-validate="{required:true}"<?php } ?>/>
+                                <?php } ?>
+                                <div id="purchase_order_filemessage" style="color:#FF0000;"></div>
+                                <div id="purchase_order_file_path_error1" style="display:none; color:#FF0000;">File type restriction
+                                    for .doc, .docx, .xls, .xlsx, .pdf, .jpeg, .jpg, .png only
+                                </div>
+                                <div id="purchase_order_file_path_error2" style="display:none; color:#FF0000;">Maximum File Size Limit is 5MB.</div>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+
+                <div class="terms-condition">
+                    <h3><?php echo __('Terms & Conditions'); ?>:</h3>
+                    <div class="field-value">
+                        <div class="field-full">
+                            <input type="checkbox" data-validate="{required:true}" <?php if ($lockFields) echo 'onclick="return false"'; ?>
+                                   name="terms_condition" <?php echo ($termsCondition == 'on') ? "checked" : "" ?> />
+                            <label style="cursor: pointer;"><?php echo __('I have read and agree to the terms and conditions.'); ?></label>
+                        </div>
+                    </div>
+                    <div class="terms-condition-div" style="display: none;"><?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('service_portal_terms_and_condition')->toHtml();?></div>
+                    <div class="field-value-btn">
+                        <?php if ($lockFields == false) { ?>
+                            <button type="button" id="submit_request" class="validBtn"
+                                    name="submit_request"><?php echo __('Submit Request'); ?></button>
+                            <button type="button" id="draft_request" class="validBtn"
+                                    name="draft_request"
+                                    onclick="saveAsDraft();"><?php echo __('Save as Draft'); ?></button>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+            <?php if ($lockFields == false || ($serviceRequest->getData('status') > 1 && $serviceQuoteRequired == 1 && $serviceRequest->getData('fpr_price')>0)) { ?>
+        </form>
+    <?php } ?>
+    </div>
+</div>
+<div class="img-popup"></div>
+<script type="text/x-magento-init">
+    {
+        "#body": {
+            "productActionService": {
+                "searchUrl": "<?php /* @noEscape */
+    echo $block->getUrl('b2bmage/quickorder/cart_productsearchlist'); ?>"
+            }
+        }
+    }
+
+
+
+</script>
+<script type="text/x-magento-init">
+        {
+            "*": {
+                "Appseconnect_ServiceRequest/js/servicerequest": {}
+            }
+        }
+
+</script>
+<script type="text/javascript">
+    function saveAsDraft() {
+        document.getElementById('requestStatus').setAttribute('value', 'draft');
+        document.getElementById('service-request').submit();
+    }
+    var tooltipVal = '<img width="500" src="<?php echo $this->getViewFileUrl('Appseconnect_ServiceRequest::images/serial.jpg')?>"/>';
+    tooltip_model_no = tooltipVal;
+    tooltip_serial_no = tooltipVal;
+</script>
+<style>
+    #report_fault_details div.mage-error {
+        position: absolute;
+        margin-top: 10px;
+    }
+    @media (min-width: 768px) {
+        #report_fault_details div.mage-error {
+            position: absolute;
+            margin-top: 0;
+        }
+    }
+</style>
+

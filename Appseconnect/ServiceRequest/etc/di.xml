@@ -1,0 +1,76 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Appseconnect\ServiceRequest\Api\Service\Data\ServiceInterface" type="Appseconnect\ServiceRequest\Model\Data\Service\ServiceInterfaceData"/>
+    <preference for="Appseconnect\ServiceRequest\Api\Service\Data\ServiceSearchResultsInterface" type="Appseconnect\ServiceRequest\Model\ServiceRequestSearchResult"/>
+    <preference for="Appseconnect\ServiceRequest\Api\Service\ServiceRepositoryInterface" type="Appseconnect\ServiceRequest\Model\RequestPostRepository" />
+    <preference for="Appseconnect\ServiceRequest\Api\Repair\Data\RepairItemsInterface" type="Appseconnect\ServiceRequest\Model\Data\Repair\RepairItemsInterfaceData"/>
+    <preference for="Appseconnect\ServiceRequest\Api\Repair\Data\RepairInterface" type="Appseconnect\ServiceRequest\Model\Data\Repair\RepairInterfaceData"/>
+    <preference for="Appseconnect\ServiceRequest\Api\Repair\Data\RepairSearchResultsInterface" type="Appseconnect\ServiceRequest\Model\RepairSearchResult"/>
+    <preference for="Appseconnect\ServiceRequest\Api\Repair\RepairRepositoryInterface" type="Appseconnect\ServiceRequest\Model\RepairRepository" />
+
+    <preference for="Appseconnect\ServiceRequest\Api\Warranty\WarrantyRepositoryInterface" type="Appseconnect\ServiceRequest\Model\WarrantyRepository" />
+    <preference for="Appseconnect\ServiceRequest\Api\Warranty\Data\WarrantyInterface" type="Appseconnect\ServiceRequest\Model\WarrantyData" />
+    <preference for="Appseconnect\ServiceRequest\Api\Warranty\Data\WarrantySearchResultsInterface" type="Appseconnect\ServiceRequest\Model\WarrantySearchResult"/>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="service_request_listing_data_source" xsi:type="string">Appseconnect\ServiceRequest\Model\ResourceModel\RequestPost\Grid\Collection</item>
+                <item name="service_request_warrantylisting_data_source" xsi:type="string">Appseconnect\ServiceRequest\Model\ResourceModel\Warranty\Grid\Collection</item>
+                <item name="service_request_repairlisting_data_source" xsi:type="string">Appseconnect\ServiceRequest\Model\ResourceModel\Repair\Grid\Collection</item>
+                <item name="service_request_serial_data_source" xsi:type="string">Appseconnect\ServiceRequest\Model\ResourceModel\Serial\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="ServiceRequestWarrantyGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Appseconnect\ServiceRequest\Model\ResourceModel\Warranty\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">ServiceRequestWarrantyGridDataProvider</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="ServiceRequestRepairGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Appseconnect\ServiceRequest\Model\ResourceModel\Repair\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">ServiceRequestRepairGridDataProvider</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="ServiceRequestPostGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Appseconnect\ServiceRequest\Model\ResourceModel\RequestPost\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">ServiceRequestPostGridDataProvider</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="ServiceRequestSerialGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Appseconnect\ServiceRequest\Model\ResourceModel\Serial\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">ServiceRequestSerialGridDataProvider</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Checkout\Model\Cart">
+        <plugin name="prevent_add_to" type="Appseconnect\ServiceRequest\Plugin\PreventAddToCart"/>
+    </type>
+
+    <type name="Magento\Sales\Model\OrderRepository">
+        <plugin name="appseconnect_service_order_repository"
+                type="Appseconnect\ServiceRequest\Plugin\Sales\Model\OrderRepository" />
+    </type>
+
+    <preference for="Magento\OfflineShipping\Model\Carrier\Freeshipping" type="Appseconnect\ServiceRequest\Model\Carrier\Freeshipping"/>
+    <preference for="Magento\Shipping\Model\CarrierFactory" type="Appseconnect\ServiceRequest\Model\Carrier\CarrierFactory"/>
+    <preference for="Magento\Config\Model\Config\Source\Email\Template" type="Appseconnect\ServiceRequest\Model\Source\Email\Template"/>
+    <preference for="Magento\Sales\Model\Order\Email\Sender\OrderSender" type="Appseconnect\ServiceRequest\Model\Email\Sender\OrderSender"/>
+
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="clean-old-service-request" xsi:type="object">Appseconnect\ServiceRequest\Console\Command\CleanOldServiceRequest</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <preference for = "Magento\ImportExport\Controller\Adminhtml\Import\Download" type = "Appseconnect\ServiceRequest\Controller\Adminhtml\Import\Download" />
+</config>

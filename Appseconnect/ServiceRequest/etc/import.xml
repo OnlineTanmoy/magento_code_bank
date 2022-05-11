@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation = "urn:magento:module:Magento_ImportExport:etc/import.xsd">
+    <entity name = "appseconnect_product_serial_import" label = "Product Serial no. import"
+            model = "Appseconnect\ServiceRequest\Model\Import\ProductSerialImport"
+            behaviorModel = "Magento\ImportExport\Model\Source\Import\Behavior\Basic" />
+</config>

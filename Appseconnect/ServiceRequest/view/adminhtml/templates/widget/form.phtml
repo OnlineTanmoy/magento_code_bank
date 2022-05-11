@@ -1,0 +1,84 @@
+<?php
+/** @var $block \Magento\Backend\Block\Widget\Form */
+?>
+<?php /* @todo replace .form-inline with better class name */?>
+<?php /* ToDo UI: check if we need this wrapper in the process of global forms refactoring */ ?>
+<?php
+$data = $this->getServiceData();
+$allStatus = $this->helper('Appseconnect\ServiceRequest\Helper\ServiceRequest\Data')->getRequestStatus();
+$closeWithoutRepair[9] = "No";
+$closeWithoutRepair[10] = "Yes";
+?>
+<div class="service_info" style="margin-bottom: 40px;">
+<?php
+    if($data['service_quote_required'] == 1 && $data['fpr_price'] == 0) {?>
+        <span style="color: red"> * This Service request is on hold, Please update the service repair cost below</span>
+    <?php }
+?>
+<div class="admin__page-section-title">
+    <span class="title">Service Request & Account Information</span></div>
+
+
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item order-information" style="width: 50%;  ">
+            <div class="admin__page-section-title">
+                <span class="title">
+                    RA #<?php echo $data['ra_id']; ?>
+                </span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <table class="admin__table-secondary ">
+                    <tbody>
+                        <tr><td>Request Date</td><td style="text-align: right;"><?php echo $data['post']; ?></td></tr>
+                        <tr>
+                            <td>Request Status</td>
+                            <td style="text-align: right;">
+                                <?php foreach ($allStatus as $_eachStatus) {
+                                    if ($_eachStatus['id'] == $data['status']) {
+                                        if ($_eachStatus['id'] == 10) {
+                                            echo "Completed";
+                                        } else {
+                                            echo $_eachStatus['label'];
+                                        }
+                                        break;
+                                    }
+                                } ?>
+                            </td>
+                        </tr>
+                        <tr><td>Requested By</td><td style="text-align: right;"><?php echo $data['requested_by_name']; ?></td></tr>
+                        <tr><td>Requested by email</td><td style="text-align: right;"><?php echo $data['requested_by_email']; ?></td></tr>
+                        <tr><td>Purchase Order Number</td><td style="text-align: right;"><?php echo $data['purchase_order_number']; ?></td></tr>
+                        <tr><td>Warranty Status</td><td style="text-align: right;"><?php echo ($data['is_warranty'] == 1) ? 'Under Manufacturer’s Warranty' : 'Out of Manufacturer’s Warranty' ; ?></td></tr>
+                        <tr><td>Submitted Date</td><td style="text-align: right;"><?php echo $data['submit_date']; ?></td></tr>
+                        <tr><td>In-service Date</td><td style="text-align: right;"><?php echo $data['service_date']; ?></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin__page-section-item order-information" style="width: 50%;  padding-left: 30px;">
+            <div class="admin__page-section-title">
+                <span class="title">
+                    Account Information
+                </span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <table class="admin__table-secondary ">
+                    <tbody>
+                    <tr><td>Customer Name</td><td style="text-align: right;"><?php echo $data['customer_name']; ?></td></tr>
+                    <tr><td>Email</td><td style="text-align: right;"><?php echo $data['customer_email']; ?></td></tr>
+                    <tr><td>Customer Group</td><td style="text-align: right;"><?php echo $data['customer_group']; ?></td></tr>
+                    <tr><td>Close without repair</td><td style="text-align: right;"><?php echo isset($closeWithoutRepair[$data['status']])? $closeWithoutRepair[$data['status']]: '' ;?></td></tr>
+                    <tr><td>Draft Date</td><td style="text-align: right;"><?php echo $data['draft_date']; ?></td></tr>
+                    <tr><td>In-transit Date</td><td style="text-align: right;"><?php echo $data['transit_date']; ?></td></tr>
+                    <tr><td>Completed Date</td><td style="text-align: right;"><?php echo $data['complete_date']; ?></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="entry-edit form-inline">
+    <?= $block->getFormHtml() ?>
+</div>
+<?= $block->getChildHtml('form_after') ?>

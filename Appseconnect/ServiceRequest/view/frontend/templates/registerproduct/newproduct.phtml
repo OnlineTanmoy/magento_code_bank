@@ -1,0 +1,141 @@
+<?php
+
+?>
+<div class="service-request">
+    <div class="container">
+        <form name="service_request" method="post"
+              id="new-register-request"
+              data-mage-init='{"validation": {}}'
+              enctype="multipart/form-data"
+              action="<?php echo $this->getUrl('servicerequest/registerproduct/submit') ?>">
+            <input name="form_key" type="hidden" value="<?php echo $block->getFormKey(); ?>">
+            <div class="device-details" id="device-details">
+                <h3><?php echo __('Device Details'); ?>:</h3>
+                <div class="field-value">
+                    <div class="field-left field  required">
+                        <label><?php echo __('Serial #'); ?></label>
+                        <div class="field-note">
+                            <?php echo __('Click'); ?>
+                            <a href="javascript:void(0)" title="here"
+                               id="tooltip-serial-no"><?php echo __('here'); ?></a>
+                            <?php echo __('if you need help to locate the Serial #') ?>
+                        </div>
+                    </div>
+                    <div class="field-right">
+                        <input type="text" class='serial_number' name="serial_number" id="serial_number"
+                               data-validate="{required:true}"/>
+                    </div>
+                </div>
+                <div class="field-value">
+                    <div class="field-left field  required">
+                        <label><?php echo __('SKU #'); ?></label>
+                        <div class="field-note">
+                            <?php echo __('Click'); ?>
+                            <a href="javascript:void(0)" title="here"
+                               id="tooltip-model-no"><?php echo __('here'); ?></a>
+                            <?php echo __('if you need help to locate the Part No./SKU #'); ?>
+                        </div>
+                    </div>
+                    <div class="field-right">
+                        <input type="text" class='copackserial' name="model_number" id="product_model"
+                               data-validate="{required:true}"/>
+                    </div>
+                </div>
+                <div class="field-value">
+                    <div class="field-left field required">
+                        <label class="label"><?php echo __('Date of Purchase'); ?></label>
+                    </div>
+                    <div class="field-right">
+                        <input type="text" class='date_of_purchase required' name="date_of_purchase" id="date_of_purchase"
+                               autocomplete="off" data-validate="{required:true}"/>
+                    </div>
+                </div>
+
+
+                <div class="device-details" id="device-details">
+                    <h3><?php echo __('Invoice Details'); ?>:</h3>
+                    <div class="field-value fieldset">
+                        <div class="field-left field  required">
+                            <label class="label"><?php echo __('Invoice Number'); ?></label>
+                        </div>
+                        <div class="field-right">
+                            <input type="text" class='serviceproduct required'
+                                   id="purchase_order_number" name="purchase_order_number" maxlength="20"
+                                   data-validate="{required:true}"/>
+                        </div>
+                    </div>
+
+                    <div class="field-value fieldset">
+                        <div class="field-left field required">
+                            <label class="label"
+                                   style="margin: 0 0 0px"><?php echo __('Attach Invoice doc,'); ?></label>
+                            <div>Maximum file size limit is 5MB.</div>
+                        </div>
+                        <div class="field-right">
+                            <input type="file" class='serviceproduct required' id="purchase_order_file"
+                                   name="purchase_order_file"
+                                   data-validate="{required:true}"/>
+                            <div id="purchase_order_file_path_error1" style="display:none; color:#FF0000;">File type restriction
+                                for .doc, .docx, .xls, .xlsx, .pdf, .jpeg, .jpg, .png only
+                            </div>
+                            <div id="purchase_order_file_path_error2" style="display:none; color:#FF0000;">Maximum File Size Limit is 5MB.</div>
+                        </div>
+                    </div>
+
+                    <div class="terms-condition">
+                        <h3><?php echo __('Terms & Conditions'); ?>:</h3>
+                        <div class="field-value field  required">
+                            <div class="field-full">
+                                <input type="checkbox" data-validate="{required:true}" name="terms_condition" />
+                                <label style="cursor: pointer;"><?php echo __('I have read and agree to the terms and conditions.'); ?></label>
+                            </div>
+                        </div>
+                        <div class="terms-condition-div" style="display: none;"><?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('service_portal_terms_and_condition')->toHtml();?></div>
+                        <div class="field-value-btn">
+                            <button type="button" id="submit_request" class="validBtn"
+                                    name="submit_request"><?php echo __('Register Product'); ?></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    require(['jquery','mage/calendar'], function ($) {
+        var get_url = BASE_URL + 'contract/create/productlist';
+        $('#date_of_purchase').datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+            defaultDate: new Date(),
+            //minDate: new Date()
+        });
+    });
+</script>
+<div class="img-popup"></div>
+<script type="text/x-magento-init">
+    {
+        "#body": {
+            "productActionService": {
+                "searchUrl": "<?php /* @noEscape */
+    echo $block->getUrl('b2bmage/quickorder/cart_productsearchlist'); ?>"
+            }
+        }
+    }
+
+
+
+</script>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Appseconnect_ServiceRequest/js/register-product": {}
+        }
+    }
+</script>
+<script>
+    var tooltipVal = '<img width="500" src="<?php echo $this->getViewFileUrl('Appseconnect_ServiceRequest::images/serial.jpg')?>"/>';
+    tooltip_model_no = tooltipVal;
+    tooltip_serial_no = tooltipVal;
+</script>

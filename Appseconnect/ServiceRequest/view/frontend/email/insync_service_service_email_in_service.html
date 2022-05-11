@@ -1,0 +1,18 @@
+
+<!--@subject {{trans "Confirmation: Your Service Request %service_number has been reviewed" service_number=$service_number}}  @-->
+
+{{template config_path="design/email/header_template"}}
+
+<p class="greeting">{{trans "Dear %customer_name" customer_name=$customer_name}},</p><br/>
+<p>{{trans "Your Service Request has been reviewed by our Service Team. Please log-in to the <a href="%service_url">Service Request Portal</a> to track the status of this request. We will contact you shortly to advise next steps. " service_url="$this.getUrl($store,'service')"|raw}}
+
+<p><br/></p>
+<p>{{trans "Yours sincerely,"}}</p>
+<p><br/></p>
+
+<p>{{trans "The Service Team"}}
+    <br/>
+    <a href="mailto:repairs@easyconnect.com">repairs@easyconnect.com</a></p>
+<br/>
+
+{{template config_path="design/email/footer_template"}}

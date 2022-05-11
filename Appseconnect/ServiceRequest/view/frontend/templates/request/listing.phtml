@@ -1,0 +1,160 @@
+<?php
+$data = $block->getSearchData();
+$_serviceRequests = $block->getServiceRequestList();
+$allStatus = $this->helper('Appseconnect\ServiceRequest\Helper\ServiceRequest\Data')->getRequestStatus();
+?>
+<div class="request-main">
+<a href="#"
+   class="filterButton <?= (isset($data["request_status"]) || isset($data["from_date"]) || isset($data["to_date"])) ? 'active' : ''; ?>">
+    Filter </a>
+<div class="customServiceFilter" <?= (isset($data["request_status"]) || isset($data["from_date"]) || isset($data["to_date"])) ? 'style="display: block;"' : ''; ?>">
+<form action="<?= $block->getServiceSearchUrl() ?>" method="post" id="form-search" autocomplete="off">
+    <?= $block->getBlockHtml('formkey') ?>
+
+    <div class="customRepairFilter">
+        <div class="row">
+            <div class="col-md-8">
+                <label><strong>Request Date</strong></label>
+                <div class="row">
+                    <div class="col-md-1">From</div>
+                    <div class="col-md-5">
+                        <input value="<?php echo (isset($data['from_date'])) ? $data['from_date'] : "" ?>" type="text"
+                               class="form-control" id="from_date" name="from_date"></div>
+                    <div class="col-md-1">To</div>
+                    <div class="col-md-5">
+                        <input type="text" value="<?php echo (isset($data['to_date'])) ? $data['to_date'] : "" ?>"
+                               id="to_date" name="to_date" class="form-control"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label><strong>Status</strong></label>
+                <div class="row">
+                    <div class="col-md-12">
+                        <select id="request_status" name="request_status" class="form-control">
+                            <option></option>
+                            <?php foreach ($allStatus as $_eachStatus) {
+                                if(in_array($_eachStatus['id'], [5,6,7,8,10,11])) {
+                                    continue;
+                                }
+                                ?>
+                                <option value="<?= $_eachStatus['id'] ?>" <?php if(isset($data['status'])){ echo ($data['status'] == $_eachStatus['id']) ? "selected" : "";} ?> ><?= $_eachStatus['label'] ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <p>&nbsp;</p>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button type="button" id="search-button" value="search"
+                            data-mage-init='{"appseconnectServiceSearch": {}}'>Apply Filter
+                    </button>
+                    <button type="button" id="resetbutton" onclick="resetFilter()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+</div>
+<script>
+    function resetFilter() {
+        document.getElementById("form-search").reset();
+        document.getElementById("to_date").value = "";
+        document.getElementById("from_date").value = "";
+        document.getElementById("request_status").value = "";
+        document.getElementById("search-button").click();
+    }
+</script>
+<?php if ($_serviceRequests && !empty($_serviceRequests->getData())) : ?>
+    <div class="table-wrapper orders-history">
+        <table class="data table table-order-items history"
+               id="my-orders-table">
+            <caption class="table-caption"><?php /* @noEscape */
+                echo __('Request Lists') ?></caption>
+            <thead>
+            <tr>
+                <th scope="col" class="col id"><?php echo __('SR/RA #') ?></th>
+                <th scope="col" class="col shipping"><?php echo __('SKU #') ?></th>
+                <th scope="col" class="col date"><?php echo __('Serial #') ?></th>
+                <th scope="col" class="col shipping" style="white-space: nowrap"><?php echo __('Request Date') ?></th>
+                <th scope="col" class="col shipping" style="white-space: nowrap"><?php echo __('In Mfr. Warranty') ?></th>
+                <th scope="col" class="col status"><?php echo __('Status') ?></th>
+                <th scope="col" class="col actions"><?php echo __('Action') ?></th>
+                <th scope="col" class="col actions"><?php echo __('Invoice') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($_serviceRequests as $_serviceRequest) : ?>
+                <tr>
+                    <td data-th="<?php echo $block->escapeHtml(__('SR/RA #')) ?>">
+                        <?php echo $_serviceRequest['ra_id'] ?></td>
+                    <td data-th="<?php echo $block->escapeHtml(__('SKU #')) ?>">
+                        <?php echo $_serviceRequest['model_number'] ?></td>
+                    <td data-th="<?php echo $block->escapeHtml(__('Serial #')) ?>">
+                        <?php echo $_serviceRequest['serial_number'] ?></td>
+                    <td data-th="<?php echo $block->escapeHtml(__('created-date')) ?>">
+                        <?php echo $block->formatDate($_serviceRequest['post'], \IntlDateFormatter::MEDIUM) ?></td>
+                    <td style="text-align: center;" data-th="<?php echo $block->escapeHtml(__('In Mfr. Warranty')) ?>">
+                        <?php echo ($_serviceRequest['is_warranty']) ? "Yes" : "No" ?></td>
+                    <td style="text-align: center;" data-th="<?php echo $block->escapeHtml(__('Status')) ?>">
+                        <?php
+                        if($_serviceRequest['status_label'] == "Submit") {
+                            echo "Submitted";
+                        } elseif (in_array($_serviceRequest['status_label'], ['On Hold', 'Not Repairable', 'Waiting for Parts', 'Approval Required'])) {
+                            echo "In-service";
+                        } elseif (in_array($_serviceRequest['status_label'], ['Completed', 'Closed without Repair', 'Cancel'])) {
+                            echo "Completed";
+                        } else {
+                            echo $_serviceRequest['status_label'];
+                        }
+                        ?>
+                    </td>
+                    <td style="text-align: center;" data-th="<?php echo $block->escapeHtml(__('View #')) ?>">
+                        <a href="<?php echo $this->getUrl('servicerequest/form', array('id' => $_serviceRequest['entity_id'])) ?>"
+                           title="<?php echo __("View Details") ?>">
+                            <img class="action view" src="<?= $block->escapeUrl($this->getViewFileUrl('Appseconnect_ServiceRequest::images/view.png')) ?>"/>
+                        </a>
+                    </td>
+                    <td style="text-align: center" data-th="<?php echo $block->escapeHtml(__('Invoice #')) ?>">
+                        <?php if (isset($_serviceRequest['order_id']) && $incrementArray = $block->getServiceInvoiceFile($_serviceRequest['order_id'])) { ?>
+                            <a href="<?= $block->getUrl('product/product/index_download',
+                                array('incrementid' => $incrementArray['order_increment_id'], 'docname' => $incrementArray['invoice_increment_id'])) ?>"
+                               target="_blank" class="action view" title="Download Invoice"
+                            order="<?php echo $incrementArray['order_increment_id']; ?>"
+                            invoice="<?php echo $incrementArray['invoice_increment_id']; ?>">
+                                <img class="action view" src="<?php echo $this->getViewFileUrl('Appseconnect_ReturnManage::images/pdf-icon.png'); ?>"/>
+                            </a>
+                        <?php } ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($block->getPagerHtml()) :
+        ?>
+        <div class="order-products-toolbar toolbar bottom">
+            <?php echo $block->getPagerHtml(); ?>
+        </div>
+
+        <script>
+            require(['jquery','mage/calendar'], function ($) {
+                    var get_url = BASE_URL + 'contract/create/productlist';
+                    $('#from_date, #to_date').datepicker({
+                        dateFormat: 'dd/mm/yy',
+                        changeMonth: true,
+                        changeYear: true,
+                        defaultDate: new Date(),
+                        //minDate: new Date()
+                    });
+                });
+        </script>
+    <?php endif ?>
+<?php else : ?>
+    <div class="message info empty">
+        <span><?php /* @noEscape */
+            echo __('No Service Request Found.'); ?></span>
+    </div>
+<?php endif ?>
+</div>

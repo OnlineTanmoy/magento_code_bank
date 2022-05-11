@@ -1,0 +1,22 @@
+
+<!--@subject {{trans "Confirmation: Your Service Request %service_number has been submitted" service_number=$service_number}}  @-->
+
+{{template config_path="design/email/header_template"}}
+
+<p class="greeting">{{trans "Dear %customer_name" customer_name=$customer_name}},</p><br/>
+<p>{{trans "Thank you for submitting a request via the Service Request portal. Your service request has been received and is currently in review. A consignment note will be sent to you on the next business day. Please attach this to your shipper before sending the item to us. Additionally, once the item is received, allow 5-7 days for our Service Team to advise on next steps."}}<p>
+
+<p>Please log-in to the <a href="{{store url=''}}service/">Service Request Portal</a> to track the status of this request.</p>
+
+<br/>
+
+</p>
+<p>{{trans "Yours sincerely,"}}</p>
+<p><br/></p>
+
+<p>{{trans "The Service Team"}}
+    <br/>
+    <a href="mailto:repairs@easyconnect.com">repairs@easyconnect.com</a></p>
+<br/>
+
+{{template config_path="design/email/footer_template"}}

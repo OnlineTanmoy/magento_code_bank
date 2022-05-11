@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<config xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation = "../../../../Magento/Config/etc/system_file.xsd">
+    <system>
+        <section id = "insync_service" translate = "label" type = "text" sortOrder = "10"
+                 showInDefault = "1" showInWebsite = "1" showInStore = "0">
+            <label>Service</label>
+            <tab>insync</tab>
+            <resource>Appseconnect_CategoryVisibility::config_categoryvisibility</resource>
+            <group id = "service_document" translate = "label" type = "text" sortOrder = "50" showInDefault = "1"
+                   showInWebsite = "1">
+                <label>Document Location</label>
+                <field id="service_po_document_path" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Service Request document location</label>
+                    <comment>Service Request document location</comment>
+                </field>
+
+                <field id="register_po_document_path" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Register PO document location</label>
+                    <comment>Register PO document location</comment>
+                </field>
+            </group>
+            <group id = "service_email" translate = "label" type = "text" sortOrder = "10" showInDefault = "1"
+                   showInWebsite = "0" showInStore = "0">
+                <label>Service Mail</label>
+                <field id = "submited" translate = "label" type = "select" sortOrder = "2" showInDefault = "1"
+                       showInWebsite = "0" showInStore = "0">
+                    <label>Service Submit Mail</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <!-- This model return all transactional email template list of magento -->
+                </field>
+                <field id = "in_service" translate = "label" type = "select" sortOrder = "2" showInDefault = "1"
+                       showInWebsite = "0" showInStore = "0">
+                    <label>Service In-Service Mail</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <!-- This model return all transactional email template list of magento -->
+                </field>
+                <field id = "completed" translate = "label" type = "select" sortOrder = "2" showInDefault = "1"
+                       showInWebsite = "0" showInStore = "0">
+                    <label>Service Complete Mail</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <!-- This model return all transactional email template list of magento -->
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="insync_service_service_email_submited" label="Service Submit" file="insync_service_service_email_submited.html" type="html" module="Appseconnect_ServiceRequest" area="frontend"/>
+    <template id="insync_service_service_email_in_service" label="Service In Service" file="insync_service_service_email_in_service.html" type="html" module="Appseconnect_ServiceRequest" area="frontend"/>
+    <template id="insync_service_service_email_completed" label="Service Complete" file="insync_service_service_email_completed.html" type="html" module="Appseconnect_ServiceRequest" area="frontend"/>
+</config>
