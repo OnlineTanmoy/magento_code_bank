@@ -1,0 +1,175 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$itemDetais = $block->cartItems();
+$customerSession = $objectManager->get( 'Magento\Customer\Model\Session' );
+$shoppinglistEnable = $this->helper( 'Appseconnect\Shoppinglist\Helper\Mylist\Data' )->getEnableshoppinglistValue();
+if ($customerSession->isLoggedIn() && $shoppinglistEnable) {
+    $shoppingListVisibility = $this->helper( '\Appseconnect\Shoppinglist\Helper\Mylist\Data' )->getShoppingListConfiguration();
+    if ($block->customerLogin() && count( json_decode( $itemDetais ) ) && $shoppingListVisibility) {
+        ?>
+        <div class="block block-Shopping-list social-button">
+
+            <div class="split button Shopping-list-action">
+                <button class="action Shopping-list-button toggle change" id="shopping-lists" type="button"
+                        title="Add to Shopping Lists">
+                    <span>Add to Shopping Lists</span>
+                </button>
+                <div class="items" id="select-list">
+                    <ul class="list-items">
+                        <?php
+                        $lists = $this->helper( '\Appseconnect\Shoppinglist\Helper\Mylist\Data' )->getListCollection();
+                        if ($lists && count( $lists ) > 0) :
+                            foreach ($lists as $list) :
+                                ?>
+                                <li class="item">
+                                    <span class="item-name" id="<?php echo $list->getId(); ?>"
+                                          title="<?php echo $list->getListName(); ?>"><?php echo $list->getListName(); ?></span>
+                                </li>
+                            <?php
+                            endforeach;
+                        endif;
+                        ?>
+                        <li class="item">
+                            <span class="action new" id="myBtn" title="Create New Shopping List">Create New Shopping List</span>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="shopping-modal-content">
+                <span class="close">&times;</span>
+                <h3>Create New Shopping List</h3>
+                <div class="mylist-function">
+                    <div class="mylist-title">
+                        <input type="text" class="mylist-name" value="New list 1" id="list_name" value="">
+                        <button type="button" class="mylist-save action primary" name="mylist_save" id="mylist_save"
+                                value="save">
+                            <span><i class="fa fa-floppy-o" aria-hidden="true"></i>Save</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            require([
+                'jquery',
+                'mage/validation'
+            ], function ($) {
+
+                // Get the modal
+                var modal = document.getElementById("myModal");
+
+                // Get the button that opens the modal
+                var btn = document.getElementById("myBtn");
+
+                // Get the <span> element that closes the modal
+                var span = document.getElementsByClassName("close")[0];
+
+                // When the user clicks the button, open the modal
+                btn.onclick = function () {
+                    $('#select-list').hide();
+                    modal.style.display = "block";
+                }
+
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function () {
+                    modal.style.display = "none";
+                }
+
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
+                var dataForm = $('#product_addtocart_form');
+                var ignore = null;
+
+                dataForm.mage('validation', {
+                    ignore: ignore ? ':hidden:not(' + ignore + ')' : ':hidden'
+                }).find('input:text').attr('autocomplete', 'off');
+
+
+                $('#shopping-lists').on('click', function () {
+                    $('#select-list').toggle();
+                });
+                var items = <?php echo $itemDetais; ?>;
+                $('.item-name').on("click", function () { //can be replaced with any event
+                    $('#select-list').hide();
+                    var list = $(this).attr('id');
+                    var self = this;
+                    var action = "<?php echo $this->getUrl( 'shoppinglist/customer/mylist_addlist' ); ?>";
+
+                    var productNewData = [];
+
+                    $.each(items, function (index, value) {
+                        var newData = {
+                            'product_id': value.product_id,
+                            'qty': value.qty,
+                            'list_id': list,
+                            'data_all': value.data_all,
+                            'product_type': value.product_type,
+                        };
+
+                        productNewData.push(newData);
+
+                    });
+
+                    $.ajax({
+                        url: action,
+                        data: {"product": productNewData},
+                        type: 'post',
+                        showLoader: true,
+                        success: function (html) {
+                            $('.select-list select').prop('selectedIndex', 0);
+                        }
+                    });
+                });
+
+                $('#mylist_save').on('click', function () {
+                    var list_name = $('#list_name').val();
+                    if (list_name != '') {
+                        var action = "<?php echo $this->getUrl( 'shoppinglist/customer/mylist_addlist' ); ?>";
+
+                        var productNewData = [];
+
+                        $.each(items, function (index, value) {
+
+                            var newData = {
+                                'product_id': value.product_id,
+                                'qty': value.qty,
+                                'list_name': list_name,
+                                'data_all': value.data_all,
+                                'product_type': value.product_type,
+                            };
+
+                            productNewData.push(newData);
+
+                        });
+
+                        $.ajax({
+                            url: action,
+                            data: {"product": productNewData},
+                            type: 'post',
+                            showLoader: true,
+                            success: function (html) {
+                                $(span).trigger("click");
+                            }
+                        });
+
+                    } else {
+                        alert('Please enter the shopping list');
+                    }
+                });
+            });
+        </script>
+    <?php }
+}
+?>

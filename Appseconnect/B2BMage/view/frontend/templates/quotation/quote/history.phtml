@@ -1,0 +1,53 @@
+<?php
+$quotes = $block->getQuotes();
+if ($quotes->getData()) {
+?>
+<div class="table-wrapper orders-history">
+    <table class="data table table-order-items history" id="contact-table">
+        <caption class="table-caption"><?php /* @noEscape */ echo __('Quote Listing') ?></caption>
+        <thead>
+            <tr>
+                <th scope="col" class="col id"><?php /* @noEscape */ echo __('Quote#') ?></th>
+                <th scope="col" class="col name"><?php /* @noEscape */ echo __('Created At') ?></th>
+                <th scope="col" class="col email"><?php /* @noEscape */ echo __('Created By') ?></th>
+                <th scope="col" class="col status"><?php /* @noEscape */ echo __('Status') ?></th>
+                <th scope="col" class="col quote total"><?php /* @noEscape */ echo __('Quote Total') ?></th>
+                <th scope="col" class="col email"><?php /* @noEscape */ echo __('Action') ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($quotes as $quote) {
+                $contactName = $block->getCustomerName($quote->getContactId());
+                $customerName = $block->getCustomerName($quote->getCustomerId());
+
+                $currentCustomerId = $block->getCustomerId();
+
+                $actionText = $quote->getStatus() == 'open' ? "View & Edit" : "View";
+
+                if ($currentCustomerId != $quote->getContactId()) {
+                    $actionText = "View";
+                }
+            ?>
+                <tr>
+                    <td data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Quote#')) ?>">
+                    <?php /* @noEscape */ echo $quote->getId() ?></td>
+                    <td data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Created At')) ?>">
+                    <?php /* @noEscape */ echo $block->formatDate($quote->getCreatedAt()) ?></td>
+                    <td data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Created By')) ?>">
+                    <?php /* @noEscape */ echo $contactName ?></td>
+                    <td data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Status')) ?>">
+                    <?php /* @noEscape */ echo $quote->getStatusLabel() ?></td>
+                    <td data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Quote Total')) ?>">
+                    <?php /* @noEscape */ echo $quote->formatPrice($quote->getGrandTotal()) ?></td>
+                    <td data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Action')) ?>">
+                    <a href="<?php /* @noEscape */ echo $block->getEditUrl($quote);?>">
+                    <?php /* @noEscape */ echo __($actionText);?></a></td>
+                </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<?php } else {?>
+    <div class="message info empty">
+    <span><?php /* @noEscape */ echo __('No quotes available.'); ?></span></div>
+<?php }?>

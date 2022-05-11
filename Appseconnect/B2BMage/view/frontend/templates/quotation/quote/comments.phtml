@@ -1,0 +1,116 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block \Appseconnect\B2BMage\Block\Quotation\Quote\Info */ ?>
+<?php
+$_quote = $block->getQuote();
+$helper = $this->helper("Appseconnect\B2BMage\Helper\ContactPerson\Data");
+?>
+<?php if ((($this->session->getCustomerId() == $block->getQuote()->getContactId()) && !$block->getSalesrepId()) || ($block->getSalesrepId() && $block->getQuote()->getStatus() == 'submitted') || ($helper->isAdministrator($this->session->getCustomerId()) && $this->session->getCustomer()->getCustomerType() == 3)): ?>
+<?php $actionUrl = $block->getUrl('b2bmage/quotation/index_addComment/', ['quote_id' => $_quote->getId()]);?>
+<form action="<?php /* @noEscape */ echo $block->getUrl('b2bmage/quotation/index_addComment') ?>"
+          method="post"
+          id="submit-comment"
+          class="form form-cart">
+
+    <input type="hidden" name="form_key" value="<?php echo $block->getFormKey() ?>" />
+<div class="block block-order-details-view">
+    <div class="block-title">
+        <strong><?php /* @noEscape */ echo __('Quote Comments') ?></strong>
+    </div>
+    <div class="block-content">
+        <div class="box box-order-shipping-address" style="width: 100%">
+            <strong class="box-title"><span><?php /* @noEscape */ echo __('Add your comment') ?></span></strong>
+            <div class="box-content">
+                <textarea name="history[comment]"
+                              rows="3"
+                              cols="5"
+                              id="history_comment"
+                              class="admin__control-textarea"></textarea>
+            </div>
+        </div>
+        
+        <div class="actions">
+        <button type="submit"
+                name="send_customer_comment"
+                data-cart-item-update=""
+                value="add_comment"
+                title="<?php /* @noEscape */ echo $block->escapeHtml(__('Send for Review')) ?>"
+                class="action update quote primary">
+            <span><?php /* @noEscape */ echo __('Send for Review') ?></span>
+        </button>
+            <?php
+            $historyCollection = $_quote->getStatusHistoryCollection();
+
+            if($historyCollection) {
+                echo '<div style="font-weight: bold; padding: 20px 0;">'.__('Comment History').'</div><ul>';
+                foreach ($historyCollection as $history) {
+                    ?>
+                    <li>
+                        <span><strong><?php echo date('M d, Y g:i:s A', strtotime($history->getCreatedAt())); ?></strong></span>
+                        | <span><strong><?php echo $history->getName(); ?></strong></span>:
+                        <span><?php echo $history->getComment(); ?></span>
+                    </li>
+                    <?php
+                }
+                echo '</ul>';
+                }?>
+                <?php if ($block->getQuote()->getStatus() == 'approved'): ?>
+                <a href="#" style="height: 33px; line-height: 16px;"
+                   data-post='<?php /* @noEscape */ echo $block->getCheckoutPostJson();?>'
+                   title="<?php /* @noEscape */ echo $block->escapeHtml(__('Go To Checkout')) ?>"
+                   onclick="isConfirm();"
+                   class="action primary action-tocheckout quote-checkout">
+                    <span>
+                        <?php /* @noEscape */ echo __('Go To Checkout') ?>
+                    </span>
+                </a>
+                <?php endif; ?>
+    </div>
+    </div>
+</div>
+</form>
+<?php endif; ?>
+
+<script type="text/javascript">
+require([
+    "jquery",
+    'mage/mage',
+    'Magento_Catalog/product/view/validation'
+],function($) {
+    $(document).ready(function() {
+        $('#submit-comment').mage(
+            'validation',
+            { 
+                submitHandler: function(form) {
+                    $.ajax({
+                        url: "<?php /* @noEscape */ echo $actionUrl;?>",
+                        data: $('#submit-comment').serialize(),
+                        type: 'POST',
+                        dataType: 'json',
+                        showLoader: true,
+                        beforeSend: function() {
+                            // show some loading icon
+                        },
+                        success: function(data, status, xhr) {
+                        	window.location.reload();
+                            // data contains your controller response
+                        },
+                        error: function (xhr, status, errorThrown) {
+                            console.log('Error happens. Try again.');
+                            console.log(errorThrown);
+                        }
+                    });
+                }
+            }
+        );
+    });
+});
+</script>
+<script type="text/javascript">
+    function isConfirm(){
+        alert("All the products at cart will remove. Are You Sure?");
+    }
+</script>

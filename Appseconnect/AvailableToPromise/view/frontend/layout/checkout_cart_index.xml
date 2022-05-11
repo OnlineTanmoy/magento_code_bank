@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="checkout.cart.container">
+            <block class="Magento\Checkout\Block\Cart\Coupon" name="checkout.cart.coupon" as="finalDeliveryDate"
+                   template="Appseconnect_AvailableToPromise::cart/coupon.phtml" after="cart.discount"/>
+            <referenceBlock name="checkout.cart.methods.onepage.bottom"
+                            template="Appseconnect_AvailableToPromise::onepage/link.phtml"/>
+            <block class="Magento\Checkout\Block\Cart\Grid" name="checkout.cart.form" as="quotationCartItems" template="Appseconnect_B2BMage::cart/form.phtml" after="cart.summary">
+                <block class="Magento\Framework\View\Element\RendererList" name="checkout.cart.item.renderers" as="renderer.list"/>
+                <block class="Magento\Framework\View\Element\Text\ListText" name="checkout.cart.order.actions"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

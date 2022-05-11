@@ -1,0 +1,19 @@
+<?php
+
+/**
+ *
+ * @var $block \Appseconnect\B2BMage\Block\TierPrice\Display
+ */
+
+$getTierPriceData = $block->displayTierPriceData();
+
+if ($getTierPriceData) {
+    $minimumOrderAmount = $getTierPriceData['minimumOrderAmount'];
+    $convertedMinimumOrderAmount = $block->convertCurrency($minimumOrderAmount);
+    $tierPrice = $getTierPriceData['tierPriceProductMapCollection'];
+    $actualPrice = $getTierPriceData['actualPrice'];
+    $tierPriceArray = [];
+    if ($minimumOrderAmount && $minimumOrderAmount > 0 && !empty($tierPrice) && $tierPrice < $actualPrice) {
+         /* @noEscape */ echo $block->escapeHtml(__('* Exclusively on minimum order of ')) . $convertedMinimumOrderAmount;
+    }
+}

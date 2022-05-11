@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <update handle="quote_item_renderers"/>
+    <update handle="quote_item_price"/>
+    <update handle="quote_info_links"/>
+    <head>
+		<link src="Appseconnect_B2BMage::css/select2.min.css" />
+		<link src="Appseconnect_B2BMage::css/chosen.min.css" />
+		<link src="Appseconnect_B2BMage::quotation/css/quote/quote.item.delete.css" />
+	</head>
+    <body>
+        <referenceContainer name="page.main.title">
+            <block class="Appseconnect\B2BMage\Block\Quotation\Quote\Info" name="quote.status" template="Appseconnect_B2BMage::quotation/quote/quote_status.phtml"/>
+            <block class="Appseconnect\B2BMage\Block\Quotation\Quote\Info" name="quote.date" template="Appseconnect_B2BMage::quotation/quote/quote_date.phtml"/>
+            <block class="Appseconnect\B2BMage\Block\Quotation\Quote\Info" name="quote.contact" template="Appseconnect_B2BMage::quotation/quote/quote_contact.phtml"/>
+            <container name="quote.actions.container" htmlTag="div" htmlClass="actions-toolbar order-actions-toolbar">
+                <block class="Appseconnect\B2BMage\Block\Quotation\Quote\Info\Buttons" as="buttons" name="quote.info.buttons" cacheable="false">
+                </block>
+            </container>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <!-- <block class="Appseconnect\B2BMage\Block\Quotation\Quote\View" name="quote.comments" template="Appseconnect_Quotation::quote/quote_comments.phtml" before="quote.info.links"/> -->
+            <block class="Appseconnect\B2BMage\Block\Quotation\Quote\View" name="quote.view" cacheable="false" template="Appseconnect_B2BMage::quotation/quote/view.phtml" after="quote.info.links">
+                <block class="Appseconnect\B2BMage\Block\Quotation\Quote\Items" name="quote_items" template="Appseconnect_B2BMage::quotation/quote/items.phtml" cacheable="false">
+                	<block class="Magento\Framework\View\Element\RendererList" name="quote.items.renderers" as="renderer.list"/>
+                    <block class="Magento\Theme\Block\Html\Pager" name="quote_item_pager"/>
+                    <block class="Appseconnect\B2BMage\Block\Quotation\Quote\Info\Buttons\UpdateQuote" name="quote.info.update.buttons" cacheable="false">
+                    </block>
+                    <block class="Appseconnect\B2BMage\Block\Quotation\Quote\Info\Buttons\DeleteQuote" name="quote.info.delete.buttons" cacheable="false">
+                    </block>
+                    <block class="Appseconnect\B2BMage\Block\Quotation\Quote\Totals" name="quote_totals" template="Appseconnect_B2BMage::quotation/quote/totals.phtml">
+                        <arguments>
+                            <argument name="label_properties" xsi:type="string">colspan="5" class="mark"</argument>
+                            <argument name="value_properties" xsi:type="string">class="amount"</argument>
+                        </arguments>
+                        <!-- <block class="Magento\Tax\Block\Sales\Order\Tax" name="tax" template="Magento_Tax::order/tax.phtml"/> -->
+                    </block>
+                </block>
+            </block>
+            <!-- <block class="Appseconnect\B2BMage\Block\Quotation\Quote\Info" as="info" name="quote.info" after="quote.view"/> -->
+            <block class="Appseconnect\B2BMage\Block\Quotation\Quote\Info" name="quote.customer.add.comments" after="quote.info" cacheable="false" template="Appseconnect_B2BMage::quotation/quote/comments.phtml"/>
+        </referenceContainer>
+        
+    </body>
+</page>

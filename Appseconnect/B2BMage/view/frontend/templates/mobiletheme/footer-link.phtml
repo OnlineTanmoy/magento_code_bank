@@ -1,0 +1,50 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+$fileSystem = $objectManager->create('\Magento\Framework\View\Asset\Repository');
+$mobilethemeFactory = $objectManager->create('\Appseconnect\B2BMage\Model\MobilethemeFactory');
+$customerSession = $objectManager->get('Magento\Customer\Model\Session');
+$customerObj = $objectManager->create('Magento\Customer\Model\Customer')
+    ->load($customerSession->getCustomerId());
+$mobileThemeModel = $mobilethemeFactory->create();
+$mobileThemeModel->load(1);
+if ($mobileThemeModel->getMobileAccountId() && $customerSession->isLoggedIn()) {
+    if ($customerObj->getCustomerType() == \Appseconnect\B2BMage\Helper\ContactPerson\Data::TYPE_CONTACT_PERSON ||
+        $customerObj->getCustomerType() == \Appseconnect\B2BMage\Helper\ContactPerson\Data::TYPE_SALES_REP) {
+        ?>
+        <div class="mobile-theme">
+            <ul>
+                <li><a><img width="100" src="<?php echo $fileSystem->getUrl("Appseconnect_B2BMage::images/app-store.png"); ?>"/></a>
+                </li>
+                <li><a href="https://play.google.com/store/apps/details?id=com.insync.b2beconnect&referrer=<?php echo $mobileThemeModel->getRegisterKey(); ?>"><img width="100" src="<?php echo $fileSystem->getUrl("Appseconnect_B2BMage::images/google-play.png"); ?>"/></a>
+                </li>
+            </ul>
+            <div class="install-note">
+                <?php echo __('Click on icon to download mobile app and install in you mobile. After installing please <a href="%1">contact us</a> for registration key for mobile app.', $block->getUrl('contact')); ?>
+            </div>
+        </div>
+
+        <style>
+            .footer.content .mobile-theme {
+                width: 100%;
+                clear: both;
+            }
+            .footer.content .mobile-theme ul {
+                float: left;
+                width: 20%;
+                display: flex;
+                margin: 0;
+                padding: 0;
+            }
+            .footer.content .mobile-theme ul li {
+                padding-left:10px;
+            }
+            .footer.content .install-note {
+                float: left;
+                width: 80%;
+            }
+        </style>
+        <?php
+    }
+}
+?>

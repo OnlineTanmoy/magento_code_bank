@@ -1,0 +1,26 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$scopeConfig = $objectManager->create('Magento\Framework\App\Config\ScopeConfigInterface');
+$discountVisible = $scopeConfig
+    ->getValue('discount_percentage_visibility/general/enable_discount_percentage_visibility', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+
+$specialPrice = $this->getProduct()->getPriceInfo()->getPrice('special_price')->getValue();
+$regularPrice = $this->getProduct()->getPriceInfo()->getPrice('regular_price')->getValue();
+
+if($specialPrice) {
+    $discountedPercent = (($regularPrice - $specialPrice) / $regularPrice) * 100;
+} else {
+    $discountedPercent = 0;
+}
+
+if ($discountedPercent) {
+    if ($discountVisible) {
+        $discountedPercent = number_format($discountedPercent, 2);
+        ?>
+        <p class="price" style="font-size: 15px; color: #97d700; margin: 0 0 10px;">
+            <?php echo $block->escapeHtmlAttr($discountedPercent); ?><?php echo __("% Discount") ?>
+        </p>
+        <?php
+    }
+}
+?>

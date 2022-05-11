@@ -1,0 +1,15 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php  $_quote = $block->getQuote() ?>
+<?php if(($this->session->getCustomerId() == $_quote->getContactId()) && !$block->getSalesrepId() && $_quote->getStatus() == 'open') : ?>
+<div class="actions">
+    <a class="action print submit primary"
+       href="<?php /* @noEscape */ echo $block->getSubmitUrl($_quote) ?>"
+        <span><?php /* @noEscape */ echo __('Submit Quote') ?></span>
+    </a>
+    <?php /* @noEscape */ echo $block->getChildHtml() ?>
+</div>
+<?php endif; ?>

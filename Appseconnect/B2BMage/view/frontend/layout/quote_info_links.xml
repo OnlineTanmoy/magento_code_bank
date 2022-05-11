@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Html\Links" as="links" name="quote.info.links" before="-">
+                <arguments>
+                    <argument name="css_class" xsi:type="string">items order-links</argument>
+                </arguments>
+                <block class="Appseconnect\B2BMage\Block\Quotation\Quote\Link" name="quotes.info.links.information">
+                    <arguments>
+                        <argument name="path" xsi:type="string">b2bmage/quotation/index_edit</argument>
+                        <argument name="label" xsi:type="string" translate="true">Items Quoted</argument>
+                    </arguments>
+                </block>
+                <block class="Appseconnect\B2BMage\Block\Quotation\Quote\Link" name="quotes.info.comments.links.information">
+                    <arguments>
+                    	<argument name="key" xsi:type="string">Comments</argument>
+                        <argument name="path" xsi:type="string">b2bmage/quotation/index_comments</argument>
+                        <argument name="label" xsi:type="string" translate="true">Comments</argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="jquery/fileUploader/css/jquery.fileupload-ui.css"/>
+        <link src="Appseconnect_B2BMage::css/select2.min.css"/>
+        <link src="Appseconnect_B2BMage::css/chosen.min.css"/>
+        <css src="jquery/colorpicker/css/colorpicker.css"/>
+    </head>
+    <update handle="editor"/>
+    <body>
+        <referenceContainer name="admin.scope.col.wrap" htmlClass="admin__old" />
+        <referenceContainer name="content">
+            <block class="Appseconnect\B2BMage\Block\Adminhtml\MobileTheme\Edit" name="mobiletheme_edit"/>
+        </referenceContainer>
+        <referenceContainer name="left">
+           	<block class="Appseconnect\B2BMage\Block\Adminhtml\MobileTheme\Edit\Tabs" name="mobiletheme_edit_tabs">
+                <block class="Appseconnect\B2BMage\Block\Adminhtml\MobileTheme\Edit\Tab\Main" name="mobiletheme_edit_tab_main"/>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">main_section</argument>
+                    <argument name="block" xsi:type="string">mobiletheme_edit_tab_main</argument>
+                </action>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

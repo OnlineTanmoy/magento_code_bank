@@ -1,0 +1,18 @@
+<?php
+if ($block->getCredit()) :
+?>
+<div class="block block-dashboard-info">
+    <div class="block-title">
+      <strong>Credit Limit</strong>
+  </div>
+ <div class="block-content">
+        <div class="box box-information">
+          <p>
+                Available credit limit : <strong class="box-title">
+                <span><?php /* @noEscape */ echo $block->getCredit();?>
+                </span></strong>
+           </p>
+       </div>
+ </div>
+</div>
+<?php endif;?>

@@ -1,0 +1,38 @@
+<?php $_gridrecords = $block->getCollection(); // get collection which we set in block class ?>
+<?php if ($_gridrecords && count($_gridrecords)): ?>
+    <div class="table-wrapper orders-history">
+        <table class="data table table-order-items history" id="my-list-table">
+            <caption class="table-caption"><?php echo __('Grid Record') ?></caption>
+            <thead>
+            <tr>
+                <th scope="col" class="col name"><?php echo __('List Name') ?></th>
+                <th scope="col" class="col total"><?php echo __('List Total') ?></th>
+                <th scope="col" class="col item"><?php echo __('Items') ?></th>
+                <th scope="col" class="col edit"><?php echo __('Edit / View') ?></th>
+                <th scope="col" class="col print"><?php echo __('Print') ?></th>
+                <th scope="col" class="col delete"><?php echo __('Delete') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            $count = 0;
+            foreach ($_gridrecords as $_gridrecord): ?>
+                <tr <?php if ($count % 2 == 0) echo 'class="even"'; else echo 'class="odd"'; ?>>
+                    <td class="col id"><?php echo $_gridrecord->getListName() ?></td>
+                    <td class="col shipping"><?php echo $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($block->getPriceTotal($_gridrecord->getId()), true, false); ?></td>
+                    <td class="col date"><?php echo $_gridrecord->getItem() ?></td>
+                    <td class="col status"><a href="<?php echo $this->getUrl('shoppinglist/customer/account_editlist', array('id'=> $_gridrecord->getId()))?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                    <td class="col status"><a href="<?php echo $this->getUrl('shoppinglist/customer/mylist_printlist', array('list_id'=> $_gridrecord->getId()))?>"><i class="fa fa-print" aria-hidden="true"></i></a></td>
+                    <td class="col status"><a onclick="return confirm('Are you sure to delete list');" href="<?php echo $this->getUrl('shoppinglist/customer/mylist_deletelist', array('id'=> $_gridrecord->getId()))?>"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                </tr>
+                <?php $count++; ?>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($block->getPagerHtml()): ?>
+        <div class="order-products-toolbar toolbar bottom"><?php echo $block->getPagerHtml(); // for display pager block which we create in block file.   ?></div>
+    <?php endif ?>
+<?php else: ?>
+    <div class="message info empty"><span><?php echo __('List records not available.'); ?></span></div>
+<?php endif ?>

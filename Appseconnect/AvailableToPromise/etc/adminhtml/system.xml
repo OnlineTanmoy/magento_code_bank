@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="insync_availabletopromise" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <label>Available To Promise</label>
+            <tab>insync</tab>
+            <resource>Appseconnect_AvailableToPromise::config</resource>
+            <group id="leadtime" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0"
+                   showInStore="0">
+                <label>General</label>
+                <field id="time" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Lead Time(Hour)</label>
+                </field>
+            </group>
+        </section>
+
+    </system>
+</config>

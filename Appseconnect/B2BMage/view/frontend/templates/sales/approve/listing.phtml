@@ -1,0 +1,82 @@
+<?php
+$_orders = $block->getOrders();
+?>
+<?php if ($_orders && !empty($_orders->getData())) :
+?>
+<div class="table-wrapper orders-history">
+   <table class="data table table-order-items history"
+        id="my-orders-table">
+      <caption class="table-caption"><?php /* @noEscape */ echo __('Orders') ?></caption>
+        <thead>
+            <tr>
+               <th scope="col" class="col id"><?php /* @noEscape */ echo __('Order #') ?></th>
+                <th scope="col" class="col date"><?php /* @noEscape */ echo __('Date') ?></th>
+             <th scope="col" class="col email"><?php /* @noEscape */ echo __('Email') ?></th>
+               <th scope="col" class="col shipping"><?php /* @noEscape */ echo __('Ship To') ?></th>
+              <th scope="col" class="col total"><?php /* @noEscape */ echo __('Order Total') ?></th>
+             <th scope="col" class="col status"><?php /* @noEscape */ echo __('Status') ?></th>
+             <th scope="col" class="col actions">&nbsp;</th>
+            </tr>
+      </thead>
+       <tbody>
+                <?php foreach ($_orders as $_order) :
+?>
+                    <tr>
+               <td
+                    data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Order #')) ?>"
+                  class="col id"><?php /* @noEscape */ echo $_order->getRealOrderId() ?></td>
+                <td
+                    data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Date')) ?>"
+                 class="col date"><?php /* @noEscape */ echo $block->formatDate($_order->getCreatedAt()) ?></td>
+                <td
+                    data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Email')) ?>"
+                    class="col shipping"><?php /* @noEscape */ echo $_order->getCustomerEmail() ?></td>
+                <td
+                    data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Ship To')) ?>"
+                  class="col shipping"><?php /* @noEscape */ echo $_order->getShippingAddress() ?
+                    $block->escapeHtml($_order->getShippingAddress()->getName()) : '&nbsp;' ?></td>
+                <td
+                    data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Order Total')) ?>"
+                  class="col total"><?php /* @noEscape */ echo $_order->formatPrice($_order->getGrandTotal()) ?></td>
+                <td
+                    data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Status')) ?>"
+                   class="col status"><?php /* @noEscape */ echo $_order->getStatusLabel() ?></td>
+                <td
+                    data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Actions')) ?>"
+                  class="col actions"><a
+                 href="<?php /* @noEscape */ echo $block->getViewUrl($_order->getEntityId()) ?>"
+                    class="action view"> <span><?php /* @noEscape */ echo __('View Order') ?></span>
+               </a>
+                            <?php if ($_order->getStatus()=='holded') :
+?>
+                            <a
+                   href="<?php /* @noEscape */ echo $block->getActionUrl().'status/cancel/order_id/'.
+                    $_order->getEntityId().
+                    '/approve_id/'.$_order->getApprovalId(); ?>"
+                   class="action cancel"> <span><?php /* @noEscape */ echo __('Cancel') ?></span>
+              </a> <a
+                    href="<?php /* @noEscape */ echo $block->getActionUrl().'status/approve/order_id/'.
+                    $_order->getEntityId().'/approve_id/'.$_order->getApprovalId(); ?>"
+                    class="action approve"> <span><?php /* @noEscape */ echo __('Approve') ?></span>
+             </a>
+                            <?php
+endif;?>
+                            </td>
+          </tr>
+                <?php endforeach; ?>
+            </tbody>
+    </table>
+</div>
+<?php if ($block->getPagerHtml()) :
+?>
+<div class="order-products-toolbar toolbar bottom"><?php /* @noEscape */ echo $block->getPagerHtml(); ?></div>
+<?php
+endif ?>
+<?php
+else :
+?>
+<div class="message info empty">
+    <span><?php /* @noEscape */ echo __('There are no orders for approval process.'); ?></span>
+</div>
+<?php
+endif ?>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+
+    <preference for="ScandiPWA\QuoteGraphQl\Model\Resolver\OrderListResolver" type="Appseconnect\PWAApiList\Model\Resolver\OrderListResolver"/>
+    <preference for="ScandiPWA\QuoteGraphQl\Model\Resolver\ExpandedOrderResolver" type="Appseconnect\PWAApiList\Model\Resolver\ExpandedOrderResolver"/>
+    <preference for="ScandiPWA\QuoteGraphQl\Model\Resolver\PlaceOrder" type="Appseconnect\PWAApiList\Model\Resolver\PlaceOrder"/>
+    <!-- Resolver override for graphql customer address -->
+    <preference for="Magento\CustomerGraphQl\Model\Resolver\CustomerAddresses" type="Appseconnect\PWAApiList\Model\Resolver\Customer\CustomerAddresses" />
+
+
+    <!-- Resolver override for displaying product prices by graphql -->
+    <preference for="ScandiPWA\CatalogGraphQl\Model\Resolver\Product\PriceRange"
+                type="Appseconnect\PWAApiList\Model\Resolver\Product\PriceRange" />
+
+    <preference for="ScandiPWA\QuoteGraphQl\Model\Resolver\SaveCartItem"
+                type="Appseconnect\PWAApiList\Model\Resolver\SaveCartItem" />
+
+
+    <preference for="ScandiPWA\CatalogCustomerGraphQl\Model\Resolver\PriceTiers"
+                type="Appseconnect\PWAApiList\Model\Resolver\PriceTiers" />
+
+    <preference for="Magento\CatalogGraphQl\Model\ProductInterfaceTypeResolverComposite"
+                type="Appseconnect\PWAApiList\Model\CacheCleanProduct" />
+
+    <preference for="Magento\CustomerGraphQl\Model\Resolver\GenerateCustomerToken"
+                type="Appseconnect\PWAApiList\Model\Resolver\GenerateCustomerToken" />
+
+
+</config>

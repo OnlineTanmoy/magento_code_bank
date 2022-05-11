@@ -1,0 +1,239 @@
+<?php
+if ($block->getList()) {
+    $listName = $block->getList()->getListName();
+    $listId = $block->getList()->getId();
+}
+$_gridrecords = $block->getCollection();
+$listItems = $block->getCustomerProductListItems();
+$isQuotationEnabled = $this->helper('Appseconnect\B2BMage\Helper\Quotation\Data')->isQuotationEnabled();
+$customerQuoteConfigurationValue = $this->helper('Appseconnect\Shoppinglist\Helper\Mylist\Data')->getCustomerQuoteConfigurationValue();
+?>
+
+<div class="mylist-main">
+    <form action="<?php echo $this->getUrl('shoppinglist/customer/mylist_save') ?>" method="post">
+        <input type="hidden" name="list_id" value="<?php echo $listId; ?>"/>
+        <div class="mylist-function">
+            <div class="mylist-title">
+                <input type="text" class="mylist-name" name="list_name" id="list_name"
+                       value="<?php echo $listName; ?>"/>
+                <?php //if (count($_gridrecords) == 0): ?>
+                <?php if (!$_gridrecords || count($_gridrecords->getData())==0):  ?>
+                    <button type="submit" class="mylist-save action primary" name="mylist_save" value="save">
+                        <span><i class="fa fa-floppy-o" aria-hidden="true"></i><?php echo __('Save') ?></span>
+                    </button>
+                <?php endif;?>
+            </div>
+            <?php if ($_gridrecords && $_gridrecords->getSize()): ?>
+                <div class="item-list">
+                    <?php echo $block->getChildHtml('customer-account-itemlist'); ?>
+                </div>
+
+                <div class="mylist-buttons">
+                    <button type="submit" class="mylist-save action save" name="mylist_save" value="save">
+                        <span><?php echo __('Save') ?></span>
+                    </button>
+                    <button type="submit" class="mylist-cart action list-cart" name="mylist_save" value="cart">
+                        <span><?php echo __('Add List To Cart') ?></span>
+                    </button>
+                    <?php
+                    if ($isQuotationEnabled && $customerQuoteConfigurationValue) {
+                        ?>
+                        <button type="submit" class="mylist-cart action list-quote" name="mylist_save" value="quote">
+                            <span><?php echo __('Add List To Quote') ?></span>
+                        </button>
+                        <?php
+                    }
+                    ?>
+                    <button type="submit" class="mylist-duplicate action duplicate-list" name="mylist_save" value="duplicate">
+                        <span><?php echo __('Duplicate To New List') ?></span>
+                    </button>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="mylist-buttons">
+            <a href="<?php echo $this->getUrl('shoppinglist/customer/account_mylist'); ?>"
+               class="back-to-mylist"><span><?php echo __('Back To My List') ?></span></a>
+        </div>
+    </form>
+</div>
+<?php if ($_gridrecords && $_gridrecords->getSize()): ?>
+    <div class="list-all filter-option" style="display: none;">
+        <div class="filter-header">
+            <div class="filter-button">
+                <div class="filter-title-block"><?php echo __('Select Customer'); ?></div>
+
+            </div>
+        </div>
+        <div class="list-all-body">
+            <div class="msg"></div>
+            <input type="hidden" id="add_url" value="<?php echo $this->getUrl('shoppinglist/customer/mylist_addlist'); ?>"/>
+            <input type="hidden" id="list_id"/>
+            <div class="selectBoxList">
+                <select id="customer_id" multiple style="height:103px;">
+                    <?php
+                    $blockContactPerson= $block->getLayout()->createBlock('Appseconnect\B2BMage\Block\ContactPerson\Contact\Listing');
+                    $contactPersons = $blockContactPerson->getContactPersons();
+                    foreach ($contactPersons as $contactPerson) {
+                        echo '<option value="' . $contactPerson->getId() . '">' . $contactPerson->getName() . '</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+        <div class="list-all-footer">
+            <div class="filter-all-button">
+                <button class="submit btn btn-primary" type="button">
+                    <span><?php echo __('Submit'); ?></span>
+                </button>
+                <button class="cancel btn btn-secondary" type="button">
+                    <span><?php echo __('Cancel'); ?></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        require([
+            'jquery',
+            'jquery/ui',
+            'Magento_Ui/js/modal/modal'
+        ], function($, modal) {
+            var options = {
+                type: 'popup',
+                title: '<?php echo __('Filter By Any / All Attributes');?>',
+                responsive: true,
+                innerScroll: true,
+                buttons: [{
+                    text: $.mage.__('Cancel'),
+                    class: '',
+                    click: function () {
+                        this.closeModal();
+                    }
+                }],
+                opened: function ($Event) {
+                    $(".modal-footer").hide();
+                    $(".modal-header").hide();
+                }
+            };
+            $(window).load(function () {
+                $('.addtocart').bind('click', null, addToCart);
+
+                jQuery(".mylist-buttons .mylist-cart").on('click', function() {
+                    var loadingMask = document.getElementsByClassName("loading-mask");
+                    if(!loadingMask.length){
+                        var appendHtml = "<div class='loading-mask' data-role='loader' style='display: none;'><div class='loader'><img alt='Loading...'' src='<?php echo $this->getViewFileUrl('images/loader-2.gif'); ?>'><p>Please wait...</p></div></div>";
+                        jQuery( "body" ).append(appendHtml);
+                    }
+                    jQuery('body').addClass('ajax-loading');
+                });
+
+                $('#button_search').click(function(event){
+                    var searchData = $('#search_list').val()
+                    $.ajax({
+                        url: "<?php echo $this->getUrl('shoppinglist/customer/mylist_searchitemlist/'); ?>",
+                        data: "search_data=" + searchData + "&list_id=<?php echo $listId; ?>",
+                        cache: false,
+                        showLoader: true,
+                        success: function (html) {
+                            $(".item-list").html(html);
+                            $('.addtocart').unbind('click', addToCart);
+                            $('.addtocart').bind('click', null, addToCart);
+                        }
+                    });
+                });
+
+                $('.qty-cls').keyup(function(){
+                    var qty = $(this).val();
+                    if($(this).parent().parent().find('.addtocart').attr('data-type') == 'grouped') {
+                        var cartData = $(this).parent().parent().find('.addtocart').attr('data-cart').split('&');
+
+                        for (i = 0; i <= cartData.length; i++) {
+
+                            if (typeof cartData[i] !== "undefined") {
+                                if (cartData[i].indexOf('_group') !== -1) {
+                                    var option = cartData[i].split('=');
+                                    cartData[i] = option[0] + '=' + qty;
+                                }
+                            }
+                        }
+                        $(this).parent().parent().find('.addtocart').attr('data-cart', cartData.join("&"));
+                    } if($(this).parent().parent().find('.addtocart').attr('data-type') == 'configurable' || $(this).parent().parent().find('.addtocart').attr('data-type') =='bundle') {
+                        var cartData = $(this).parent().parent().find('.addtocart').attr('data-cart').split('&');
+
+                        for (i = 0; i <= cartData.length; i++) {
+
+                            if (typeof cartData[i] !== "undefined") {
+                                if (cartData[i].indexOf('qty') !== -1) {
+                                    var option = cartData[i].split('=');
+                                    if(option[0] == 'qty') {
+                                        cartData[i] = option[0] + '=' + qty;
+                                    }
+                                }
+                            }
+                        }
+                        $(this).parent().parent().find('.addtocart').attr('data-cart', cartData.join("&"));
+                    }
+                });
+
+                $('.filter-option .submit').click(function(event){
+                    var customerData = $('#customer_id').val();
+
+                    $.ajax({
+                        url: "<?php echo $this->getUrl('shoppinglist/customer/mylist_save/', array('mylist_save' => 'share', 'list_id' => $listId)); ?>",
+                        data: "customer_id=" + customerData,
+                        cache: false,
+                        showLoader: true,
+                        success: function (html) {
+                            location.reload();
+                        }
+                    });
+                });
+
+                $(".mylist-share").click(function () {
+                    $(".filter-option").modal(options).modal('openModal');
+                });
+
+                $(".filter-option .cancel").click(function () {
+                    $(".filter-option").modal(options).modal("closeModal");
+                });
+
+                function addToCart() {
+                    var action = $(this).attr('data-url');
+                    var product = $(this).attr('data-product');
+                    var list = $(this).attr('data-list_id');
+                    var qty = $('#qty' + list).val();
+                    var self = this;
+                    if($(this).attr('data-type') == '') {
+                        $.ajax({
+                            url: action,
+                            data: {'product': product, 'qty': qty, 'form_key': '<?php echo $block->getFormKey(); ?>'},
+                            type: 'post',
+                            dataType: 'json',
+                            showLoader: true,
+                            success: function (res) {
+                                if (res.minicart) {
+                                    $(self.options.minicartSelector).replaceWith(res.minicart);
+                                    $(self.options.minicartSelector).trigger('contentUpdated');
+                                }
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            url: action,
+                            data: $(this).attr('data-cart'),
+                            type: 'post',
+                            showLoader: true,
+                            success: function (res) {
+                                if (res.minicart) {
+                                    $(self.options.minicartSelector).replaceWith(res.minicart);
+                                    $(self.options.minicartSelector).trigger('contentUpdated');
+                                }
+                            }
+                        });
+
+                    }
+                }
+            });
+        });
+    </script>
+<?php endif; ?>
+

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link src="Appseconnect_Shoppinglist::css/shoppinglist.css"/>
+    </head>
+
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+            <container name="customer.account.mylist" htmlTag="div" htmlClass="customer-mylist" before="-">
+
+                <container name="customer.account.mylist.page" htmlTag="div" htmlClass="customer-mylist-product">
+                    <block class="Appseconnect\Shoppinglist\Block\Customer\Account\Mylist"
+                           name="customer.account.page.mylist"
+                           template="Appseconnect_Shoppinglist::customer/account/mylist.phtml"
+                           cacheable="false">
+                        <block class="Appseconnect\Shoppinglist\Block\Customer\Account\Mylist\SearchMyList"
+                               name="customer.account.mylist.itemlist" as="account-mylist-itemlist"
+                               template="Appseconnect_Shoppinglist::customer/account/mylist/searchmylist.phtml"/>
+                    </block>
+                </container>
+            </container>
+        </referenceContainer>
+        <referenceContainer name="sidebar.additional">
+            <block class="Magento\Cms\Block\Block" name="dashboard-right">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">dashboard-right-add</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="sale.reorder.sidebar" remove="true"/>
+    </body>
+</page>

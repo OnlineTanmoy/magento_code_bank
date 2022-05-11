@@ -1,0 +1,20 @@
+{
+	"name" : "appseconnect/extension-b2b",
+	"description" : "N/A",
+	"require" : {
+		"php" : "^7.1.0 || ^7.2.32"
+	},
+	"type" : "magento2-module",
+	"version" : "3.0.0",
+	"license" : [
+		"proprietary"
+	],
+	"autoload" : {
+		"files" : [
+			"registration.php"
+		],
+		"psr-4" : {
+			"Appseconnect\\B2BMage\\" : ""
+		}
+	}
+}

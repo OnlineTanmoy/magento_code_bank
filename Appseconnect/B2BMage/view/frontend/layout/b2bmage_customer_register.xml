@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <referenceContainer name="content">
+        <block class="Appseconnect\B2BMage\Block\Customer\Form\Register" name="B2B.customer.form.register" template="Appseconnect_B2BMage::registration.phtml" >
+            <arguments>
+                <argument name="attribute_data" xsi:type="object">Magento\Customer\Block\DataProviders\AddressAttributeData</argument>
+                <argument name="post_code_config" xsi:type="object">Magento\Customer\Block\DataProviders\PostCodesPatternsAttributeData</argument>
+                <argument name="view_model" xsi:type="object">Magento\Customer\ViewModel\Address</argument>
+            </arguments>
+        </block>
+    </referenceContainer>
+</page>

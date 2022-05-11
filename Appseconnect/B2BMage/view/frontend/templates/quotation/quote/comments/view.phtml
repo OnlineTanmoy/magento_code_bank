@@ -1,0 +1,39 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var  $block \Appseconnect\B2BMage\Block\Quotation\Quote\View*/?>
+<div class="order-details-items ordered">
+    <?php $_quote = $block->getQuote() ?>
+
+    <div class="order-title">
+        <strong><?php /* @noEscape */ __('Comments') ?></strong>
+    </div>
+    
+    <?php $_history = $block->getQuote()->getVisibleStatusHistory() ?>
+<?php if (count($_history)): ?>
+    <div class="block block-order-details-comments">
+        <div class="block-content">
+            <dl class="order-comments">
+                <?php foreach ($_history as $_historyItem): ?>
+                    <dt class="comment-date" style="max-width: 500px;"><?php /* @noEscape */ echo $block->formatDate($_historyItem->getCreatedAt(), \IntlDateFormatter::MEDIUM, true)."[".$_historyItem->getName()."]" ?></dt>
+                    <dd class="comment-content"><?php /* @noEscape */ echo $block->escapeHtml($_historyItem->getComment()) ?></dd>
+                <?php endforeach; ?>
+            </dl>
+
+        </div>
+    </div>
+<?php endif; ?>
+
+
+
+
+    <div class="actions-toolbar">
+        <div class="secondary">
+            <a class="action back" href="<?php /* @noEscape */ $block->getBackUrl() ?>">
+                <span><?php /* @noEscape */ $block->getBackTitle() ?></span>
+            </a>
+        </div>
+    </div>
+</div>

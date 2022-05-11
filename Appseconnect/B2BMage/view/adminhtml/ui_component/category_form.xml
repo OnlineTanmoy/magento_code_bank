@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+<fieldset name="general">
+    <container name="customer_group_group" component="Magento_Ui/js/form/components/group">
+        <argument name="data" xsi:type="array">
+            <item name="type" xsi:type="string">group</item>
+            <item name="config" xsi:type="array">
+                <item name="breakLine" xsi:type="boolean">true</item>
+                <item name="required" xsi:type="boolean">false</item>
+            </item>
+        </argument>
+        <field name="customer_group" formElement="multiselect">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Appseconnect\B2BMage\Model\Entity\Attribute\Source\Options</item>
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">category</item>
+                </item>
+            </argument>
+            <settings>
+                <additionalClasses>
+                    <class name="admin__field-default">true</class>
+                </additionalClasses>
+                <label translate="true">Customer Group</label>
+            </settings>
+        </field>
+    </container>
+</fieldset>
+</form>

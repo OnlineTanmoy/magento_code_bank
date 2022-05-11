@@ -1,0 +1,87 @@
+<?php
+$_customers = $block->getCustomer();
+if ($_customers && !empty($_customers->getData())) :
+    ?>
+<div class="table-wrapper orders-history">
+  <div>
+      <input style="border: 1px solid rgb(221, 221, 221); padding: 5px;"
+         id="search-customers" placeholder="Search Customers..." />
+     <button class="button search-button-search customers" title="Search">
+          <span><?php /* @noEscape */ echo __('Search') ?></span>
+        </button>
+      <button class="button reset-button customers" title="Reset">
+           <span><?php /* @noEscape */ echo __('Reset') ?></span>
+     </button>
+  </div>
+ <table class="data table table-order-items history"
+        id="my-orders-table">
+      <caption class="table-caption"><?php /* @noEscape */ echo __('Orders') ?></caption>
+        <thead>
+            <tr>
+               <th scope="col" class="col id"><?php /* @noEscape */ echo __('Id #') ?></th>
+               <th scope="col" class="col date"><?php /* @noEscape */ echo __('Name') ?></th>
+             <th scope="col" class="col shipping"><?php /* @noEscape */ echo __('Email') ?></th>
+                <th scope="col" class="col status"><?php /* @noEscape */ echo __('Status') ?></th>
+             <th scope="col" class="col actions">&nbsp;</th>
+            </tr>
+      </thead>
+       <tbody>
+            <?php
+    
+            foreach ($_customers as $_customer) :
+                    $status = $_customer['customer_status'];
+                    ?>
+                            <tr>
+                            <td
+                    data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Id #')) ?>">
+                    <?php /* @noEscape */ echo $_customer['entity_id'] ?></td>
+             <td
+                    data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Name #')) ?>">
+                    <?php /* @noEscape */ echo $_customer['name'] ?></td>
+              <td
+                    data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Email #')) ?>">
+                    <?php /* @noEscape */ echo $_customer['email'] ?></td>
+             <td
+                    data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Status #')) ?>">
+                    <?php /* @noEscape */ echo ($status)?'Active':'Inactive'?></td>
+                <td
+                    data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Actions #')) ?>">
+                    <?php if ($status) :
+?>
+                        <a
+                 href="<?php /* @noEscape */ echo $block->getContactPersonUrl($_customer) ?>"
+                   class="action order"> <span><?php /* @noEscape */ echo __('Login') ?></span>
+               </a>
+                    <?php
+endif;?>
+                    </td>
+          </tr>
+            <?php
+            endforeach;?>
+        </tbody>
+ </table>
+</div>
+<?php if ($block->getPagerHtml()) :
+?>
+<div class="order-products-toolbar toolbar bottom">
+<?php /* @noEscape */ echo $block->getPagerHtml(); ?></div>
+<?php
+endif ?>
+<?php
+else :
+?>
+<div class="message info empty">
+    <span><?php /* @noEscape */ echo __('No customers assigned.'); ?></span>
+</div>
+<?php
+endif ?>
+<script type="text/x-magento-init">
+    {
+        "#my-orders-table": {
+            "customerListing": {
+                "searchUrl": "<?php /* @noEscape */ echo  $block->getUrl('b2bmage/salesrep/search_customers'); ?>",
+                "customerViewUrl": "<?php /* @noEscape */ echo $block->getUrl('b2bmage/salesrep/customer_view'); ?>"
+            }
+        }
+    }
+</script>

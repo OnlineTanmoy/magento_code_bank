@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <type name="Magento\Customer\Block\Address\Book">
+        <plugin name="DivisionCustomerAddressList" type="Appseconnect\CompanyDivision\Plugin\Customer\Block\Address\BookPlugin" sortOrder="0" />
+    </type>
+
+    <type name="Magento\Customer\Helper\Session\CurrentCustomerAddress">
+        <plugin name="DivisionDefaultBillingShipping" type="Appseconnect\CompanyDivision\Plugin\Customer\Helper\Session\CurrentCustomerAddressPlugin" sortOrder="0" />
+    </type>
+
+    <type name="Magento\Checkout\Model\DefaultConfigProvider">
+        <plugin name="updateCustomerDataToParentCustomerData"
+                type="Appseconnect\CompanyDivision\Plugin\Checkout\Model\DefaultConfigProviderPlugin" sortOrder="0"/>
+    </type>
+
+    <type name="Magento\Customer\Block\Address\Grid">
+        <plugin name="DivisionCustomerAddress" type="Appseconnect\CompanyDivision\Plugin\Customer\Block\Address\GridPlugin" sortOrder="0" />
+    </type>
+
+    <preference for="Appseconnect\B2BMage\Controller\Customer\Address\FormPost" type="Appseconnect\CompanyDivision\Controller\Customer\Address\FormPost"/>
+
+    <type name="Appseconnect\B2BMage\Pricing\Price\RegularPrice">
+        <plugin name="DivisionCustomerDiscount" type="Appseconnect\CompanyDivision\Plugin\Pricing\Price\RegularPricePlugin" sortOrder="10" />
+    </type>
+
+    <preference for="Appseconnect\B2BMage\Block\Salesrep\Customer\Listing" type="Appseconnect\CompanyDivision\Block\Salesrep\Customer\Listing"/>
+
+    <type name="Magento\Customer\Model\ResourceModel\CustomerRepository">
+        <plugin name="appseconnect_division_id_update"
+                type="Appseconnect\CompanyDivision\Plugin\Customer\Model\ResourceModel\CustomerRepository" sortOrder="1" />
+    </type>
+
+</config>

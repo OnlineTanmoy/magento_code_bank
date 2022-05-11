@@ -1,0 +1,15 @@
+.quote-item-delete{
+    width: 20px;
+    height: 20px;
+    display: block;
+    font-size: 0;
+    line-height: 0;
+    text-indent: -12000px;
+    background: url("blank-theme-icons.png") no-repeat -159px -55px;
+    
+}
+
+.quote-item-delete.grey{
+    opacity:0.5;
+    
+}

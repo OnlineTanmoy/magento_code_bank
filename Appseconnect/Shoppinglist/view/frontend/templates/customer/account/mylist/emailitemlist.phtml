@@ -1,0 +1,82 @@
+<?php
+$_gridrecords = $block->listCollection;
+if ($_gridrecords && count($_gridrecords)): ?>
+    <div class="table-wrapper mylist">
+        <table class="data table table-list-items history" id="my-list-table" style="width: 100%">
+            <thead>
+            <tr>
+                <th scope="col"
+                    style="background: #c5c4d8; color: #191565; font: 600 13px/20px 'Oswald', Sans Sarif; padding: 10px 8px;"><?php echo __('Code') ?></th>
+                <th scope="col"
+                    style="background: #c5c4d8; color: #191565; font: 600 13px/20px 'Oswald', Sans Sarif; padding: 10px 8px;"><?php echo __('Description') ?></th>
+                <th scope="col"
+                    style="background: #c5c4d8; color: #191565; font: 600 13px/20px 'Oswald', Sans Sarif; padding: 10px 8px;"><?php echo __('UOM') ?></th>
+                <th scope="col"
+                    style="background: #c5c4d8; color: #191565; font: 600 13px/20px 'Oswald', Sans Sarif; padding: 10px 8px;"><?php echo __('Unit Price inc. GST') ?></th>
+                <th scope="col"
+                    style="background: #c5c4d8; color: #191565; font: 600 13px/20px 'Oswald', Sans Sarif; padding: 10px 8px;"><?php echo __('Quantity') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            $count = 0;
+            $priceTotal = 0;
+            $qtyTotal = 0;
+            foreach ($_gridrecords as $_gridrecord): ?>
+                <tr <?php if ($count % 2 == 0) echo 'class="even"'; else echo 'class="odd"'; ?>>
+                    <td style="text-align: left; padding-left: 10px;">
+                        <?php echo $_gridrecord->getSku() ?>
+                        <?php echo $block->getProductOption($_gridrecord->getListItemId()); ?>
+                    </td>
+                    <td style="text-align: left; padding-left: 10px;"><?php echo $_gridrecord->getShortDescription(); ?></td>
+                    <td style="text-align: center; padding: 7px 0 14px 0;"><?php echo $block->getAttributeLabel($_gridrecord, 'product_uom', $_gridrecord->getProductUom()); ?></td>
+                    <td style="text-align: center; padding: 7px 0 14px 0;"><?php echo $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($block->getItemPrice($_gridrecord->getListItemId()), true, false); ?></td>
+                    <td style="text-align: center; padding: 7px 0 14px 0;"><?php echo $_gridrecord->getQty(); ?></td>
+                </tr>
+                <?php $count++; ?>
+                <?php
+                $priceTotal += ($block->getItemPrice($_gridrecord->getListItemId()) * $_gridrecord->getQty());
+                $qtyTotal += $_gridrecord->getQty();
+                ?>
+            <?php endforeach; ?>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td style="text-align: left; padding-left: 10px;"></td>
+                <td style="text-align: left; padding-left: 10px;"></td>
+                <td style="text-align: center; padding: 7px 0 14px 0;"><?php echo __('Total') ?></td>
+                <td style="text-align: center; padding: 7px 0 14px 0;"><?php echo $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($priceTotal, true, false); ?></td>
+                <td style="text-align: center; padding: 7px 0 14px 0;"><?php echo $qtyTotal; ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left; padding-left: 10px;"></td>
+                <td style="text-align: left; padding-left: 10px;"></td>
+                <td style="text-align: center; padding: 7px 0 14px 0;"></td>
+                <td style="text-align: center; padding: 7px 0 14px 0;"></td>
+                <td>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>
+                                <table cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td style="border-radius: 2px;" bgcolor="#F5951F">
+                                            <a href="<?php echo $this->getOrderUrl(); ?>" target="_blank"
+                                               style="padding: 8px 12px; border: 1px solid #f6951f;border-radius: 2px;font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size: 12px; width:63px; color: #ffffff;text-decoration: none;font-weight:bold;display: inline-block;">
+                                                <?php echo __('Order Now') ?>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+<?php else: ?>
+    <div class="message info empty"><span><?php echo __('List records not available.'); ?></span></div>
+<?php endif ?>
+
+

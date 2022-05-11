@@ -1,0 +1,14 @@
+<?php
+$quoteHelper = $this->helper('\Appseconnect\B2BMage\Helper\Quotation\Data')->isFromQuote();
+?>
+
+<script type="text/javascript">
+    require(['jquery',
+    ], function (jQuery) {
+        jQuery(document).ajaxComplete(function () {
+            <?php if ($quoteHelper){?>
+            jQuery(".minicart-items .product.actions").hide();
+            <?php } ?>
+        });
+    });
+</script>

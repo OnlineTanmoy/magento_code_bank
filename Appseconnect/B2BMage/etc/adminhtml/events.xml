@@ -1,0 +1,27 @@
+<?xml version="1.0"?> 
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../lib/internal/Magento/Framework/Event/etc/events.xsd">
+	<event name="catalog_product_save_before"> 
+        <observer name="insyncProductUpdate" instance="Appseconnect\B2BMage\Observer\Pricelist\ProductUpdateObserver" /> 
+    </event>
+	<event name="adminhtml_customer_save_after"> 
+        <observer name="customerSaveAfter" instance="Appseconnect\B2BMage\Observer\ContactPerson\CustomerSaveAfterObserver" /> 
+    </event>
+	<event name="sales_order_invoice_save_after"> 
+        <observer name="invoiceSaveAfter" instance="Appseconnect\B2BMage\Observer\ContactPerson\InvoiceSaveAfterObserver" /> 
+    </event>
+	<event name="catalog_category_save_after"> 
+        <observer name="catalogCategorySaveAfterObserver" instance="Appseconnect\B2BMage\Observer\CategoryVisibility\CatalogCategorySaveAfterObserver" /> 
+    </event>	
+	<event name="sales_order_save_after"> 
+        <observer name="salesOrderSaveCommitAfter" instance="Appseconnect\B2BMage\Observer\CreditLimit\SalesOrderCommitSaveAfterObserver" /> 
+    </event>
+    <event name="catalog_category_prepare_save">
+        <observer name="categorySave" instance="Appseconnect\B2BMage\Observer\CategoryVisibility\CategorySaveObserver" />
+    </event>
+    <event name="order_cancel_after">
+        <observer name="orderCancelAfter" instance="Appseconnect\B2BMage\Observer\ContactPerson\OrderCancelAfterObserver" />
+    </event>
+    <event name="checkout_cart_save_after">
+        <observer name="checkoutCartSaveAfter" instance="Appseconnect\B2BMage\Observer\Quotation\CheckoutCartSaveAfter" />
+    </event>
+</config>

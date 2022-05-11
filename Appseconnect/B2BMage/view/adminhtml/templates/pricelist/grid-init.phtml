@@ -1,0 +1,19 @@
+<?php
+$blockGrid = $block->getBlockGrid();
+$gridJsObjectName = $blockGrid->getJsObjectName();
+?>
+<?php  echo $block->getGridHtml(); ?>
+<input type="hidden" name="pricelist_products" id="in_pricelist_products"
+    data-form-part="mymodule_form" value="" />
+<input type="hidden" name="discount_type" id="discount_type"
+        value="<?php echo $block->getDiscountType(); ?>" />
+<script type="text/x-magento-init">
+    {
+        "*" : {
+            "Appseconnect_B2BMage/js/pricelist/grid-init": {
+                "selectedProducts": <?php /* @noEscape */ echo $block->getProductsJson(); ?>,
+                "gridJsObjectName": <?php /* @noEscape */ echo '"' . $gridJsObjectName . '"' ?: '{}'; ?>
+            }
+        }
+    }
+</script>

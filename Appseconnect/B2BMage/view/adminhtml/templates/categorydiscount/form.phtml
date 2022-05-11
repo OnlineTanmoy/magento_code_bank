@@ -1,0 +1,163 @@
+<?php /** @var $block \Appseconnect\B2BMage\Block\Adminhtml\CategoryDiscount\Edit\Tab\View\Category */ ?>
+<div id="category_load" class="loading-mask" data-role="loader"
+     style="display: none;">
+    <div class="popup popup-loading">
+        <div class="popup-inner">
+            <img alt="Loading..."
+                 src="<?php /* @noEscape */
+                 echo $block->getBaseUrl(); ?>
+                /pub/static/adminhtml/Magento/backend/en_US/images/loader-2.gif">Please
+            wait...
+        </div>
+    </div>
+</div>
+<?php
+$catAddDetailUrl = $block->getUrl('b2bmage/categorydiscount/index_addcategorydetail', []);
+$strpos = strpos($catAddDetailUrl, "addcategorydetail");
+$strpos = $strpos + 17;
+$categoryNames = $block->getCategoryNames($block->getRequest()->getParam('id'));
+?>
+<div id='approver_errormesage'></div>
+<div id="body">
+    <table class="admin__control-table tiers_table" id="tiers_table">
+        <thead id="heading_body">
+        <tr>
+            <th class="col-category"><?php /* @noEscape */
+                echo __('Category') ?></th>
+            <th class="col-discounttype"><?php /* @noEscape */
+                echo __('Discount Type') ?></th>
+            <th class="col-discountfactor"><?php /* @noEscape */
+                echo __('Discount Factor') ?></th>
+            <th class="col-delete"><?php /* @noEscape */
+                echo __('Status') ?></th>
+            <th class="col-delete"><?php /* @noEscape */
+                echo __('Action') ?></th>
+        </tr>
+
+        </thead>
+        <tbody id="listing_body">
+        <?php
+        $count = 0;
+        if (!empty($block->getcustomercategory($block->getRequest()
+            ->getParam('id')))) {
+            foreach ($block->getcustomercategory($block->getRequest()
+                ->getParam('id')) as $catVal) {
+                ?>
+                <tr>
+                    <td class="col-category"><select
+                                data='<?php /* @noEscape */
+                                echo $catVal['categorydiscount_id']; ?>'
+                                class='category_old'
+                                id="category_id_up<?php /* @noEscape */
+                                echo $count ?>">
+                            <option value="">Select Category</option>
+                            <?php
+
+                            foreach ($block->getCategoryNames($block->getRequest()
+                                ->getParam('id'), $catVal['category_id']) as $category_id => $categoryname) :
+                                if ($category_id == 2) {
+                                    continue;
+                                }
+                                ?>
+                                <option
+                                    <?php /* @noEscape */
+                                    echo ($catVal['category_id'] == $category_id) ?
+                                        'selected="selected"' : ''; ?>
+                                        value="<?php /* @noEscape */
+                                        echo $category_id ?>">
+                                    <?php /* @noEscape */
+                                    echo $categoryname ?></option>
+                            <?php
+                            endforeach ?>
+                        </select></td>
+
+                    <td class="col-discounttype">
+                        <select class="discounttype_up"
+                                id="discounttype_up<?php /* @noEscape */
+                                echo $count ?>">
+                            <option
+                                <?php /* @noEscape */
+                                echo ($catVal['discount_type'] == 0) ? 'selected="selected"' : ''; ?>
+                                    value="0">By Fixed Price
+                            </option>
+                            <option
+                                <?php /* @noEscape */
+                                echo ($catVal['discount_type'] == 1) ? 'selected="selected"' : ''; ?>
+                                    value="1">By Percentage
+                            </option>
+                        </select>
+                    </td>
+
+                    <td class="col-discountfactor"><input type="text"
+                                                          class="discountfactor_up" value="<?php /* @noEscape */
+                        echo $catVal['discount_factor']; ?>"
+                                                          id="discountfactor_up<?php /* @noEscape */
+                                                          echo $count ?>">
+                    </td>
+                    <td class="col-category"><select class="status"
+                                                     id="status_up<?php /* @noEscape */
+                                                     echo $count ?>">
+                            <option
+                                <?php /* @noEscape */
+                                echo ($catVal['is_active'] == 1) ? 'selected="selected"' : ''; ?>
+                                    value="1">Active
+                            </option>
+                            <option
+                                <?php /* @noEscape */
+                                echo ($catVal['is_active'] == 0) ? 'selected="selected"' : ''; ?>
+                                    value="0">Inactive
+                            </option>
+                        </select></td>
+                    <td class="col-deletebutton">
+                        <button category-id="<?php /* @noEscape */
+                        echo $catVal['categorydiscount_id']; ?>"
+                                class="cat-disc-delete">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                <?php
+                $count++;
+            }
+        }
+        ?>
+        <input type="hidden" id="count"
+               value="<?php /* @noEscape */
+               echo $count ?>">
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="5" class="col-actions-add">
+                <?php /* @noEscape */
+                echo $block->getAddButtonHtml() ?>
+                <?php /* @noEscape */
+                echo $block->getSubmitButton() ?>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<script type="text/x-magento-init">
+{
+    "#tiers_table": {
+        "Appseconnect_B2BMage/js/categorydiscount/category-discount": {
+            "urldata": "<?php /* @noEscape */
+    echo substr($catAddDetailUrl, 0, $strpos); ?>",
+            "catdiscountid":"<?php /* @noEscape */
+    echo $block->getRequest()->getParam('id'); ?>",
+            "categorynames":<?php /* @noEscape */
+    echo json_encode($categoryNames); ?>
+        }
+    }
+}
+
+</script>
+<script>
+    require([
+            'jquery'
+        ],
+        function ($,) {
+            $('.admin__old').trigger('contentUpdated');
+        }
+    );
+</script>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="multiplediscount_listing_data_source" xsi:type="string">
+                    Appseconnect\MultipleDiscounts\Model\ResourceModel\Discount\Grid\Collection
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Appseconnect\MultipleDiscounts\Model\ResourceModel\Discount\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">insync_multiple_discount</argument>
+            <argument name="eventPrefix" xsi:type="string">insync_multiple_discount_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">insync_multiple_discount_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Appseconnect\MultipleDiscounts\Model\ResourceModel\Discount
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="MultipleDiscountPostGridDataProvider"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">
+                Appseconnect\MultipleDiscounts\Model\ResourceModel\Discount\Collection
+            </argument>
+            <argument name="filterPool" xsi:type="object" shared="false">MultipleDiscountPostGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MultipleDiscountPostGridFilterPool"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">
+                    Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter
+                </item>
+                <item name="fulltext" xsi:type="object">
+                    Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Checkout\Model\Cart">
+        <plugin name="pluginAddProductToCart" type="Appseconnect\MultipleDiscounts\Plugin\CartPlugin" sortOrder="30"
+                disabled="false"/>
+    </type>
+
+    <type name="Magento\Checkout\Controller\Cart\UpdatePost">
+        <plugin name="pluginCartUpdatePost" type="Appseconnect\MultipleDiscounts\Plugin\UpdatePostPlugin"
+                disabled="false"/>
+    </type>
+    
+</config>

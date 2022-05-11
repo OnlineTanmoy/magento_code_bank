@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="top.links">
+            <block class="Appseconnect\Shoppinglist\Block\Link\Current" name="add-new-top-link"
+                   ifconfig="insync_shoppinglist/general/enable_shoppinglist_active">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">My Shopping List</argument>
+                    <argument name="path" xsi:type="string" translate="true">shoppinglist/customer/account_mylist</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

@@ -1,0 +1,36 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Customer\Block\Account\AuthorizationLink */
+$dataPostParam = '';
+if ($block->isLoggedIn()) {
+    $dataPostParam = sprintf(" data-post='%s'", $block->getPostParams());
+}
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$canRegister =$objectManager->get ( 'Magento\Framework\App\Config\ScopeConfigInterface' )->getValue ( 'insync_account/create/type','store' );
+if($canRegister):
+    ?>
+    <li class="authorization-link" data-label="<?php /* @noEscape */ echo $block->escapeHtml(__('or')); ?>">
+        <a <?php /* @noEscape */ echo $block->getLinkAttributes(); ?><?php /* @noEscape */ echo $dataPostParam; ?>>
+            <?php /* @noEscape */ echo $block->escapeHtml($block->getLabel()); ?>
+        </a>
+    </li>
+<?php
+else:
+    $label=$block->getLabel();
+    $check=($label==__('Sign In'))?false:true;
+
+    ?>
+    <li class="authorization-link" <?php /* @noEscape */ echo ($check)?'data-label="'.$block->escapeHtml(__('or')).'"':''; ?>>
+        <a <?php /* @noEscape */ echo $block->getLinkAttributes(); ?><?php /* @noEscape */ echo $dataPostParam; ?>>
+            <?php /* @noEscape */ echo $block->escapeHtml($block->getLabel()); ?>
+        </a>
+    </li>
+<?php
+endif;
+?>

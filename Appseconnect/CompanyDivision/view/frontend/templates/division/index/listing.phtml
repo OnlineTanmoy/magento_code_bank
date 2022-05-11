@@ -1,0 +1,120 @@
+<?php
+
+$om = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $om->get('Magento\Customer\Model\Session');
+$customerFactory = $om->create('Magento\Customer\Model\customerFactory');
+$currentCustomer = $customerFactory->create()->load($customerSession->getCurrentCustomerId());
+
+$_customers = $block->getDivision();
+
+?>
+<div class="table-wrapper orders-history">
+    <div style="display: flow-root">
+        <h2 style="float: left;"><?php echo __('Current Division') . ': ' . $currentCustomer->getName(); ?></h2>
+        <div class="add-button" style="float: right"><span><a href="<?php /* @noEscape */
+                echo $block->getDivisionAddUrl() ?>"
+                                                              class="action primary add"><?php echo __('Add Division') ?></a></span>
+        </div>
+    </div>
+    <?php if ($_customers && count($_customers) > 0) : ?>
+        <table class="data table table-order-items history"
+               id="my-orders-table">
+            <caption class="table-caption"><?php /* @noEscape */
+                echo __('Orders') ?></caption>
+            <thead>
+            <tr>
+                <th scope="col" class="col date"><?php /* @noEscape */
+                    echo __('Name') ?></th>
+                <th scope="col" class="col shipping"><?php /* @noEscape */
+                    echo __('Email') ?></th>
+                <th scope="col" class="col status"><?php /* @noEscape */
+                    echo __('Status') ?></th>
+                <th scope="col" class="col status"><?php /* @noEscape */
+                    echo __('Parent Division') ?></th>
+                <th scope="col" class="col actions">&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+
+            foreach ($_customers as $_customer) :
+                $status = $_customer['status'];
+                $parentCustomer = $customerFactory->create()->load($_customer['customer_id']);
+                ?>
+                <tr>
+                    <td
+                            data-th="<?php /* @noEscape */
+                            echo $block->escapeHtml(__('Name #')) ?>">
+                        <?php /* @noEscape */
+                        echo $_customer['name'] ?></td>
+                    <td
+                            data-th="<?php /* @noEscape */
+                            echo $block->escapeHtml(__('Email #')) ?>">
+                        <?php /* @noEscape */
+                        echo $_customer['email'] ?></td>
+                    <td
+                            data-th="<?php /* @noEscape */
+                            echo $block->escapeHtml(__('Status #')) ?>">
+                        <?php /* @noEscape */
+                        echo ($status) ? 'Active' : 'Inactive' ?></td>
+                    <td
+                            data-th="<?php /* @noEscape */
+                            echo $block->escapeHtml(__('Parent Division #')) ?>">
+                        <?php /* @noEscape */
+                        echo $parentCustomer->getName(); ?></td>
+                    <td
+                            data-th="<?php /* @noEscape */
+                            echo $block->escapeHtml(__('Actions #')) ?>">
+                        <a
+                                href="<?php /* @noEscape */
+                                echo $block->getDivisionViewUrl($_customer) ?>"
+                                class="action order"> <span><?php /* @noEscape */
+                                echo __('View') ?></span>
+                        </a>
+                        <?php if ($status && ($customerSession->getCurrentCustomerId() != $_customer['division_id'])) :
+                            ?>
+                            <a
+                                    href="<?php /* @noEscape */
+                                    echo $block->getDivisionUrl($_customer) ?>"
+                                    class="action order"> <span><?php /* @noEscape */
+                                    echo __('Login') ?></span>
+                            </a>
+                        <?php
+                        endif; ?>
+                    </td>
+                </tr>
+            <?php
+            endforeach; ?>
+            </tbody>
+        </table>
+        <?php if ($block->getPagerHtml()) :
+            ?>
+            <div class="order-products-toolbar toolbar bottom">
+                <?php /* @noEscape */
+                echo $block->getPagerHtml(); ?></div>
+        <?php
+        endif ?>
+    <?php
+    else :
+        ?>
+        <div class="message info empty">
+            <span><?php /* @noEscape */
+                echo __('No customers assigned.'); ?></span>
+        </div>
+    <?php
+    endif ?>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "#my-orders-table": {
+            "customerListing": {
+                "searchUrl": "<?php /* @noEscape */
+    echo $block->getUrl('b2bmage/salesrep/search_customers'); ?>",
+                "customerViewUrl": "<?php /* @noEscape */
+    echo $block->getUrl('b2bmage/salesrep/customer_view'); ?>"
+            }
+        }
+    }
+
+</script>

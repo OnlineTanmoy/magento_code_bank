@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+		<add id="Appseconnect_B2BMage::insync_customer_quote_product_manage" title="Quotes" module="Appseconnect_B2BMage" sortOrder="0"
+             action="b2bmage/quotation/index_index" parent="Magento_Sales::sales_operation" resource="Appseconnect_B2BMage::insync_customer_quote_product_manage" />
+
+        <add id="Appseconnect_B2BMage::b2beconnect" title="B2BeConnect" module="Appseconnect_B2BMage" sortOrder="30"
+             resource="Appseconnect_B2BMage::b2beconnect"/>
+
+        <add id="Appseconnect_B2BMage::advanced_pricing" title="Advanced Pricing" module="Appseconnect_B2BMage" sortOrder="90"
+             parent="Appseconnect_B2BMage::b2beconnect" resource="Appseconnect_B2BMage::advanced_pricing"/>
+        <add id="Appseconnect_B2BMage::pricelist_manage" title="Pricelist" module="Appseconnect_B2BMage" sortOrder="10"
+             parent="Appseconnect_B2BMage::advanced_pricing" action="b2bmage/pricelist/" resource="Appseconnect_B2BMage::pricelist_manage"/>
+        <add id="Appseconnect_B2BMage::tierprice_manage" title="Tier Price" module="Appseconnect_B2BMage" sortOrder="30"
+             parent="Appseconnect_B2BMage::advanced_pricing" action="b2bmage/tier/" resource="Appseconnect_B2BMage::tierprice_manage"/>
+        <add id="Appseconnect_B2BMage::specialprice_manage" title="Special Price" module="Appseconnect_B2BMage" sortOrder="50"
+             parent="Appseconnect_B2BMage::advanced_pricing" action="b2bmage/special/" resource="Appseconnect_B2BMage::specialprice_manage"/>
+
+
+        <add id="Appseconnect_B2BMage::salesrepresentative" title="Sales Rep" module="Appseconnect_B2BMage" sortOrder="100" action="b2bmage/salesrep"
+             parent="Appseconnect_B2BMage::b2beconnect" resource="Appseconnect_B2BMage::salesrepresentative"/>
+
+        <add id="Appseconnect_B2BMage::mobile_configuration" title="Mobile Configuration" module="Appseconnect_B2BMage" sortOrder="110"
+             parent="Appseconnect_B2BMage::b2beconnect" resource="Appseconnect_B2BMage::mobile_configuration"/>
+        <add id="Appseconnect_B2BMage::mobile_design_theme" title="Settings" translate="title" module="Appseconnect_B2BMage" sortOrder="20"
+             parent="Appseconnect_B2BMage::mobile_configuration" action="b2bmage/mobiletheme/edit" resource="Appseconnect_B2BMage::mobiletheme_manage"/>
+   	</menu>
+</config>

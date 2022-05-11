@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Appseconnect_MultipleDiscounts::multiple_discounts_manage" title="Multiple Discounts" module="Appseconnect_MultipleDiscounts"
+             sortOrder="70" parent="Appseconnect_B2BMage::advanced_pricing" action="multiplediscount/price/"
+             resource="Appseconnect_MultipleDiscounts::multiple_discounts_manage"/>
+    </menu>
+</config>

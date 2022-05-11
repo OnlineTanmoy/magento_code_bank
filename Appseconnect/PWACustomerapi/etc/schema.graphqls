@@ -1,0 +1,81 @@
+type Query {
+    salesOrderDetails (
+        id: String @doc(description: "Id of the Sales Order")
+    ): SalesOrder @resolver(class: "Appseconnect\\PWACustomerapi\\Model\\Resolver\\SalesOrder") @doc(description: "The Sales Order query returns information about a Sales order")
+
+    customerPlacedOrder (
+        customer_email: String @doc(description: "Id of the Customer for fetch all the placed order")
+    ): SalesOrderCollection @resolver(class: "Appseconnect\\PWACustomerapi\\Model\\Resolver\\CustomerOrder") @doc(description: "The Sales Order query returns information about customer all placed order")
+}
+
+type Mutation {
+    changeOrderStatus(
+        input: OrderInputQuery!
+    ): OrderOutputQuery@resolver( class: "Appseconnect\\PWACustomerapi\\Model\\Resolver\\ChangeOrderStatus")@doc(description: "Create a new pickup store")
+}
+
+input OrderInputQuery {
+    id: String @doc(description: "")
+    status: String @doc(description: "")
+}
+
+type OrderOutputQuery {
+    status: String @doc(description: "")
+    updated_at: String @doc(description: "")
+}
+
+type SalesOrder @doc(description: "Sales Order graphql gather Data of specific order information") {
+    increment_id: String @doc(description: "Increment Id of Sales Order")
+    customer_name: String @doc(description: "Customername of Sales Order")
+    grand_total: String @doc(description: "Grand total of Sales Order")
+    is_guest_customer : Boolean @doc(description: "Specifies if this otder was placed by Guest cusotmer")
+    created_at: String @doc(description: "Creation date of Sales Order")
+    status: String @doc(description: "Status of Sales Order")
+    shipping_method: String @doc(description: "Shipping method of Sales Order")
+    shipping: [Shipping] @doc(description: "An array of shipping data of order") @resolver(class: "Appseconnect\\PWACustomerapi\\Model\\Resolver\\Shipping")
+    billing: [Billing] @doc(description: "An array of billing data of order") @resolver(class: "Appseconnect\\PWACustomerapi\\Model\\Resolver\\Billing")
+    items: [Items] @doc(description: "An array of all items data of order") @resolver(class: "Appseconnect\\PWACustomerapi\\Model\\Resolver\\Items")
+}
+
+type Billing @doc(description: "An array containing all the billing fields of order") {
+    name: String @doc(description: "Billing City of Sales Order")
+    street: String @doc(description: "Billing City of Sales Order")
+    city: String @doc(description: "Billing City of Sales Order")
+    region: String @doc(description: "Billing City of Sales Order")
+    country: String @doc(description: "Billing City of Sales Order")
+    postcode: String @doc(description: "Billing City of Sales Order")
+    telephone: String @doc(description: "Billing City of Sales Order")
+    fax: String @doc(description: "Billing City of Sales Order")
+    company: String @doc(description: "Billing City of Sales Order")
+}
+
+type Shipping @doc(description: "An array containing all the shipping fields of order") {
+    name: String @doc(description: "Shipping City of Sales Order")
+    street: String @doc(description: "Shipping City of Sales Order")
+    city: String @doc(description: "Shipping City of Sales Order")
+    region: String @doc(description: "Shipping City of Sales Order")
+    country: String @doc(description: "Shipping City of Sales Order")
+    postcode: String @doc(description: "Shipping City of Sales Order")
+    telephone: String @doc(description: "Shipping City of Sales Order")
+    fax: String @doc(description: "Shipping City of Sales Order")
+    company: String @doc(description: "Shipping City of Sales Order")
+}
+
+type Items @doc(description: "An array containing all the items of order") {
+    sku: String @doc(description: "SKU of Sales Order Item")
+    title: String @doc(description: "title of Sales Order Item")
+    price: Float @doc(description: "price of Sales Order Item")
+}
+
+type SalesOrderCollection @doc(description: "Sales order item information") {
+    allOrderRecords: [OrderRecord] @doc(description: "An array containing the all the CMS Page from Magento")
+}
+
+type OrderRecord @doc(description: "Sales Order graphql gather Data of specific order information") {
+    increment_id: String @doc(description: "Increment Id of Sales Order")
+    customer_name: String @doc(description: "Customername of Sales Order")
+    grand_total: String @doc(description: "Grand total of Sales Order")
+    created_at: String @doc(description: "Timestamp indicating when the order was placed")
+    status: String @doc(description: "status of Sales Order")
+    shipping_method: String @doc(description: "Shipping method for order placed")
+}

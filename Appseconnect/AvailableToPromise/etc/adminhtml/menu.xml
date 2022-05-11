@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Appseconnect_AvailableToPromise::availabletopromise" title="Available To Promise"
+             module="Appseconnect_AvailableToPromise"
+             sortOrder="70" parent="Appseconnect_B2BMage::b2beconnect" action="availabletopromise/productinstock/"
+             resource="Appseconnect_AvailableToPromise::availabletopromise"/>
+    </menu>
+</config>

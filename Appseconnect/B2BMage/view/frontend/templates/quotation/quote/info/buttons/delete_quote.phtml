@@ -1,0 +1,17 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+?>
+    <?php  $_quote = $block->getQuote() ?>
+    <div class="actions">
+        <button type="submit" style="float: right; margin-right:  10px;"
+                name="update_cart_action"
+                data-cart-item-update=""
+                value="empty_quote"
+                title="<?php /* @noEscape */ echo $block->escapeHtml(__('Clear Quote')) ?>"
+                class="action update quote primary">
+            <span><?php /* @noEscape */ echo __('Clear Quote') ?></span>
+        </button>
+    </div>
+    <?php /* @noEscape */ echo $block->getChildHtml() ?>

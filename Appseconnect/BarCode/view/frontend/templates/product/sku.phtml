@@ -1,0 +1,25 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
+$scopeConfig = $objectManager->get('\Magento\Framework\App\Config\ScopeConfigInterface');
+$barCodeDisplay = $scopeConfig->getValue('barcode_sku_visibility/general/enable_barcode_product_listing_visibility', $storeScope);
+$skuDisplay = $scopeConfig->getValue('barcode_sku_visibility/general/enable_sku_visibility', $storeScope);
+$_product = $this->getProduct();
+if ($skuDisplay) {
+    ?>
+    <div class="sku" style="margin-bottom: 10px;"><?php /* @escapeNotVerified */
+        echo __('Sku').': '.$_product->getSku() ?></div>
+    <?php
+}
+
+$barCodeValue = $_product->getBarCode();
+if ($barCodeValue && $barCodeDisplay) {
+    ?>
+    <div class="barcode" style="margin-bottom: 10px;">
+        <?php
+        echo __('Barcode').': '.$barCodeValue;
+        ?>
+    </div>
+    <?php
+}
+?>

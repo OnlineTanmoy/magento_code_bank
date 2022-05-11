@@ -1,0 +1,17 @@
+<?php
+?>
+<div class="order-date">
+    <?= $block->escapeHtml(
+        __(
+            '<span class="label">Order Date:</span> %1',
+            '<span>' . $block->formatDate($block->getOrder()->getCreatedAt(), \IntlDateFormatter::LONG) . '</span>'
+        ),
+        ['span']
+    ) ?>
+    <br>
+    <?php
+    if ($block->getOrder()->getDeliveryInfo()) {
+        echo "Delivery Date: " . date('F j, Y', strtotime($block->getOrder()->getDeliveryInfo()));
+    }
+    ?>
+</div>

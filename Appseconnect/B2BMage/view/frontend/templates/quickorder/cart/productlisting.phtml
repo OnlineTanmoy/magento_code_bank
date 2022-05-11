@@ -1,0 +1,190 @@
+<style>
+    .download-buttons {
+        display: flex;
+        line-height: 30px;
+        border: 2px solid #97d700;
+        width: auto;
+        float: left;
+        padding: 5px 15px;
+        color: #97d700;
+        font-weight: 600;
+        font-size: 16px;
+        margin: 0 20px 30px 0;
+    }
+    .spacer {
+        font-size: 0;
+        line-height: 0;
+        clear: both;
+    }
+</style>
+<div id="tierprice_load" class="loading-mask" data-role="loader"
+     style="display: none;">
+    <div class="popup popup-loading">
+        <div class="popup-inner">
+            <img alt="Loading..."
+                 src="<?php /* @noEscape */
+                 echo $block->getBaseUrl(); ?>
+                /pub/static/adminhtml/Magento/backend/en_US/images/loader-2.gif">Please
+            wait...
+        </div>
+    </div>
+</div>
+
+<div id='approver_errormesage'></div>
+<div id="body" style="
+    width: 80%;">
+    <div class="table-wrapper orders-recent">
+        <form id="quick_order_form"
+              action="<?php /* @noEscape */
+              echo $block->getUrl('checkout', []); ?>"
+              method="post">
+            <table class="data table table-order-items recent"
+                   id="my-orders-table">
+                <caption class="table-caption">Recent Orders</caption>
+                <thead>
+                <tr>
+                    <th scope="col" class="col id">SKU</th>
+                    <th scope="col" class="col date">Quantity</th>
+                    <th scope="col" class="col shipping">Action</th>
+                </tr>
+                </thead>
+                <tbody class="cart item" id="cart_item">
+                <?php $count = 0; ?>
+                <input name="form_key" type="hidden"
+                       value="<?php /* @noEscape */
+                       echo $block->getFormKey(); ?>">
+                <tr class="item-info">
+                    <td class="col productsku" width="500"><select
+                                class='select frontend__control-select productadd'
+                                id="product_sku" name="product_sku[]">
+                        </select></td>
+                    <td class="col qty" data-th="Qty">
+                        <div class="field qty">
+                            <div class="control qty" style="white-space:nowrap;">
+                                <button class="dec" style="width: 35px;height: 35px;">-</button>
+                                <input style="width: 80px;" name="qty[]" value="" autocomplete="off"
+                                       type="number" id="qty" size="4" title="Qty"
+                                       class="input-text qty" maxlength="12"
+                                       data-validate="{required:true,'validate-greater-than-zero':true}"
+                                       data-role="cart-item-qty">
+                                <button class="inc" style="width: 35px;height: 35px;">+</button>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="col action remove"><a href='javascript:;'
+                                                     class="delete row"><i class="porto-icon-cancel"></a></td>
+
+                </tr>
+                <input type="hidden" id="count" value="<?php /* @noEscape */
+                echo $count ?>">
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <div class="block block-dashboard-info">
+
+        <span><button class="action primary add">Add More Product</button></span>
+        <span><button class="action primary proceed">Go To Checkout</button></span>
+    </div>
+    <form id="bulk-order" enctype="multipart/form-data"
+          action="<?php /* @noEscape */
+          echo $block->getUrl('b2bmage/quickorder/cart_bulkorder', []); ?>"
+          method="post">
+        <div class="bulk-upload-box">
+            <div class="bulk field upload skus">
+                <label class="label" for="customer_sku_csv"><span><h3>Import CSV File</h3></span></label>
+                <div class="bulk-control">
+                    <input id="bulk_customer_sku_csv" data-reset="true"
+                           name="sku_file" type="file">
+                    <input id="bulk-reset" value="0" data-reset="true"
+                           name="sku_file_uploaded" type="hidden">
+                    <div class="note">
+                        <p>File extensions allowed: <b>.csv</b></p>
+                        <p>Your csv file must include <b>Sku</b> and <b>Qty</b> columns.</p>
+                        <p><a href="<?php echo $block->getUrl('b2bmage/quickorder/cart_downloadcsv'); ?>" class="download-buttons">
+                                <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                                     width="24.000000pt" height="24.000000pt" viewBox="0 0 48.000000 48.000000"
+                                     preserveAspectRatio="xMidYMid meet">
+
+                                    <g transform="translate(0.000000,48.000000) scale(0.100000,-0.100000)"
+                                       fill="#97d700" stroke="none">
+                                        <path d="M92 428 c-8 -8 -12 -65 -12 -190 0 -165 1 -178 19 -188 11 -5 76 -10
+145 -10 100 0 128 3 140 16 13 12 16 39 16 132 l0 118 -68 67 -68 67 -80 0
+c-49 0 -85 -5 -92 -12z m148 -73 c0 -64 13 -75 84 -75 l46 0 0 -105 0 -105
+-130 0 -130 0 0 170 0 170 65 0 65 0 0 -55z m70 -10 l34 -35 -37 0 c-36 0 -37
+1 -37 35 0 19 1 35 3 35 2 0 18 -16 37 -35z"/>
+                                        <path d="M226 244 c-3 -9 -6 -24 -6 -35 0 -12 -5 -16 -15 -13 -22 9 -18 -16 7
+-43 l21 -23 -36 0 c-26 0 -37 -4 -37 -15 0 -12 16 -15 80 -15 64 0 80 3 80 15
+0 11 -11 15 -37 15 l-36 0 21 23 c25 27 29 52 7 43 -10 -3 -15 1 -15 13 0 25
+-10 51 -20 51 -4 0 -11 -7 -14 -16z"/>
+                                    </g>
+                                </svg>
+                                <span> Download File Format </span> </a>
+                            <a href="<?php echo $block->getUrl().'pub/media/InSyncCommerce_Product_Catalog.csv'; ?>"
+                            class="download-buttons">
+
+                                <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                                     width="24.000000pt" height="24.000000pt" viewBox="0 0 48.000000 48.000000"
+                                     preserveAspectRatio="xMidYMid meet">
+
+                                    <g transform="translate(0.000000,48.000000) scale(0.100000,-0.100000)"
+                                       fill="#97d700" stroke="none">
+                                        <path d="M92 428 c-8 -8 -12 -65 -12 -190 0 -165 1 -178 19 -188 11 -5 76 -10
+145 -10 100 0 128 3 140 16 13 12 16 39 16 132 l0 118 -68 67 -68 67 -80 0
+c-49 0 -85 -5 -92 -12z m148 -73 c0 -64 13 -75 84 -75 l46 0 0 -105 0 -105
+-130 0 -130 0 0 170 0 170 65 0 65 0 0 -55z m70 -10 l34 -35 -37 0 c-36 0 -37
+1 -37 35 0 19 1 35 3 35 2 0 18 -16 37 -35z"/>
+                                        <path d="M226 244 c-3 -9 -6 -24 -6 -35 0 -12 -5 -16 -15 -13 -22 9 -18 -16 7
+-43 l21 -23 -36 0 c-26 0 -37 -4 -37 -15 0 -12 16 -15 80 -15 64 0 80 3 80 15
+0 11 -11 15 -37 15 l-36 0 21 23 c25 27 29 52 7 43 -10 -3 -15 1 -15 13 0 25
+-10 51 -20 51 -4 0 -11 -7 -14 -16z"/>
+                                    </g>
+                                </svg>
+                                <span> Download Catalog </span> </a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br class="spacer">
+        <div class="bulk-actions-toolbar">
+            <div class="primary">
+                <button type="submit" title="Add to Cart" class="bulk action tocart primary">
+                    <span>Add to Cart</span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/x-magento-init">
+    {
+        "#body": {
+            "productListing": {
+                "searchUrl": "<?php /* @noEscape */
+    echo $block->getUrl('b2bmage/quickorder/cart_productsearchlist'); ?>"
+            }
+        }
+    }
+
+
+</script>
+<script type="text/x-magento-init">
+  { "#body": {
+       "productAction": {
+           "searchUrl": "<?php /* @noEscape */
+    echo $block->getUrl('b2bmage/quickorder/cart_productsearchlist'); ?>",
+           "removeUrl": "<?php /* @noEscape */
+    echo $block->getUrl('checkout/sidebar/removeItem', []); ?>",
+           "formKey": "<?php /* @noEscape */
+    echo $block->getFormKey(); ?>",
+           "addUrl": "<?php /* @noEscape */
+    echo $block->getUrl('checkout/cart/add/form_key/' .
+        $block->getFormKey(), []); ?>",
+           "updateUrl": "<?php /* @noEscape */
+    echo $block->getUrl('checkout/sidebar/updateItemQty/' .
+        $block->getFormKey(), []); ?>"
+        }
+     }
+  }
+
+
+</script>

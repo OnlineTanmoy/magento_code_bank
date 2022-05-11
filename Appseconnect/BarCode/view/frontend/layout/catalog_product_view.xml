@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+        <referenceContainer name="product.info.main">
+            <container name="product.barcode.main" after="product.price.tier">
+                <block class="Magento\Catalog\Block\Product\View" name="product.info.barcode" template="Appseconnect_BarCode::product/view/barcode.phtml"  />
+            </container>
+        </referenceContainer>
+        </referenceContainer>
+    </body>
+</page>

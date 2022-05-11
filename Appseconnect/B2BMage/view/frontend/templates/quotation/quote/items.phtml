@@ -1,0 +1,70 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var \Appseconnect\B2BMage\Block\Quotation\Quote\Items $block */
+?>
+<?php $_quote = $block->getQuote(); ?>
+<div class="table-wrapper order-items">
+<form action="<?php /* @noEscape */ echo $block->getUrl('b2bmage/quotation/index_updatePost') ?>"
+          method="post"
+          id="form-validate"
+          data-mage-init='{"validation":{}}'
+          class="form form-cart">
+	<?php /* @noEscape */ echo $block->getBlockHtml('formkey'); ?>
+    <table class="data table table-order-items" id="my-orders-table" summary="<?php /* @noEscape */ echo __('Items Quoted') ?>">
+        <caption class="table-caption"><?php /* @noEscape */ echo __('Items Quoted') ?></caption>
+        <thead>
+            <?php if($block->isPagerDisplayed()): ?>
+                <tr>
+                    <td colspan="6" data-block="order-items-pager-top" class="order-pager-wrapper order-pager-wrapper-top">
+                        <?php /* @noEscape */ echo $block->getPagerHtml() ?>
+                    </td>
+                </tr>
+            <?php endif ?>
+            <tr>
+                <th class="col name"><?php /* @noEscape */ echo __('Product Name') ?></th>
+                <th class="col sku"><?php /* @noEscape */ echo __('SKU') ?></th>
+                <th class="col price"><?php /* @noEscape */ echo __('Price') ?></th>
+                <th class="col qty"><?php /* @noEscape */ echo __('Qty') ?></th>
+                <th class="col subtotal"><?php /* @noEscape */ echo __('Subtotal') ?></th>
+                <th class="col subtotal action"><?php /* @noEscape */ echo __('Action') ?></th>
+            </tr>
+        </thead>
+        <?php $items = $block->getItems(); ?>
+        <?php $giftMessage = ''?>
+        <?php foreach ($items as $item): ?>
+        	<?php if($item->getParentItem()):
+                	   continue;
+                  endif; 
+        	?>
+            <tbody>
+                <?php /* @noEscape */ echo $block->getItemHtml($item) ?>
+            </tbody>
+        <?php endforeach; ?>
+        <input type="hidden" value=<?php /* @noEscape */ echo $block->getQuote()->getId();?> name="quote_id"/>
+        <?php if((($this->session->getCustomerId() == $block->getQuote()->getContactId()) && !$block->getSalesrepId() && $block->getQuote()->getStatus() == 'open') || ($block->getSalesrepId() && $block->getQuote()->getStatus() == 'submitted')) : ?>
+        <tr>
+            <td colspan="6" data-block="order-items-pager-bottom" class="order-pager-wrapper order-pager-wrapper-bottom">
+                <?php /* @noEscape */ echo $block->getChildHtml('quote.info.update.buttons') ?>
+                <?php /* @noEscape */ echo $block->getChildHtml('quote.info.delete.buttons') ?>
+            </td>
+        </tr>
+        <?php endif; ?>
+        <tfoot>
+            <?php if($block->isPagerDisplayed()): ?>
+                <tr>
+                    <td colspan="6" data-block="order-items-pager-bottom" class="order-pager-wrapper order-pager-wrapper-bottom">
+                        <?php /* @noEscape */ echo $block->getPagerHtml() ?>
+                    </td>
+                </tr>
+            <?php endif ?>
+            <?php /* @noEscape */ echo $block->getChildHtml('quote_totals') ?>
+        </tfoot>
+    </table>
+    </form>
+</div>

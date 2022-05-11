@@ -1,0 +1,37 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php $_quote = $block->getQuote() ?>
+<?php if ($_quote): ?>
+    <?php $_items = $_quote->getAllItems(); ?>
+    <table class="email-items">
+        <thead>
+            <tr>
+                <th class="item-info">
+                    <?php /* @noEscape */ echo  __('Items'); ?>
+                </th>
+                <th class="item-qty">
+                    <?php /* @noEscape */ echo  __('Qty'); ?>
+                </th>
+                <th class="item-price">
+                    <?php /* @noEscape */ echo  __('Price'); ?>
+                </th>
+            </tr>
+        </thead>
+        <?php foreach ($_items as $_item): ?>
+            <?php
+                if ($_item->getParentItem()) {
+                    continue;
+                }
+            ?>
+            <tbody>
+                <?php /* @noEscape */ echo $block->getItemHtml($_item) ?>
+            </tbody>
+        <?php endforeach; ?>
+        <tfoot class="order-totals">
+            <?php /* @noEscape */ echo $block->getChildHtml('quote_totals') ?>
+        </tfoot>
+    </table>
+<?php endif; ?>

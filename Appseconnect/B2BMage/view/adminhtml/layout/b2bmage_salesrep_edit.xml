@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="jquery/fileUploader/css/jquery.fileupload-ui.css"/>
+    </head>
+    <update handle="editor"/>
+      <body>
+     	<referenceContainer name="admin.scope.col.wrap" htmlClass="admin__old" />
+        <referenceContainer name="content">
+           <uiComponent name="salesrep_form"/>
+        </referenceContainer>        
+        <referenceBlock name="salesrep_form">
+                <block class="Appseconnect\B2BMage\Block\Adminhtml\Salesrep\Edit\Tab\Contact" name="salesrepcustomertab_edit_tab_contact">
+                <action method="setTabLabel">
+                    <argument name="label" xsi:type="string">Customer</argument>
+                </action>
+                </block>
+            </referenceBlock>
+            
+            
+	 </body>
+  
+</page>

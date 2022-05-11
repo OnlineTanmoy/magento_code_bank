@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="product.info.addtocart">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">
+                    Appseconnect_B2BMage::salesrep/product/view/addtocart.phtml
+                </argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="product.info.addtocart.additional">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">
+                    Appseconnect_B2BMage::salesrep/product/view/addtocart.phtml
+                </argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="product.info.main">
+            <block class="Appseconnect\B2BMage\Block\TierPrice\Display"
+                    name="appseconnect.tierprice.display" template="Appseconnect_B2BMage::tierprice/display.phtml" after="product.info.price" cacheable="false"/>
+        </referenceContainer>
+    </body>
+</page>

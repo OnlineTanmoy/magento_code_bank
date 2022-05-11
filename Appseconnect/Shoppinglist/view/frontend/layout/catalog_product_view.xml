@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link src="Appseconnect_Shoppinglist::css/shoppinglist.css"/>
+    </head>
+    <body>
+          <referenceBlock name="product.info.addtocart">
+              <block class="Magento\Framework\View\Element\Template" name="customer.list.select.product"
+                     template="Appseconnect_Shoppinglist::customer/product/listselect.phtml"/>
+          </referenceBlock>
+          <referenceBlock name="product.info.addtocart.additional">
+              <block class="Magento\Framework\View\Element\Template" name="customer.list.select"
+                     template="Appseconnect_Shoppinglist::customer/product/listselect.phtml"/>
+          </referenceBlock>
+    </body>
+</page>

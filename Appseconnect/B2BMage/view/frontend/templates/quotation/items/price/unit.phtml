@@ -1,0 +1,12 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+/** @var \Appseconnect\B2BMage\Block\Quotation\Quote\Item\Renderer\DefaultRenderer $block */
+$_item = $block->getItem();
+?>
+<span class="price-excluding-tax" data-label="<?php /* @noEscape */ echo $block->escapeHtml(__('Excl. Tax')) ?>">
+    <span class="cart-price">
+        <?php /* @noEscape */ echo $block->getQuote()->formatPrice($block->getItem()->getPrice()) ?>
+    </span>
+</span>

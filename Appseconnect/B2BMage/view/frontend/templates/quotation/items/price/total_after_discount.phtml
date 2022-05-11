@@ -1,0 +1,9 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+/** @var \Appseconnect\B2BMage\Block\Quotation\Quote\Item\Renderer\DefaultRenderer $block */
+$_item = $block->getItem();
+?>
+<?php $_quote = $block->getItem()->getQuoteItem()->getQuote() ?>
+<?php /* @noEscape */ echo $_quote->formatPrice($block->getTotalAmount($_item)) ?>

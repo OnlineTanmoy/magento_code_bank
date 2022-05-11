@@ -1,0 +1,19 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/** @var \Appseconnect\B2BMage\Block\Quotation\Quote\Email\Items\DefaultItems $block */
+
+$_item = $block->getItem();
+
+/** @var \Appseconnect\B2BMage\Model\Quote $_quote */
+$_quote = $_item->getQuote();
+?>
+
+<?php /* @noEscape */ echo  $_quote->formatPrice($_item->getRowTotal()) ?>

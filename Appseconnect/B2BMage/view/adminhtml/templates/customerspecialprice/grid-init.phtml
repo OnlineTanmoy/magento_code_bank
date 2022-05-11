@@ -1,0 +1,17 @@
+<?php
+$blockGrid = $block->getBlockGrid();
+$gridJsObjectName = $blockGrid->getJsObjectName();
+?>
+<?php  echo $block->getGridHtml(); ?>
+<input type="hidden" name="special_price_products" id="in_special_price_products"
+    data-form-part="mymodule_form" value="" />
+<script type="text/x-magento-init">
+    {
+        "*" : {
+            "Appseconnect_B2BMage/js/customerspecialprice/grid-init": {
+                "selectedProducts": <?php /* @noEscape */ echo $block->getProductsJson(); ?>,
+                "gridJsObjectName": <?php /* @noEscape */ echo '"' . $gridJsObjectName . '"' ?: '{}'; ?>
+            }
+        }
+    }
+</script>

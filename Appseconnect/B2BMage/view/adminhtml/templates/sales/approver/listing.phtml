@@ -1,0 +1,134 @@
+<?php
+$customerId = $block->getRequest()->getParam('id');
+$contactPersons = $block->getContactpersonList($customerId);
+$approverList = $block->getApprover($customerId);
+$approverOrderSaveUrl = $block->getUrl('b2bmage/approver/ordersave');
+?>
+<div id="approver_load" class="admin__data-grid-loading-mask"
+   data-component="customer_form.areas" data-role="spinner"
+   style="display: none;">
+    <div class="spinner">
+      <span></span><span></span><span>
+        </span><span></span><span></span>
+        <span></span><span></span><span></span>
+    </div>
+</div>
+<div id='approver_errormesage'></div>
+<div id="body">
+    <table class="admin__control-table tiers_table" id="approver_table">
+        <thead id="heading_body">
+          <tr>
+               <th class="col-category"><?php /* @noEscape */ echo __('Contact Person') ?></th>
+               <th class="col-discountfactor"><?php /* @noEscape */ echo __('Minimum Order Value') ?></th>
+                <th class="col-delete"><?php /* @noEscape */ echo __('Action') ?></th>
+         </tr>
+      </thead>
+       <tbody id="approver_listing">
+                <?php
+                if ($approverList) {
+                    foreach ($approverList as $approverVal) {
+                        ?>
+                        <tr>
+                <td class="col-category"><select
+                   data='<?php /* @noEscape */ echo $approverVal['insync_approver_id']; ?>'
+                   class="admin__control-select-appover-old">
+                    <?php
+                    if ($contactPersons) :
+                        ?>
+        <option value="">Please Select</option>
+        <?php
+        foreach ($contactPersons as $contactPerson) :
+            ?>
+            <option
+                <?php /* @noEscape */ echo ($contactPerson['entity_id']==$approverVal['contact_person_id'])?
+                'selected="selected"':''; ?>
+               value="<?php /* @noEscape */ echo $contactPerson['entity_id']; ?>">
+                <?php /* @noEscape */ echo $contactPerson['name']; ?></option>
+            <?php
+        endforeach
+        ;
+                    else :
+        ?>
+                    <option value=""><?php /* @noEscape */ echo __('No Contact Person(s)');?></option>
+                    <?php
+                    endif;
+    ?>
+                </select></td>
+              <td class="col-discountfactor"><input
+                  value='<?php /* @noEscape */ echo $approverVal['from']; ?>'
+                    type="text"></td>
+              <td class="col-deletebutton">
+                  <button
+                        data='<?php /* @noEscape */ echo $approverVal['insync_approver_id']; ?>'
+                       class="approver-delete"><?php /* @noEscape */ echo __('Delete');?></button>
+                </td>
+          </tr>
+                        <?php
+                    }
+                }
+                ?>
+                <tr>
+                <td class="col-category"><select id="appover" name="appover"
+                   class="admin__control-select-appover">
+                                <?php
+                                if ($contactPersons) :
+                    ?>
+                <option value="">Please Select</option>
+                <?php
+                foreach ($block->getContactpersonList($customerId, true) as $contact) :
+                    ?>
+                    <option
+                                         value="<?php /* @noEscape */ echo $contact['entity_id']; ?>">
+                <?php /* @noEscape */ echo $contact['name']; ?></option>
+                    <?php
+                endforeach
+                            ;
+                                else :
+                                    ?>
+                                <option value="">No Contact Person(s)</option>
+                                <?php
+                                endif;
+                                ?>
+                            </select></td>
+              <td class="col-discountfactor"><input name="from[]" type="text"></td>
+              <td class="col-deletebutton">
+                  <button class="approver-delete">Delete</button>
+                </td>
+          </tr>
+      </tbody>
+       <tfoot>
+            <tr>
+               <td colspan="5" class="col-actions-add">
+                   <button id="approver_addmore" title="Add Approver"
+                       type="button" class="action-default scalable add">
+                     <span>Add Approver</span>
+                  </button>
+                  <button id="approver_save" title="Add Category Discount Price"
+                      type="button" class="action-default scalable add">
+                     <span>Save</span>
+                  </button>
+              </td>
+          </tr>
+      </tfoot>
+   </table>
+</div>
+<script type="text/x-magento-init">
+{
+    "#approver_table": {
+        "Appseconnect_B2BMage/js/approver/approver-listing": {
+            "approverordersaveurl": "<?php /* @noEscape */ echo $approverOrderSaveUrl;?>",
+            "customerid": "<?php /* @noEscape */ echo $customerId;?>",
+            "productlistid": "<?php /* @noEscape */ echo $block->getRequest()->getParam('id');?>"
+        }
+    }
+}
+ </script>
+ <script>
+ require([
+     'jquery'
+     ],
+     function($,) {
+  $('.admin__old').trigger('contentUpdated');
+     }
+);
+ </script>

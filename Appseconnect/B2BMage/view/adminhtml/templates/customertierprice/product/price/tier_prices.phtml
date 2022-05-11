@@ -1,0 +1,82 @@
+<?php
+$url = $block->getUrl('b2bmage/tier/tierpriceadd', []);
+$strpos = strpos($url, "tierpriceadd");
+$strpos = $strpos + 17;
+$urlData=$strpos=substr($url, 0, $strpos);
+?>
+<div id="tierprice_load" class="loading-mask" data-role="loader" style="display: none;">
+<div class="popup popup-loading"><div class="popup-inner">
+<img alt="Loading..." src="<?php /* @noEscape */ echo $block->getBaseUrl();?>
+/pub/static/adminhtml/Magento/backend/en_US/images/loader-2.gif">Please wait...</div></div></div>
+
+<div id='approver_errormesage'></div>
+
+<div id="body" >
+        <table class="admin__control-table tiers_table" id="tiers_table">           
+                    <thead id="heading_body">
+                        <tr>
+                            <th class="col-productsku" width="60%"><?php /* @noEscape */ echo __('SKU') ?></th>
+                            <th class="col-quantity"><?php /* @noEscape */ echo __('Quantity') ?></th>
+                            <th class="col-tier_price"><?php /* @noEscape */ echo __('Price') ?></th>
+                            <th class="col-delete"><?php /* @noEscape */ echo __('Action') ?></th>
+                        </tr>
+                       
+                    </thead>
+                    <tbody id="listing_body">
+                    <?php
+                    $productCollection=$block->getProductSku();
+                    $count=0;
+                    if (!empty($block->getCustomerTierPrice($block->getRequest()->getParam('id')))) {
+                        foreach ($block->getCustomerTierPrice($block->getRequest()->getParam('id')) as $data) {
+                            ?>
+                            <tr>
+                                <td class="col-productsku">
+                                    <input class="tierprice_id" type="hidden"  
+                                    value="<?php /* @noEscape */ echo $data['id'];?>" >
+                                    <select class='select admin__control-select productadd'>
+                                        <option value="<?php /* @noEscape */ echo $data['product_sku']; ?>">
+                                        <?php /* @noEscape */ echo $data['product_sku']; ?></option>
+                                    </select>
+                                </td> 
+                                <td class="col-quantity">
+                                    <input type="text" value="<?php /* @noEscape */ echo $data['quantity']; ?>" 
+                                    class="quantity">
+                                </td>
+                                <td class="col-tier_price">
+                                    <input type="text" value="<?php /* @noEscape */ echo $data['tier_price']; ?>" 
+                                    class="tier_price">
+                                </td>   
+                                <td class="col-deletebutton">
+                                    <button class="delete-row" 
+                                    pricelist-id="<?php /* @noEscape */ echo $data['id'];?>">Delete</button>
+                                </td>
+                            </tr>
+                            <?php
+                            $count++;
+                        }
+                    }
+                    ?>
+                    <input type="hidden" id="count" value="<?php /* @noEscape */ echo $count?>">
+                    </tbody>
+                   <tfoot>
+                        <tr>
+                            <td colspan="5" class="col-actions-add">
+                            <?php /* @noEscape */ echo $block->getAddButtonHtml() ?>
+                            <?php /* @noEscape */ echo $block->getSubmitButton() ?>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+ </div>
+<script type="text/x-magento-init">
+{
+    "#tiers_table": {
+        "Appseconnect_B2BMage/js/customertierprice/customer-tierprice": {
+            "tierpriceaddurl": "<?php /* @noEscape */ echo $url?>",
+            "productlisturl": "<?php /* @noEscape */ echo $block->getUrl('b2bmage/tier/productlist');?>",
+            "productlistid": "<?php /* @noEscape */ echo $block->getRequest()->getParam('id');?>",
+            "urldata":"<?php /* @noEscape */ echo $urlData;?>"
+        }
+    }
+}
+ </script>

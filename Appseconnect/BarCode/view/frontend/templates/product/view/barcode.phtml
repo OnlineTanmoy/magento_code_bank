@@ -1,0 +1,17 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
+$scopeConfig = $objectManager->get('\Magento\Framework\App\Config\ScopeConfigInterface');
+$barCodeDisplay = $scopeConfig->getValue('barcode_sku_visibility/general/enable_barcode_product_details_visibility', $storeScope);
+$barCodeValue = $this->getProduct()->getBarCode();
+if ($barCodeValue && $barCodeDisplay) {
+    ?>
+    <div class="stock" style="margin-bottom: 10px; margin-top: -12px; font-size: .8571em;">
+        <span class="label"><?php /* @escapeNotVerified */
+            echo __('BAR CODE:') ?></span>
+        <span><?php /* @escapeNotVerified */
+            echo $barCodeValue ?></span>
+    </div>
+    <?php
+}
+?>

@@ -1,0 +1,40 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block \Appseconnect\B2BMage\Block\Adminhtml\Quotation\Quote\View\Tab\Info */ ?>
+<?php $_quote = $block->getQuote() ?>
+
+<div id="order-messages">
+    <?php /* @noEscape */ echo $block->getChildHtml('quote_messages') ?>
+</div>
+
+<?php /* @noEscape */ echo $block->getChildHtml('quote_info') ?>
+
+
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?php /* @noEscape */ echo __('Items Quoted') ?></span>
+    </div>
+    <?php /* @noEscape */ echo $block->getItemsHtml() ?>
+</section>
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?php /* @noEscape */ echo __('Quote Total') ?></span>
+    </div>
+    <div class="admin__page-section-content">
+			<div class="admin__page-section-item order-comments-history">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?php /* @noEscape */ echo __('Notes for this Quote') ?></span>
+            </div>
+            <?php /* @noEscape */ echo $block->getChildHtml('quote_history') ?>
+        </div>
+        <div class="admin__page-section-item order-totals">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?php /* @noEscape */ echo __('Quote Totals') ?></span>
+            </div>
+            <?php /* @noEscape */ echo $block->getChildHtml('quote_totals') ?>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <head>
+		<link src="Appseconnect_B2BMage::css/select2.min.css" />
+		<link src="Appseconnect_B2BMage::css/chosen.min.css" />
+		<link src="Appseconnect_B2BMage::quotation/css/quote/form.css" />
+	</head>
+    <body>
+        <referenceContainer name="content">            
+            <block class="Appseconnect\B2BMage\Block\Quotation\Quote" name="quote.form" cacheable="false">
+            </block>
+        </referenceContainer>
+    </body>
+</page>

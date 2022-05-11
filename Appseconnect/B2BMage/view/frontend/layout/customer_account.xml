@@ -1,0 +1,96 @@
+<?xml version="1.0" ?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+    	<referenceBlock name="customer-account-navigation-address-link" remove="true" />
+    	<referenceBlock name="customer-account-navigation-downloadable-products-link" remove="true" />
+    	<referenceBlock name="customer-account-navigation-wish-list-link" remove="true" />
+    	<referenceBlock name="customer-account-navigation-my-credit-cards-link" remove="true" />
+    	<referenceBlock name="customer-account-navigation-billing-agreements-link" remove="true" />
+    	<referenceBlock name="customer-account-navigation-product-reviews-link" remove="true" />
+    	<referenceBlock name="customer-account-navigation-newsletter-subscriptions-link" remove="true" />
+        <referenceBlock name="customer_account_navigation">
+            <block class="Appseconnect\B2BMage\Block\ContactPerson\Link\Current" after="customer-account-navigation-customer-address-listing" name="customer-account-navigation-contact-listing">
+                <arguments>
+                    <argument name="path" xsi:type="string">b2bmage/contact/index_listing</argument>
+                    <argument name="label" xsi:type="string" translate="true">Manage Contact Person</argument>
+                </arguments>
+            </block>
+			
+			<block class="Appseconnect\B2BMage\Block\QuickOrder\Link\Current" after="customer-account-navigation-contact-listing" name="customer-account-navigation-quick-order">
+                <arguments>
+                    <argument name="path" xsi:type="string">b2bmage/quickorder/cart_productlisting</argument>
+                    <argument name="label" xsi:type="string" translate="true">Quick Order</argument>
+                </arguments>
+            </block>
+			
+			<block class="Appseconnect\B2BMage\Block\Salesrep\Link\CustomerList" after="customer-account-navigation-wish-list-link" name="customer-account-navigation-customer-listing">
+                <arguments>
+                    <argument name="path" xsi:type="string">b2bmage/salesrep/customer_listing</argument>
+                    <argument name="label" xsi:type="string" translate="true">Customer List</argument>
+                </arguments>
+            </block>
+			
+			<block class="Appseconnect\B2BMage\Block\Sales\Link\Current" after="customer-account-navigation-wish-list-link" name="customer-account-navigation-approver-listing">
+                <arguments>
+                    <argument name="path" xsi:type="string">b2bmage/sales/approve_listing</argument>
+                    <argument name="label" xsi:type="string" translate="true">Approve Orders</argument>
+                </arguments>
+            </block>
+			<block class="Appseconnect\B2BMage\Block\Quotation\Link\Current" after="customer-account-navigation-wish-list-link" name="customer-account-navigation-customer-quote-listing">
+                <arguments>
+                    <argument name="path" xsi:type="string">b2bmage/quotation/index_history</argument>
+                    <argument name="label" xsi:type="string" translate="true">My Quotes</argument>
+                </arguments>
+            </block>
+            <block class="Appseconnect\B2BMage\Block\Salesrep\Link\Current" name="customer-account-navigation-address-link-appseconnect">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Address Book</argument>
+                        <argument name="path" xsi:type="string">customer/address</argument>
+                    </arguments>
+                </block>
+                <block class="Appseconnect\B2BMage\Block\Salesrep\Link\Current" name="customer-account-navigation-downloadable-products-link-appseconnect">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">My Downloadable Products</argument>
+                        <argument name="path" xsi:type="string">downloadable/customer/products</argument>
+                    </arguments>
+                </block>
+                <block class="Appseconnect\B2BMage\Block\Salesrep\Link\Current" name="customer-account-navigation-wish-list-link-appseconnect">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">My Wish List</argument>
+                        <argument name="path" xsi:type="string">wishlist</argument>
+                    </arguments>
+                </block>
+                <block class="Appseconnect\B2BMage\Block\Salesrep\Link\Current" name="customer-account-navigation-my-credit-cards-link-appseconnect">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Stored Payment Methods</argument>
+                        <argument name="path" xsi:type="string">vault/cards/listaction</argument>
+                    </arguments>
+                </block>
+                <block class="Appseconnect\B2BMage\Block\Salesrep\Link\Current" name="customer-account-navigation-billing-agreements-link-appseconnect">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Billing Agreements</argument>
+                        <argument name="path" xsi:type="string">paypal/billing_agreement</argument>
+                    </arguments>
+                </block>
+                <block class="Appseconnect\B2BMage\Block\Salesrep\Link\Current" name="customer-account-navigation-product-reviews-link-appseconnect">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">My Product Reviews</argument>
+                        <argument name="path" xsi:type="string">review/customer</argument>
+                    </arguments>
+                </block>
+                <block class="Appseconnect\B2BMage\Block\Salesrep\Link\Current" name="customer-account-navigation-newsletter-subscriptions-link-appseconnect">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Newsletter Subscriptions</argument>
+                        <argument name="path" xsi:type="string">newsletter/manage</argument>
+                    </arguments>
+                </block>
+            <block class="Appseconnect\B2BMage\Block\Salesrep\Link\CustomerList" after="customer-account-navigation-wish-list-link" name="customer-account-navigation-contact-create">
+                <arguments>
+                    <argument name="path" xsi:type="string">b2bmage/salesrep/contact_create</argument>
+                    <argument name="label" xsi:type="string" translate="true">Create Contact Person</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        
+    </body>
+</page>

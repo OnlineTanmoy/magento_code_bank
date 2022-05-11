@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+   <!-- Create Customer Category Discounts -->
+    <route url="/V1/customers/categorydiscounts" method="POST">
+        <service class="Appseconnect\B2BMage\Api\CategoryDiscount\CustomerCategoryDiscountRepositoryInterface" method="createCustomerCategoryDiscount"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <!-- Get Customer Category Discounts -->
+    <route url="/V1/customers/:customerId/categorydiscounts" method="GET">
+        <service class="Appseconnect\B2BMage\Api\CategoryDiscount\CustomerCategoryDiscountRepositoryInterface" method="getCustomerCategoryDiscount"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <!-- Update Customer Category Discounts -->
+    <route url="/V1/customers/:customerId/categorydiscounts" method="PUT">
+        <service class="Appseconnect\B2BMage\Api\CategoryDiscount\CustomerCategoryDiscountRepositoryInterface" method="updateCustomerCategoryDiscount"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+	
+	<!--  Get pricelist by customer id -->
+     <route url="/V1/customers/:customerId/pricelist" method="GET">
+        <service class="Appseconnect\B2BMage\Api\Pricelist\PricelistRepositoryInterface" method="get"/>
+        <resources>
+             <resource ref="self" />
+        </resources>
+    </route>
+    <!-- Update pricelist -->
+     <route url="/V1/pricelist/:id" method="PUT">
+        <service class="Appseconnect\B2BMage\Api\Pricelist\PricelistRepositoryInterface" method="update"/>
+        <resources>
+             <resource ref="self" />
+        </resources>
+    </route>
+       <!-- Assign pricelist to a Customer -->
+    <route url="/V1/pricelistcustomerassign" method="POST">
+        <service class="Appseconnect\B2BMage\Api\Pricelist\PricelistRepositoryInterface" method="assignPricelist"/>
+        <resources>
+             <resource ref="self" />
+        </resources>
+    </route>
+         <!-- Create new pricelist -->
+    <route url="/V1/pricelist" method="POST">
+        <service class="Appseconnect\B2BMage\Api\Pricelist\PricelistRepositoryInterface" method="create"/>
+        <resources>
+             <resource ref="self" />
+        </resources>
+    </route>
+    
+    <!-- Assign products to pricelist -->
+    <route url="/V1/pricelist/products" method="POST">
+        <service class="Appseconnect\B2BMage\Api\Pricelist\PricelistRepositoryInterface" method="assignProducts"/>
+        <resources>
+             <resource ref="self" />
+        </resources>
+    </route>
+	
+	<!-- Create Customer Sp. Tier Price -->
+    <route url="/V1/customers/tierprices" method="POST">
+        <service class="Appseconnect\B2BMage\Api\CustomerTierPrice\CustomerTierpriceRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <!-- Update Customer Sp. Tier Price -->
+    <route url="/V1/customers/tierprices/:id" method="PUT">
+        <service class="Appseconnect\B2BMage\Api\CustomerTierPrice\CustomerTierpriceRepositoryInterface" method="update"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <!-- Get Customer Sp. Tier Price -->
+    <route url="/V1/customers/:customerId/tierprices" method="GET">
+        <service class="Appseconnect\B2BMage\Api\CustomerTierPrice\CustomerTierpriceRepositoryInterface" method="getByCustomerId"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+	
+	<!-- Add contact person -->
+    <route url="/V1/customers/contactperson" method="POST">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\ContactPersonRepositoryInterface" method="createContactPerson"/>
+        <resources>
+             <resource ref="self"/>
+        </resources>
+    </route>
+     
+    <!-- Update contact person -->
+    <route url="/V1/customers/contactperson/:id" method="PUT">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\ContactPersonUpdateRepositoryInterface" method="save"/>
+        <resources>
+             <resource ref="self"/>
+        </resources>
+    </route>
+    <!-- To get contact person list -->
+    <route url="/V1/contactperson/search" method="GET">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\ContactPersonGetRepositoryInterface" method="getContactPersonData"/>
+        <resources>
+             <resource ref="self"/>
+        </resources>
+    </route>
+	
+	<!--  Get specila price by specialprice id -->
+     <route url="/V1/specialprice/:specialpriceId" method="GET">
+        <service class="Appseconnect\B2BMage\Api\CustomerSpecialPrice\SpecialPriceRepositoryInterface" method="get"/>
+        <resources>
+             <resource ref="self" />
+        </resources>
+    </route>
+    <!-- Update specila price -->
+    <route url="/V1/specialprice/:id" method="PUT">
+        <service class="Appseconnect\B2BMage\Api\CustomerSpecialPrice\SpecialPriceRepositoryInterface" method="update"/>
+        <resources>
+             <resource ref="self" />
+        </resources>
+    </route>
+    
+    <!--  Create new specila price -->
+    <route url="/V1/specialprice" method="POST">
+        <service class="Appseconnect\B2BMage\Api\CustomerSpecialPrice\SpecialPriceRepositoryInterface" method="create"/>
+        <resources>
+             <resource ref="self" />
+        </resources>
+    </route>
+	
+	
+	
+	<!-- Salesrep Create -->    
+    <route url="/V1/salesrep" method="POST">
+        <service class="Appseconnect\B2BMage\Api\Salesrep\SalesrepRepositoryInterface" method="createAccount"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    
+    <!-- Salesrep Update -->
+    <route url="/V1/salesrep/:id" method="PUT">
+        <service class="Appseconnect\B2BMage\Api\Salesrep\SalesrepRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- Get all company assigned to Salesrep -->
+    <route url="/V1/salesrep/:id/company" method="GET">
+        <service class="Appseconnect\B2BMage\Api\Salesrep\SalesrepRepositoryInterface" method="getCompany"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    
+    <!-- Customer Assign to Salesrep -->
+    <route url="/V1/salesrepcustomerassign" method="POST">
+        <service class="Appseconnect\B2BMage\Api\Salesrep\SalesrepRepositoryInterface" method="assignCustomer"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    
+    <!-- Get assigned customers of a Salesrep -->
+    <route url="/V1/salesrep/customer/search" method="GET">
+        <service class="Appseconnect\B2BMage\Api\Salesrep\SalesrepRepositoryInterface" method="getCustomerData"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+	
+	 <!-- To get credit limit -->
+    <route url="/V1/creditlimit/customers/:customerId" method="GET">
+        <service class="Appseconnect\B2BMage\Api\CreditLimit\CreditLimitRepositoryInterface" method="get"/>
+        <resources>
+             <resource ref="self"/>
+        </resources>
+    </route>
+    <!-- To add credit limit -->
+    <route url="/V1/creditlimit/customers" method="POST">
+        <service class="Appseconnect\B2BMage\Api\CreditLimit\CreditLimitRepositoryInterface" method="save"/>
+        <resources>
+             <resource ref="self"/>
+        </resources>
+    </route>
+    <!-- To edit credit limit -->
+    <route url="/V1/creditlimit/customers/:customerId" method="PUT">
+        <service class="Appseconnect\B2BMage\Api\CreditLimit\CreditLimitRepositoryInterface" method="update"/>
+        <resources>
+             <resource ref="self"/>
+        </resources>
+    </route>
+	
+	<!-- erp pdf work -->
+    <route url="/V1/erpinvoicepdf" method="POST">
+        <service class="Appseconnect\B2BMage\Api\ErpDocs\InvoicePdfUploadInterface" method="upload"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+	<!-- erp pdf work -->
+	<route url="/V1/quotations/:id" method="GET">
+        <service class="Appseconnect\B2BMage\Api\Quotation\QuotationRepositoryInterface" method="get"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+    </route>
+    <route url="/V1/quotations/search" method="GET">
+        <service class="Appseconnect\B2BMage\Api\Quotation\QuotationRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+    </route>
+    
+    <route url="/V1/contactperson/:contactPersonId/quotations" method="POST">
+        <service class="Appseconnect\B2BMage\Api\Quotation\QuotationRepositoryInterface" method="createEmptyQuoteForContact"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+    </route>
+    <route url="/V1/quotations/:quoteId/items" method="POST">
+        <service class="Appseconnect\B2BMage\Api\Quotation\QuotationItemRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+    </route>
+	<route url="/V1/quotations/:quoteId/items/:itemId" method="PUT">
+        <service class="Appseconnect\B2BMage\Api\Quotation\QuotationItemRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+    </route>
+    <route url="/V1/quotations/:quoteId/items" method="GET">
+        <service class="Appseconnect\B2BMage\Api\Quotation\QuotationItemRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+    </route>
+    <route url="/V1/quotations/:quoteId/items/:itemId" method="DELETE">
+        <service class="Appseconnect\B2BMage\Api\Quotation\QuotationItemRepositoryInterface" method="deleteById"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+    </route>
+    
+    <route url="/V1/quotations/:id/submit" method="POST">
+        <service class="Appseconnect\B2BMage\Api\Quotation\QuotationServiceInterface" method="submitQuoteById"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+    </route>
+    
+    <route url="/V1/quotations/:id/approve" method="POST">
+        <service class="Appseconnect\B2BMage\Api\Quotation\QuotationServiceInterface" method="approveQuoteById"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+    </route>
+    
+    <route url="/V1/quotations/:id/hold" method="POST">
+        <service class="Appseconnect\B2BMage\Api\Quotation\QuotationServiceInterface" method="holdQuoteById"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+    </route>
+    
+    <route url="/V1/quotations/:id/unhold" method="POST">
+        <service class="Appseconnect\B2BMage\Api\Quotation\QuotationServiceInterface" method="unholdQuoteById"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+    </route>
+    
+    <route url="/V1/quotations/:id/cancel" method="POST">
+        <service class="Appseconnect\B2BMage\Api\Quotation\QuotationServiceInterface" method="cancelQuoteById"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+    </route>
+
+    <!-- Get all product with company -->
+    <route url="/V1/company/:id/products" method="GET">
+        <service class="Appseconnect\B2BMage\Api\Company\CompanyRepositoryInterface" method="getProducts"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- Get all category with company -->
+    <route url="/V1/company/:id/categories/search" method="GET">
+        <service class="Appseconnect\B2BMage\Api\Company\CompanyRepositoryInterface" method="getCategories"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- Get all category with company -->
+    <route url="/V1/company/:id/categories" method="GET">
+        <service class="Appseconnect\B2BMage\Api\Company\CompanyRepositoryInterface" method="getAllCategories"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- Get all product details with company -->
+    <route url="/V1/company/:id/product/:sku" method="GET">
+        <service class="Appseconnect\B2BMage\Api\Company\CompanyRepositoryInterface" method="getProductBySku"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- Get contactperson list with company -->
+    <route url="/V1/company/:id/contactperson" method="GET">
+        <service class="Appseconnect\B2BMage\Api\Company\CompanyRepositoryInterface" method="getContactperson"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- Update company details -->
+    <route url="/V1/company/:id" method="PUT">
+        <service class="Appseconnect\B2BMage\Api\Company\CompanyRepositoryInterface" method="saveAddress"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- Get company details -->
+    <route url="/V1/company/:id" method="GET">
+        <service class="Appseconnect\B2BMage\Api\Company\CompanyRepositoryInterface" method="getCompany"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- Get address list with company -->
+    <route url="/V1/company/:id/addresslist" method="GET">
+        <service class="Appseconnect\B2BMage\Api\Company\CompanyRepositoryInterface" method="getAddressList"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+
+
+    <!-- Get cart id with contact person -->
+    <route url="/V1/contactperson/:contactPersonId/carts/mine" method="POST">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\CartRepositoryInterface" method="createEmptyCartForCustomer"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- delete item to cart with contact person -->
+    <route url="/V1/contactperson/:contactPersonId/cart/mine/items/:itemId" method="DELETE">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\CartRepositoryInterface" method="deleteById"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+    </route>
+
+    <!-- add item to cart with contact person -->
+    <route url="/V1/contactperson/:contactPersonId/cart/mine/items" method="POST">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\CartRepositoryInterface" method="addCartItem"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+    </route>
+
+    <!-- Get cart with contact person -->
+    <route url="/V1/contactperson/:contactPersonId/cart" method="GET">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\CartRepositoryInterface" method="getCart"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+    </route>
+
+    <!-- Get shipping method list with company -->
+    <route url="/V1/contactperson/:contactPersonId/cart/mine/shipping-method-list" method="POST">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\CartRepositoryInterface" method="getShippingMethod"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- Get payment method list with contactperson -->
+    <route url="/V1/contactperson/:contactPersonId/cart/mine/payment-method-list" method="GET">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\CartRepositoryInterface" method="getPaymentMethod"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- Assign billing addres -->
+    <route url="/V1/contactperson/:contactPersonId/cart/mine/billing-address-assign" method="POST">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\CartRepositoryInterface" method="assignBilling"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- submit shipping information  -->
+    <route url="/V1/contactperson/:contactPersonId/cart/mine/shipping-information" method="POST">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\CartRepositoryInterface" method="saveShippinginformation"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- create order with contact person -->
+    <route url="/V1/contactperson/:contactPersonId/cart/mine/payment-information" method="POST">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\CartRepositoryInterface" method="savePaymentInformationAndPlaceOrder"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- get orders with contact person -->
+    <route url="/V1/contactperson/:contactPersonId/orders" method="GET">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\CartRepositoryInterface" method="getOrders"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- get order by Id with contact person -->
+    <route url="/V1/contactperson/:contactPersonId/order/:orderId" method="GET">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\CartRepositoryInterface" method="getOrderById"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- Put coupon code with contact person -->
+    <route url="/V1/contactperson/:contactPersonId/cart/mine/coupons/:couponCode" method="PUT">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\CartRepositoryInterface" method="setCouponCode"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- Delete coupon code with contact person -->
+    <route url="/V1/contactperson/:contactPersonId/cart/mine/coupons" method="DELETE">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\CartRepositoryInterface" method="deleteCouponCode"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- get coupon code with contact person -->
+    <route url="/V1/contactperson/:contactPersonId/cart/mine/coupons" method="GET">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\CartRepositoryInterface" method="getCouponCode"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- get cart total with contact person -->
+    <route url="/V1/contactperson/:contactPersonId/cart/mine/total" method="GET">
+        <service class="Appseconnect\B2BMage\Api\ContactPerson\CartRepositoryInterface" method="getTotal"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+</routes>

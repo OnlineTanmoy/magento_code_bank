@@ -1,0 +1,289 @@
+type Query {
+    getContectpersonList : ContactpersonList @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Customer\\ContactpersonListResolver") @doc(description: "The Sales Order query returns information about a Sales order")
+    getCompanyList : CompanyList @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Customer\\CompanyListResolver") @doc(description: "The Company list is displayed for the Salesrep")
+    customerPlacedOrder (
+        telephone: String @doc(description: "Telephone Number of the Sales Order")
+    ): SalesOrderCollection @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Customer\\CustomerData") @doc(description: "The Sales Order query returns information about a Sales order")
+    getApprovalOrderList : OrderList @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Approver\\GetApprovalOrderList") @doc(description: "This query return Approval Order List information ")
+    getQuotationList : QuotationList @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Quotation\\QuotationList")
+    viewQuoteItems (quote_id: Int @doc(description: "Quote Id")): QuoteItemsOutput @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Quotation\\ViewQuoteItems") @doc(description:"View Quote Items")
+    isEnableCompanyCreation : String @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\EnableCompanyCreation")
+}
+
+type QuoteItemsOutput {
+    quotedata: [Quote]
+}
+
+type Quote {
+    status: String
+    created_at: String
+    created_by: String
+    subtotal: String
+    grand_total: String
+    items: [QuotationProduct]
+    customer_comment:String
+    admin_comment:String
+}
+
+type QuotationProduct {
+    product_id: String @doc(description: "The product id.")
+    product_name: String @doc(description: "The product name.")
+    sku: String @doc(description: "The product sku.")
+    price: String @doc(description: "The product price.")
+    qty: Int @doc(description: "The product quantity.")
+    subtotal: String @doc(description: "The subtotal of the product")
+}
+
+type OrderList
+{
+    items: [Order]
+}
+type BaseOrderInfo
+{
+    id: Int
+    total_qty_ordered: Int
+    increment_id: String
+    created_at: String
+    status: String
+    status_label: String
+    grand_total: Float
+    sub_total: Float
+    currency_code: String
+}
+type QuotationList {
+    quotedata: [QuoteData]
+}
+type QuoteData {
+    quote_id: String
+    created_at: String
+    created_by: String
+    status: String
+    quote_total: String
+}
+type PaymentInfo
+{
+    method: String
+    cc_owner: String
+    cc_last_4: String
+    cc_type: String
+}
+
+type ShippingInfo
+{
+    shipping_method: String
+    shipping_address: OrderCustomerAddress
+    shipping_description: String
+    shipping_amount: Float
+    shipping_incl_tax: Float
+    tracking_numbers: [String]
+}
+type OrderCustomerAddress {
+    city: String
+    company: String
+    country_id: String
+    customer_id: Int
+    firstname: String
+    id: Int
+    lastname: String
+    middlename: String
+    prefix: String
+    region: String
+    street: String
+    telephone: String
+    district: String
+    house_number: String
+    apartment_number: String
+    postomat_code: String
+    store_pickup_code: String
+    post_office_code: String
+    is_b2b: String
+    postcode: String
+    organizationname: String
+    organizationbin: String
+    organizationaddress: String
+    organizationiic: String
+    organizationbik: String
+}
+type Order
+{
+    base_order_info: BaseOrderInfo
+    payment_info: PaymentInfo
+    shipping_info: ShippingInfo
+}
+
+type Customer {
+    companyname : String @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Customer\\AdditionaData"),
+    available_credit : String @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Customer\\CreditData"),
+    check_customer_eligibility : Boolean @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Customer\\CheckCustomer"),
+    customer_type : String @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Customer\\CustomerType")
+    is_quote_enable : String @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Customer\\EnableQuote")
+}
+
+type ContactpersonList {
+    items: [Contact]
+}
+
+type Contact {
+    name: String
+    email: String
+    contactperson_role: String
+    status: String
+    id: String
+}
+
+type SalesOrderCollection @doc(description: "Sales Order graphql gather Data of specific order information") {
+    allOrderRecords: [OrderRecord] @doc(description: "Increment Id of Sales Order")
+}
+
+type OrderRecord @doc(description: "Sales Order graphql gather Data of specific order information") {
+    increment_id: String @doc(description: "Increment Id of Sales Order")
+    status: String @doc(description: "Shipping method for order placed")
+}
+
+type Mutation {
+    createContactPerson (input: ContactInput!): ContactOutput @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Contact\\CreateContactCustomer") @doc(description:"Create customer account")
+    editContactPerson (input: ContactPersonInput!): ContactPersonOutput @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Contact\\EditContactCustomer") @doc(description:"Edit contact person account")
+    salesrepTokenGenerate (input: SalesrepInput!): SalesrepOutput @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\SalesRep\\GenerateTokenForSalesrep") @doc(description:"Generate Customer Token for Salesrep Login as Contact Person")
+    approvalOrderStatusChange (input: ApprovalOrderInput!): ApprovalOrderOutput @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Approver\\ApprovalOrderStatus") @doc(description:" Approve and Reject Orders by Approver")
+    submitQuotation (input: SubmitQuoteInput!): SubmitQuoteOutput @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Quotation\\SubmitQuote") @doc(description:"Submit Quote")
+    addQuotation (input: QuotationInput!): QuotationOutput @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Quotation\\AddQuotation") @doc(description:"Add Quotation")
+    updateQuotation (input: QuotationInput!): QuotationOutput @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Quotation\\UpdateQuotation") @doc(description:"Update Quotation")
+    quoteaddtocart (input: QuoteCheckoutInput!): QuoteCheckoutOutput @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Quotation\\QuoteAddtoCart") @doc(description:"Add Quotation Products to cart")
+    salesRepCreateContactPerson (input: SalesrepContactInput!): SalesrepContactOutput @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\SalesRep\\SalesrepContactPersonCreate") @doc(description:"Salesrep create contact Person account")
+    createB2BCustomerAccount (input: B2BCustomerInput!): B2BCustomerOutput @resolver(class: "Appseconnect\\PWAApiList\\Model\\Resolver\\Customer\\CreateB2BCustomer") @doc(description:"Create B2B Customer account")
+}
+
+input B2BCustomerInput {
+    legalname: String @doc(description: "The customer's Legalname. Required")
+    email: String @doc(description: "The customer's email. Required")
+    telephone: String @doc(description: "The customer's telephone. Required")
+    street1: String @doc(description: "The customer's street address. Required")
+    street2: String @doc(description: "The customer's street address. ")
+    street3: String @doc(description: "The customer's street address. ")
+    country_id: String @doc(description: "The customer's country . Required")
+    region_id: String @doc(description: "The customer's region . Required")
+    city: String @doc(description: "The customer's city . Required")
+    postcode: String @doc(description: "The customer's zipcode . Required")
+    contactfirstname: String @doc(description: "The customer's firstname . Required")
+    contactlastname: String @doc(description: "The customer's lastname . Required")
+    contactemail: String @doc(description: "The customer's email . Required")
+    contactpassword: String @doc(description: "The customer's password . Required")
+    contactconfirmpassword: String @doc(description: "The customer's confirm password . Required")
+}
+
+type B2BCustomerOutput {
+    legalname: String @doc(description: "The customer's Legalname name")
+    email: String @doc(description: "The customer's email address")
+}
+
+input SalesrepContactInput {
+    companyId: String @doc(description: "The Parent customer's ID.")
+    firstname: String @doc(description: "The contactPerson's first name")
+    lastname: String @doc(description: "The contactPerson's last name")
+    email: String @doc(description: "The contactPerson's email address. Required")
+}
+
+type SalesrepContactOutput {
+    firstname: String @doc(description: "The contactPerson's first name")
+    lastname: String @doc(description: "The contactPerson's last name")
+    email: String @doc(description: "The contactPerson's email address. Required")
+}
+
+input QuoteCheckoutInput {
+    quote_id: Int @doc(description: "The product id.")
+    store_id: Int @doc(description: "The store id.")
+}
+
+type QuoteCheckoutOutput {
+    status:String
+}
+
+input QuotationInput {
+    product_id: Int @doc(description: "The product id.")
+    qty: Int @doc(description: "The product qty.")
+    store_id: Int @doc(description: "The store id.")
+}
+
+type QuotationOutput {
+    quotationdata: [NewQuoteData]
+}
+
+type NewQuoteData {
+    quote_id: Int
+    status: String
+    created_at: String
+    created_by: String
+    quote_total: String
+}
+
+input ContactInput {
+    status: String @doc(description: "The customer's status.")
+    role: String @doc(description: "The customer's Role")
+    firstname: String @doc(description: "The customer's first name")
+    lastname: String @doc(description: "The customer's last name")
+    email: String @doc(description: "The customer's email address. Required")
+}
+
+type ContactOutput {
+    customer: Customer!
+}
+
+input ContactPersonInput {
+    contactperson_id: Int @doc(description: "The contact person's id.")
+    status: Int @doc(description: "The customer's status.")
+    role: Int @doc(description: "The customer's Role")
+    firstname: String @doc(description: "The customer's first name")
+    lastname: String @doc(description: "The customer's last name")
+    email: String @doc(description: "The customer's email address. Required")
+}
+
+type ContactPersonOutput {
+    customer: Customer!
+}
+
+type CompanyList {
+    companydata: [Company]
+}
+type Company {
+    name: String
+    email: String
+    status: String
+    id: String
+    companycontactpersondata: [CompanyContactPersonList]
+}
+type CompanyContactPersonList {
+    name: String
+    email: String
+    contactperson_role: String
+    status: String
+    id: String
+}
+input SalesrepInput
+{
+    email:String
+}
+input SubmitQuoteInput
+{
+    quote_id:Int
+    quote_comment:String
+}
+type SubmitQuoteOutput
+{
+    quote_id:Int
+}
+type SalesrepOutput
+{
+    contactperson_email:String
+    contactperson_token:String
+}
+
+input ApprovalOrderInput
+{
+  orderId:String @doc(description: "The OrderItem increament id.")
+  status:String @doc(description: "The status of Approve and Reject")
+}
+type ApprovalOrderOutput
+{
+    orderId:String @doc(description: "The OrderItem id.")
+    status:String @doc(description: "The status of Approve and Reject")
+}

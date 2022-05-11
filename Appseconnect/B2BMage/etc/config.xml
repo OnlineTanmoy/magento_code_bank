@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<!--  Explorer/Payment/etc/config.xml -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+   <default>
+        <insync_account>
+            <create>
+                <type>1</type>
+            </create>
+        </insync_account>
+		
+		<insync_category_visibility>
+            <select_product_visibility>
+                <active>1</active>
+            </select_product_visibility>
+            
+            <select_visibility>
+                <select_visibility_type>all_groups</select_visibility_type>
+            </select_visibility>
+        </insync_category_visibility>
+		
+		<payment>
+            <creditlimit>
+                <active>0</active>
+                <title>Credit limit</title>
+                <order_status>pending</order_status>
+                <instructions>Credit limit</instructions>
+                <model>Appseconnect\B2BMage\Model\CreditLimit</model>
+                <allowspecific>0</allowspecific>
+                <group>offline</group>
+            </creditlimit>
+        </payment>
+
+
+        <insync_approver>
+            <creditlimitmanagement>
+                <active>0</active>
+            </creditlimitmanagement>
+            <email>
+                <enabled>1</enabled>
+                <identity>sales</identity>
+                <copy_method>bcc</copy_method>
+                <type>insync_approver_email_type</type>
+                <order_success>insync_approver_email_order_success</order_success>
+                <order_cancel>insync_approver_email_order_cancel</order_cancel>
+            </email>
+        </insync_approver>
+		
+		<insync_quotes>
+			<email>
+                <enabled>1</enabled>
+				<type>insync_quotes_email_new</type>
+                <identity>sales</identity>
+                <copy_method>bcc</copy_method>
+			</email>
+			<email>
+                <enabled>1</enabled>
+				<type>insync_quotes_email_approve</type>
+                <identity>sales</identity>
+                <copy_method>bcc</copy_method>
+			</email>
+			<email>
+                <enabled>1</enabled>
+				<type>insync_quotes_email_hold</type>
+                <identity>sales</identity>
+                <copy_method>bcc</copy_method>
+			</email>
+			<email>
+                <enabled>1</enabled>
+				<type>insync_quotes_email_unhold</type>
+                <identity>sales</identity>
+                <copy_method>bcc</copy_method>
+			</email>
+			<email>
+                <enabled>1</enabled>
+				<type>insync_quotes_email_cancel</type>
+                <identity>sales</identity>
+                <copy_method>bcc</copy_method>
+			</email>
+			<comment>
+                <enabled>1</enabled>
+				<type>insync_quotes_comment_template</type>
+                <identity>sales</identity>
+                <copy_method>bcc</copy_method>
+			</comment>
+            <general>
+                <lifetime>10</lifetime>
+            </general>
+        </insync_quotes>
+       
+       <insync_pricerule>
+           <setpriority>
+               <enabled>0</enabled>
+               <priority1>price_list</priority1>
+               <priority2>tier_price</priority2>
+               <priority3>special_price</priority3>
+               <priority4>category_price</priority4>
+           </setpriority>
+       </insync_pricerule>
+    </default>
+</config>

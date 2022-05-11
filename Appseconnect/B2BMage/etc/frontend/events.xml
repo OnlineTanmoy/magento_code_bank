@@ -1,0 +1,38 @@
+<?xml version="1.0"?> 
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../lib/internal/Magento/Framework/Event/etc/events.xsd">
+    <event name="controller_action_predispatch">
+        <observer name="customer_group_redirect"
+                  instance="Appseconnect\B2BMage\Observer\Customer\CustomerGroupRedirectObserver" />
+    </event>
+    <event name="catalog_block_product_list_collection">
+        <observer name="appseconnectCatalogProductCollection" instance="Appseconnect\B2BMage\Observer\CategoryVisibility\CatalogBlockProductListCollection" /> 
+    </event>
+	<event name="catalog_category_collection_load_before"> 
+        <observer name="catalogCategoryCollectionLoadBeforeObserver" instance="Appseconnect\B2BMage\Observer\CategoryVisibility\CatalogCategoryCollectionLoadBeforeObserver" /> 
+    </event>
+	<event name="customer_address_save_after"> 
+        <observer name="customerAddress" instance="Appseconnect\B2BMage\Observer\ContactPerson\AddressUpdateObserver" /> 
+    </event>
+	
+	<event name="catalog_product_collection_load_after"> 
+        <observer name="gridView" instance="Appseconnect\B2BMage\Observer\PriceRule\GridViewObserver" /> 
+    </event>
+    <event name="checkout_cart_product_add_after"> 
+        <observer name="afterAdd" instance="Appseconnect\B2BMage\Observer\PriceRule\AfterAddObserver" /> 
+    </event>
+    <event name="controller_action_predispatch_checkout_cart_add">
+        <observer name="afterAdd" instance="Appseconnect\B2BMage\Observer\Checkout\BeforeAddObserver" />
+    </event>
+    <event name="catalog_product_get_final_price"> 
+        <observer name="descView" instance="Appseconnect\B2BMage\Observer\PriceRule\DescViewObserver" /> 
+    </event>
+    <event name="checkout_cart_update_items_after"> 
+        <observer name="catalogProductUpdate" instance="Appseconnect\B2BMage\Observer\PriceRule\UpdateObserver" /> 
+    </event>
+    <event name="checkout_cart_product_update_after"> 
+        <observer name="afterUpdate" instance="Appseconnect\B2BMage\Observer\PriceRule\AfterAddObserver" /> 
+    </event>
+    <event name="checkout_cart_save_after">
+        <observer name="checkoutCartSaveAfter" instance="Appseconnect\B2BMage\Observer\Quotation\CheckoutCartSaveAfter" />
+    </event>
+</config>

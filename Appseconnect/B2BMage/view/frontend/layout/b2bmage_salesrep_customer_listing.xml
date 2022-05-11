@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!-- /**
+ * Copyright Â© 2017 Appseconnect. All rights reserved.
+ * See COPYING.txt for license details.
+ */ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Appseconnect\B2BMage\Block\Salesrep\Customer\Listing" name="salesrepresentative.customer.list.block" template="salesrep/customer/listing.phtml" cacheable="false">
+                <container name="salesrepresentative.customer.list.block.info" as="info" label="Customer List"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

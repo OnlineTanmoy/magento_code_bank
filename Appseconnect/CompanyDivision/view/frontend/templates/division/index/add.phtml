@@ -1,0 +1,113 @@
+<?php
+$currentDivisionId = $this->getRequest()->getParam('division_id');
+$om = \Magento\Framework\App\ObjectManager::getInstance();
+
+$divisionFactory = $om->create('Appseconnect\CompanyDivision\Model\DivisionFactory');
+$divisionHelper = $om->create('Appseconnect\CompanyDivision\Helper\Division\Data');
+$divisionModel = $divisionHelper->divisionByCustomerId($currentDivisionId);
+$division = $divisionFactory->create()->load($divisionModel->getId());
+
+$customerFactory = $om->create('Magento\Customer\Model\CustomerFactory');
+$customer = $customerFactory->create()->load($currentDivisionId);
+
+?>
+<form class="form create account form-create-account"
+      action=<?php /* @noEscape */ echo $block->getUrl('division/division/index_addpost')?>
+      method="post" id="form-validate" enctype="multipart/form-data"
+      autocomplete="off">
+    <input type="hidden" name="division_id" id="division_id" value="<?php echo $currentDivisionId; ?>">
+    <fieldset class="fieldset create info">
+        <legend class="legend">
+            <span><?php echo __('Select Company'); ?></span>
+        </legend>
+        <div class="field field-name-role required">
+            <label class="label" for="role"> <span><?php /* @noEscape */ echo __("Select Company"); ?></span>
+            </label>
+
+            <div class="control">
+
+                <select class="required-entry select" name="company_id" id="company_id">
+                    <option value=""><?php /* @noEscape */ echo __("Select"); ?></option>
+                    <?php foreach($block->getCompanyList() as $company) {
+                        $selected = '';
+                        if($division->getCustomerId() == $company->getDivisionId()) {
+                            $selected = 'selected';
+                        }
+                        ?>
+                        <option value="<?php /* @noEscape */ echo $company->getDivisionId(); ?>" <?php echo $selected; ?>><?php /* @noEscape */ echo $company->getName(); ?></option>
+                    <?php }?>
+                </select>
+            </div>
+        </div>
+
+    </fieldset>
+    <fieldset class="fieldset create info">
+        <legend class="legend">
+            <span><?php echo __('Personal Information'); ?></span>
+        </legend>
+        <br>  <input type="hidden" name="success_url" value=""> <input type="hidden" name="error_url" value="">
+
+        <div class="field field-name-firstname required">
+            <label class="label" for="firstname"> <span><?php echo __('First Name'); ?></span>
+            </label>
+
+            <div class="control">
+                <input type="text" id="firstname" name="firstname" value="<?php echo $customer->getFirstname(); ?>"
+                       title="First Name" class="input-text required-entry"
+                       data-validate="{required:true}">
+            </div>
+        </div>
+        <div class="field field-name-lastname required">
+            <label class="label" for="lastname"> <span><?php echo __('Last Name'); ?></span>
+            </label>
+
+            <div class="control">
+                <input type="text" id="lastname" name="lastname" value="<?php echo $customer->getLastname(); ?>"
+                       title="Last Name" class="input-text required-entry"
+                       data-validate="{required:true}">
+            </div>
+        </div>
+        <div class="field field-name-lastname required">
+            <label class="label" for="lastname"> <span><?php echo __('Is Active'); ?></span>
+            </label>
+
+            <div class="control">
+                <select class="required-entry select" name="is_active" id="is_active">
+                    <option value=""><?php /* @noEscape */ echo __("Select"); ?></option>
+                    <option value="1" <?php if($division->getIsActive() == 1) echo 'selected';?>><?php /* @noEscape */ echo __("Active"); ?></option>
+                    <option value="0" <?php if($division->getIsActive() == 0) echo 'selected';?>><?php /* @noEscape */ echo __("Inactive"); ?></option>
+                </select>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="fieldset create account"
+              data-hasrequired="* Required Fields">
+        <legend class="legend">
+            <span><?php echo __('Sign-in Information'); ?></span>
+        </legend>
+        <br>
+        <div class="field required">
+            <label for="email_address" class="label"><span><?php echo __('Email'); ?></span></label>
+            <div class="control">
+                <input type="email" name="email" autocomplete="email"
+                       id="email_address" value="<?php echo $customer->getEmail(); ?>" title="Email" class="input-text"
+                       data-validate="{required:true, 'validate-email':true}">
+            </div>
+        </div>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action submit primary"
+                    title="Create an Account">
+                <span><?= __("Save")?></span>
+            </button>
+        </div>
+    </div>
+</form>
+<script type="text/x-magento-init">
+    {
+        "#form-validate": {
+            "contactAdd": {}
+        }
+    }
+</script>

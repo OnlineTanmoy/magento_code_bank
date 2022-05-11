@@ -1,0 +1,104 @@
+<?php
+/**
+ * @var \Appseconnect\Shoppinglist\Block\Customer\Account\Mylist $block
+ */
+
+$customerProductLists = $block->getCustomerProductList();
+$isQuotationEnabled = $this->helper('Appseconnect\B2BMage\Helper\Quotation\Data')->isQuotationEnabled();
+$customerQuoteConfigurationValue = $this->helper('Appseconnect\Shoppinglist\Helper\Mylist\Data')->getCustomerQuoteConfigurationValue();
+?>
+
+<div class="primary" style="float: right">
+    <a class="action create primary" href="<?php echo $block->getUrl('shoppinglist/customer/account_editlist'); ?>">
+        <span><?= $block->escapeHtml(__('Create New List')) ?></span>
+    </a>
+</div>
+
+<?php if (count($customerProductLists) > 0): ?>
+    <div class="table-wrapper orders-history">
+        <table class="data table table-order-items history" id="contact-table">
+            <caption class="table-caption"><?php /* @noEscape */
+                echo __('Wishlists') ?></caption>
+            <thead>
+            <tr>
+                <th scope="col" class="col name"><?php /* @noEscape */
+                    echo __('List Name') ?></th>
+                <th scope="col" class="col name"><?php /* @noEscape */
+                    echo __('Item(s)') ?></th>
+                <th scope="col" class="col actions"><?php /* @noEscape */
+                    echo __('Cart / Quote') ?>&nbsp;
+                </th>
+                <th scope="col" class="col actions"><?php /* @noEscape */
+                    echo __('Action') ?>&nbsp;
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            foreach ($customerProductLists as $customerProductList) {
+                ?>
+                <tr>
+                    <td
+                            data-th="<?php /* @noEscape */
+                            echo $block->escapeHtml(__('List Name')) ?>">
+                        <a
+                                href="<?php /* @noEscape */
+                                echo $block->getUrl('shoppinglist/customer/account_editlist/id/' . $customerProductList['entity_id']) ?>"
+                        > <span><?php /* @noEscape */
+                                echo $customerProductList['list_name'] ?></span>
+                        </a>
+                    </td>
+                    <td
+                            data-th="<?php /* @noEscape */
+                            echo $block->escapeHtml(__('Item(s)')) ?>">
+                        <?php /* @noEscape */
+                        echo $customerProductList['item'] ?></td>
+                    <td data-th="Actions" class="col actions">
+                        <a href="<?php echo $this->getUrl('shoppinglist/customer/mylist_addtocart', array(
+                            'product_id' => '',
+                            'qty' => '',
+                            'list_id' => $customerProductList['entity_id'],
+                            'product_type' => '',
+                            'product_addtocart_data' => ''
+                        )); ?>" class="action add-to-cart">
+                            <span>Add to Cart</span>
+                        </a>
+                        <?php if ($isQuotationEnabled && $customerQuoteConfigurationValue) { ?>
+                            <a href="<?php echo $this->getUrl('shoppinglist/customer/mylist_addtoquote', array(
+                                'product_id' => "",
+                                'qty' => '',
+                                'list_id' => $customerProductList['entity_id']
+                            )); ?>" class="action add-to-quote">
+                                <span>Add to Quote</span>
+                            </a>
+                        <?php } ?>
+
+                    </td>
+                    <td data-th="Actions" class="col actions">
+                        <a href="<?php /* @noEscape */
+                        echo $block->getUrl('shoppinglist/customer/account_editlist/id/' . $customerProductList['entity_id']) ?>"
+                           class="action edit">
+                            <span><?php /* @noEscape */
+                                echo __('Edit') ?></span>
+                        </a>
+                            <a href="<?php /* @noEscape */
+                            echo $block->getUrl('shoppinglist/customer/mylist_deletelist/id/' . $customerProductList['entity_id']) ?>"
+                               class="action delete"
+                               onclick="if(window.confirm('Are you sure to delete?')){ return true; }else{ return false;}">
+                                <span><?php /* @noEscape */
+                                    echo __('Delete') ?></span>
+                            </a>
+                    </td>
+                </tr>
+                <?php
+            } ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($block->getPagerHtml()) {
+        ?>
+        <div class="order-products-toolbar toolbar bottom"><?php /* @noEscape */
+            echo $block->getPagerHtml(); ?></div>
+        <?php
+    } ?>
+<?php endif ?>

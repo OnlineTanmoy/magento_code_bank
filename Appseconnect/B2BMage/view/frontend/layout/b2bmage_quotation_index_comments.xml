@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <update handle="quote_item_renderers"/>
+    <update handle="quote_item_price"/>
+    <update handle="quote_info_links"/>
+    <head>
+		<link src="Appseconnect_B2BMage::css/select2.min.css" />
+		<link src="Appseconnect_B2BMage::css/chosen.min.css" />
+		<link src="Appseconnect_B2BMage::quotation/css/quote/quote.item.delete.css" />
+	</head>
+    <body>
+        
+        <referenceContainer name="page.main.title">
+            <block class="Appseconnect\B2BMage\Block\Quotation\Quote\Info" name="quote.status" template="Appseconnect_B2BMage::quotation/quote/quote_status.phtml"/>
+            <block class="Appseconnect\B2BMage\Block\Quotation\Quote\Info" name="quote.date" template="Appseconnect_B2BMage::quotation/quote/quote_date.phtml"/>
+            <block class="Appseconnect\B2BMage\Block\Quotation\Quote\Info" name="quote.contact" template="Appseconnect_B2BMage::quotation/quote/quote_contact.phtml"/>
+            <container name="quote.actions.container" htmlTag="div" htmlClass="actions-toolbar order-actions-toolbar">
+                <block class="Appseconnect\B2BMage\Block\Quotation\Quote\Info\Buttons" as="buttons" name="quote.info.buttons" cacheable="false">
+                </block>
+            </container>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Appseconnect\B2BMage\Block\Quotation\Quote\View" name="quote.view" cacheable="false" template="Appseconnect_B2BMage::quotation/quote/comments/view.phtml" after="quote.info.links"/>
+            <block class="Appseconnect\B2BMage\Block\Quotation\Quote\Info" name="quote.customer.add.comments" after="quote.info" template="Appseconnect_B2BMage::quotation/quote/comments.phtml"/>
+        </referenceContainer>
+        
+    </body>
+</page>

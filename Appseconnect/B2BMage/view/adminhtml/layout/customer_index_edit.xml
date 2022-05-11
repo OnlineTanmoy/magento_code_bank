@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left"
+      xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <body>
+            <referenceBlock name="customer_form">
+                <block class="Appseconnect\B2BMage\Block\Adminhtml\CategoryDiscount\Edit\Tab\Category" name="customer_edit_tab_category">
+                <action method="setTabLabel">
+                    <argument name="label" xsi:type="string">Category Discount</argument>
+                </action>
+                </block>
+				
+				<block class="Appseconnect\B2BMage\Block\Adminhtml\ContactPerson\Edit\Tab\Contact" name="customer_edit_tab_contact">
+				<action method="setTabLabel">
+					<argument name="label" xsi:type="string">Contact Person</argument>
+				</action>
+				</block>
+				
+				<block class="Appseconnect\B2BMage\Block\Adminhtml\CreditLimit\Edit\Tab\CreditLimit" name="customer_edit_tab_credit">
+				<action method="setTabLabel">
+					<argument name="label" xsi:type="string">Credit Transaction</argument>
+				</action>
+				</block>
+				
+				<block class="Appseconnect\B2BMage\Block\Adminhtml\Sales\Approver\Tab" name="salesorder.approver.tab">
+                <action method="setTabLabel">
+                    <argument name="label" xsi:type="string">Approvers</argument>
+                </action>
+                </block>
+            </referenceBlock>
+			<uiComponent name="b2bmage_contactperson_listing"/>
+    </body>
+</page>
+

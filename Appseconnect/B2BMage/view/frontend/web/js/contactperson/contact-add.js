@@ -1,0 +1,9 @@
+require([
+        "jquery",
+        "mage/mage"
+    ], function ($) {
+        var dataForm = $('#form-validate');
+        dataForm.mage('validation', {
+        });
+
+    });

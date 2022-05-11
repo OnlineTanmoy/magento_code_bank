@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link src="Appseconnect_B2BMage::css/select2.min.css"/>
+        <link src="Appseconnect_B2BMage::css/chosen.min.css"/>
+    </head>
+
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Customer\Block\Account\Dashboard\Info" name="customer_account_dashboard_info" as="info"
+                   template="Magento_Customer::account/dashboard/info.phtml" cacheable="false"/>
+            <block class="Magento\Customer\Block\Account\Dashboard\Address" name="customer_account_dashboard_address" as="address"
+                   template="Magento_Customer::account/dashboard/address.phtml" cacheable="false"/>
+            <container name="customer.account.dashboard" htmlTag="div" htmlClass="customer-info-main" after="customer_account_dashboard_address">
+                <container name="customer.account.productlist.container" htmlTag="div" htmlClass="customer-productlist"
+                           before="-">
+                    <block class="Appseconnect\Shoppinglist\Block\Customer\Account\Mylist"
+                           name="customer.account.productlist"
+                           template="Appseconnect_Shoppinglist::customer/account/mylist.phtml"
+                           cacheable="false">
+                        <block class="Appseconnect\Shoppinglist\Block\Customer\Account\Mylist\SearchMyList"
+                               name="customer.account.mylist.itemlist" as="account-mylist-itemlist"
+                               template="Appseconnect_Shoppinglist::customer/account/mylist/searchmylist.phtml"/>
+                    </block>
+                </container>
+            </container>
+        </referenceContainer>
+        <referenceContainer name="sidebar.additional">
+            <block class="Magento\Cms\Block\Block" name="dashboard-right">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">dashboard-right-add</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="sale.reorder.sidebar" remove="true"/>
+    </body>
+</page>

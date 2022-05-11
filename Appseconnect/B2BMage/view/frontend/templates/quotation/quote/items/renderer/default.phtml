@@ -1,0 +1,79 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var  $block \Appseconnect\B2BMage\Block\Quotation\Quote\Item\Renderer\DefaultRenderer */
+$_item = $block->getItem();
+$removeUrl = $block->getQuote()->getStatus() == 'open' ? '#' : 'javascript:void(0)';
+?>
+<tr id="order-item-row-<?php /* @noEscape */ echo $_item->getId() ?>">
+    <td class="col name" data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Product Name')) ?>">
+        <strong class="product name product-item-name"><?php /* @noEscape */ echo $block->escapeHtml($_item->getName()) ?></strong>
+    </td>
+    <td class="col sku" data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('SKU')) ?>"><?php /* @noEscape */ echo $block->prepareSku($block->getSku()) ?></td>
+    <?php if($block->getSalesrepId() && $block->getQuote()->getStatus() == 'submitted'):?>
+     <td class="col price" style="width: 55px" data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Price')) ?>">
+     	<div class="field price">
+                <div class="control price">
+                    <input id="quote-<?php /* @noEscape */ echo $_item->getId() ?>-price"
+                           name="quote[<?php /* @noEscape */ echo $_item->getId() ?>][price]"
+                           value="<?php /* @noEscape */ echo $block->getItem()->getPrice() ?>"
+                           type="number"
+                           size="4"
+                           title="<?php /* @noEscape */ echo $block->escapeHtml(__('Price')) ?>"
+                           class="input-text price"
+                           data-validate="{required:true,'validate-greater-than-zero':true}"
+                           />
+                </div>
+            </div>
+            </td>
+    <?php else: ?>
+    <td class="col price" data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Price')) ?>">
+        <?php /* @noEscape */ echo $block->getItemPriceHtml() ?>
+    </td>
+    <?php endif; ?>
+    <td class="col qty" style="width: 55px" data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Qty')) ?>">
+    	<?php if((($this->session->getCustomerId() == $block->getQuote()->getContactId()) && !$block->getSalesrepId() && $block->getQuote()->getStatus() == 'open') || ($block->getSalesrepId() && $block->getQuote()->getStatus() == 'submitted')) : ?>
+        <div class="field qty">
+                <div class="control qty">
+                    <input id="quote-<?php /* @noEscape */ echo $_item->getId() ?>-qty"
+                           name="quote[<?php /* @noEscape */ echo $_item->getId() ?>][qty]"
+                           value="<?php /* @noEscape */ echo $block->getItem()->getQty() ?>"
+                           type="number"
+                           size="4"
+                           title="<?php /* @noEscape */ echo $block->escapeHtml(__('Qty')) ?>"
+                           class="input-text qty"
+                           data-validate="{required:true,'validate-greater-than-zero':true}"
+                           />
+                </div>
+            </div>
+            <?php else: ?>
+            <ul class="items-qty">
+            <li class="item">
+                <span class="content"><?php /* @noEscape */ echo $block->getItem()->getQty()*1 ?></span>
+            </li>
+        </ul>
+        <?php endif; ?>
+    </td>
+    <td class="col subtotal" data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Subtotal')) ?>">
+        <?php /* @noEscape */ echo $block->getItemRowTotalHtml() ?>
+    </td>
+    <td class="col action" data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Action')) ?>">
+     <div class="actions-toolbar">
+        <a href="<?php /* @noEscape */ echo $removeUrl ?>"
+        <?php if ((($this->session->getCustomerId() == $block->getQuote()->getContactId()) && !$block->getSalesrepId() && $block->getQuote()->getStatus() == 'open') || ($block->getSalesrepId() && $block->getQuote()->getStatus() == 'submitted')): ?>
+           data-post='<?php /* @noEscape */ echo $block->getDeletePostJson($_item);?>'
+           <?php endif; ?>
+           title="<?php /* @noEscape */ echo $block->escapeHtml(__('Remove item')) ?>"
+           class="action action-delete quote-item-delete <?php /* @noEscape */ echo ((($this->session->getCustomerId() == $block->getQuote()->getContactId()) && !$block->getSalesrepId() && $block->getQuote()->getStatus() == 'open') || ($block->getSalesrepId() && $block->getQuote()->getStatus() == 'submitted')) ? '':'grey'?>" style="float: right">
+    <span>
+        <?php /* @noEscape */ echo __('Remove item') ?>
+    </span>
+</a>
+</div>
+    </td>
+</tr>

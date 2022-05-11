@@ -1,0 +1,12 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left"
+      xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_form">
+            <block class="Appseconnect\CompanyDivision\Block\Adminhtml\Edit\Tab\Division" name="division_edit_tab">
+                <action method="setTabLabel">
+                    <argument name="label" xsi:type="string">Division list</argument>
+                </action>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

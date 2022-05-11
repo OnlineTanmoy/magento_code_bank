@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="insync_approver_email_type" label="Order Approver Mail" file="order_approver.html" type="html" module="Appseconnect_B2BMage" area="frontend"/>
+	
+	<template id="insync_quotes_email_new" label="New Quote Template" file="customer_quote.html" type="html" module="Appseconnect_B2BMage" area="frontend"/>
+    <template id="insync_quotes_email_approve" label="Approve Quote Template" file="approve_quote.html" type="html" module="Appseconnect_B2BMage" area="frontend"/>
+    <template id="insync_approver_email_order_success" label="Order Approval Success Template" file="order_approver_success.html" type="html" module="Appseconnect_B2BMage" area="frontend"/>
+    <template id="insync_approver_email_order_cancel" label="Ordel Approval Cancel Template" file="order_approver_cancel.html" type="html" module="Appseconnect_B2BMage" area="frontend"/>
+    <template id="insync_quotes_email_hold" label="Hold Quote Template" file="hold_quote.html" type="html" module="Appseconnect_B2BMage" area="frontend"/>
+    <template id="insync_quotes_email_unhold" label="Unhold Quote Template" file="unhold_quote.html" type="html" module="Appseconnect_B2BMage" area="frontend"/>
+    <template id="insync_quotes_email_cancel" label="Cancel Quote Template" file="cancel_quote.html" type="html" module="Appseconnect_B2BMage" area="frontend"/>
+    <template id="insync_quotes_comment_template" label="Quote Comment Template" file="quote_comment.html" type="html" module="Appseconnect_B2BMage" area="frontend"/>
+</config>

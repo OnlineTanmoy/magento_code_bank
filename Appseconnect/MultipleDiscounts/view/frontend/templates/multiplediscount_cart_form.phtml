@@ -1,0 +1,29 @@
+<?php
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$cart = $objectManager->create('Magento\Checkout\Model\Cart');
+$formKey = $objectManager->get('Magento\Framework\Data\Form\FormKey');
+
+$reorder = $cart->getCheckoutSession()->setCurrentReorder(true);
+
+?>
+
+<form action = "<?php echo $this->getUrl('checkout/cart/updatePost'); ?>" method = "post" id="reorder_action">
+    <input type="hidden" name="form_key" value="<?php echo $formKey->getFormKey();?>">
+<?php
+foreach($cart->getQuote()->getAllItems() as $cartItem) {
+    ?>
+    <input type="hidden" name="cart[<?php echo $cartItem->getId(); ?>][qty]" value="<?php echo $cartItem->getQty(); ?>" />
+    <?php
+}
+
+?>
+</form>
+<script>
+    require(['jquery'], function($){
+        $(window).load( function() {
+            $('body').hide();
+            $('#reorder_action').submit();
+        });
+    });
+</script>

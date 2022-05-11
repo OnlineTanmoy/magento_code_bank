@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left"
+      xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_form">
+            <block class="Appseconnect\ShippingMethod\Block\Adminhtml\ShippingMethod\Edit\Tab\ShippingMethod"
+                   name="customer_edit_tab_shipping_method">
+                <action method="setTabLabel">
+                    <argument name="label" xsi:type="string">Delivery Methods</argument>
+                </action>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

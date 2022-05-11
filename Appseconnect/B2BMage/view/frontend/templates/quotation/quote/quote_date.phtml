@@ -1,0 +1,9 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<div class="order-date">
+    <?php /* @noEscape */ echo __('<span class="label">Quote Date:</span> %1', '<strong>Created At :</strong> <date>' . $block->formatDate($block->getQuote()->getCreatedAt(), \IntlDateFormatter::LONG) . '</date>') ?>
+</div>

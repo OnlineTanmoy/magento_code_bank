@@ -1,0 +1,169 @@
+<?php
+/**
+ *
+ * @var \Appseconnect\B2BMage\Block\Adminhtml\Quotation\Quote\View\Items $block
+ */
+$_quote = $block->getQuote();?>
+<?php $itemsCount = $_quote->getItemsCount();?>
+<?php $removeUrl = ($itemsCount != 1 && $_quote->getStatus() == 'submitted')  ? '#' : 'javascript:void(0)';?>
+<div class="admin__table-wrapper">
+<form action="<?php /* @noEscape */
+    echo $block->getUrl('b2bmage/quotation/index_updatePost/quote_id/'.$_quote->getId()) ?>"
+          method="post"
+          id="form-validate"
+          class="form form-cart">
+    <?php /* @noEscape */ echo $block->getBlockHtml('formkey'); ?>
+    <table class="data-table admin__table-primary edit-order-table">
+        <thead>
+            <tr class="headings">
+                <?php
+                $i = 0;
+                $columns = $block->getColumns();
+                $lastItemNumber = count($columns)?>
+                <?php foreach ($columns as $columnName => $columnTitle) :
+?>
+                    <?php $i++; ?>
+                    <th
+                    class="col-<?php /* @noEscape */ echo $columnName ?>
+                    <?php /* @noEscape */ echo ($i === $lastItemNumber ? ' last' : '') ?>">
+                    <span><?php /* @noEscape */ echo $columnTitle ?></span></th>
+                <?php
+endforeach; ?>
+            </tr>
+        </thead>
+        <?php $_items = $block->getItemsCollection();?>
+        <?php $i = 0; foreach ($_items as $_item) :?>
+                <?php if ($_item->getParentItem()) :
+                       continue;
+endif;
+            ?>
+            <?php
+            $i ++;
+            ?>
+            <tbody class="<?php /* @noEscape */ echo $i%2 ? 'even' : 'odd' ?>">
+            <tr>
+                <td class="col-product"><div id="order_item_<?php /* @noEscape */ echo $_item->getId() ?>">
+                        <div id="order_item_<?php /* @noEscape */ echo $_item->getId() ?>_title"
+                            class="product-title">
+                                <?php /* @noEscape */ echo $_item->getName() ?>    
+                                </div>
+
+                        <div class="product-sku-block">
+                            <span>SKU:</span> <?php /* @noEscape */ echo $_item->getProductSku() ?>   </div>
+
+                    </div></td>
+                <td class="col-price-original"><span class="price">
+                <?php /* @noEscape */ echo $block->displayPrices(
+                    $_item->getOriginalPrice(),
+                    $_item->getBaseOriginalPrice()
+                )?>
+                </span></td>
+                <td class="col-price" style="width: 55px">
+                    <div class="price-excl-tax">
+                    
+                    <?php if ($_quote->getStatus() == 'submitted') : ?>
+                    
+<div class="field price">
+                <div class="control price">
+                    <input id="quote-<?php /* @noEscape */ echo $_item->getId() ?>-price"
+                           style="height: 32px;width: 47px;"
+                           name="quote[<?php /* @noEscape */ echo $_item->getId() ?>][price]"
+                           value="<?php /* @noEscape */ echo $_item->getPrice() ?>"
+                           type="text"
+                           title="<?php /* @noEscape */ echo $block->escapeHtml(__('Price')) ?>"
+                           class="input-text price"
+                           data-validate="{required:true,'validate-greater-than-zero':true}"
+                           />
+                </div>
+            </div>
+            <?php else :?>
+            
+            <span class="price">
+            <?php /* @noEscape */ echo $block->displayPrices($_item->getPrice(), $_item->getBasePrice())?>
+            </span>
+            <?php endif; ?>
+            
+            
+                    </div>
+                </td>
+                <td class="col-ordered-qty" style="width: 55px"><table class="qty-table">
+                        <tbody>
+                            <tr>
+                                <td>
+                                <?php if ($_quote->getStatus() == 'submitted') : ?>
+                                
+                                <div class="field qty">
+    <div class="control qty">
+        <input id="quote-<?php /* @noEscape */ echo $_item->getId() ?>-qty"
+               style="height: 32px;width: 47px;"
+               name="quote[<?php /* @noEscape */ echo $_item->getId() ?>][qty]"
+               value="<?php /* @noEscape */ echo $_item->getQty() ?>"
+               type="number"
+               size="4"
+               title="<?php /* @noEscape */ echo $block->escapeHtml(__('Qty')) ?>"
+               class="input-text qty"
+               min = "<?php /* @noEscape */ echo $block->getProductDefaultQty($_item->getProduct()) * 1;?>"
+               data-validate="{required:true,'validate-greater-than-zero':true}"
+               />
+    </div>
+            </div>
+                                <?php else :?>
+                                
+                                <?php /* @noEscape */ echo $_item->getQty()?>
+                                
+                                <?php endif; ?>
+                                
+                                
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table></td>
+    <td class="col-subtotal">
+        <div class="price-excl-tax">
+
+            <span class="price">
+            <?php /* @noEscape */
+            echo $block->displayPrices($_item->getRowTotal(), $_item->getBaseRowTotal())?>
+            </span>
+        </div>
+    </td>
+
+                <td class="col-total last"><span class="price">
+                <?php /* @noEscape */ echo $block->displayPrices(
+                    $_item->getRowTotal(),
+                    $_item->getBaseRowTotal()
+                )?>
+                </span></td>
+                
+                <td class="col action" style="float: left;" 
+                data-th="<?php /* @noEscape */ echo $block->escapeHtml(__('Action')) ?>">
+     <div class="actions-toolbar">
+        <a href="<?php /* @noEscape */ echo $removeUrl ?>"
+        <?php if ($itemsCount != 1 && $_quote->getStatus() == 'submitted') :?>
+           data-post='<?php /* @noEscape */ echo $block->getDeletePostJson($_item);?>'
+            <?php endif;?>
+           title="<?php /* @noEscape */ echo $block->escapeHtml(__('Remove item')) ?>"
+           class="action action-delete quote-item-delete <?php
+            echo ($itemsCount == 1 || $_quote->getStatus() != 'submitted')?'grey':'';?>" 
+           style="float: right">
+    <span>
+        <?php /* @noEscape */ echo __('Remove item') ?>
+    </span>
+</a>
+</div>
+    </td>
+    
+    
+            </tr>
+        </tbody>
+        <?php endforeach; ?>
+        <?php if ($_quote->getStatus() == 'submitted') : ?>
+        <tr>
+            <td colspan="7">
+                <?php /* @noEscape */ echo $block->getChildHtml('quote.info.update.buttons') ?>
+            </td>
+        </tr>
+        <?php endif; ?>
+    </table>
+    </form>
+</div>

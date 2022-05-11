@@ -1,0 +1,103 @@
+<?php
+if ($block->getContactPersons()) {
+    $contactPersons = $block->getContactPersons();
+    if ($contactPersons->getData()) {
+        ?>
+        <div style="float: right">
+  <span><a class="action primary add"
+           href="<?php /* @noEscape */
+           echo $block->getContactPersonAddUrl() ?>">Add
+          Contact Person</a></span>
+        </div>
+        <div class="table-wrapper orders-history">
+            <table class="data table table-order-items history" id="contact-table">
+                <caption class="table-caption"><?php /* @noEscape */
+                    echo __('Contact Listing') ?></caption>
+                <thead>
+                <tr>
+                    <th scope="col" class="col id"><?php /* @noEscape */
+                        echo __('ID') ?></th>
+                    <th scope="col" class="col name"><?php /* @noEscape */
+                        echo __('Name') ?></th>
+                    <th scope="col" class="col email"><?php /* @noEscape */
+                        echo __('Email') ?></th>
+                    <th scope="col" class="col role"><?php /* @noEscape */
+                        echo __('Role') ?></th>
+                    <th scope="col" class="col status"><?php /* @noEscape */
+                        echo __('Status') ?></th>
+                    <th scope="col" class="col actions"><?php /* @noEscape */
+                        echo __('Action') ?>&nbsp;
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+
+                foreach ($contactPersons as $contactPerson) {
+                    $status = $contactPerson['customer_status'];
+                    $role = $contactPerson['contactperson_role'] == 1 ? 'Administrator' : 'Standard';
+                    ?>
+                    <tr>
+                        <td
+                                data-th="<?php /* @noEscape */
+                                echo $block->escapeHtml(__('ID')) ?>">
+                            <?php /* @noEscape */
+                            echo $contactPerson['entity_id'] ?></td>
+                        <td
+                                data-th="<?php /* @noEscape */
+                                echo $block->escapeHtml(__('Name')) ?>">
+                            <?php /* @noEscape */
+                            echo $contactPerson['name'] ?></td>
+                        <td
+                                data-th="<?php /* @noEscape */
+                                echo $block->escapeHtml(__('Email')) ?>">
+                            <?php /* @noEscape */
+                            echo $contactPerson['email'] ?></td>
+                        <td
+                                data-th="<?php /* @noEscape */
+                                echo $block->escapeHtml(__('Role')) ?>">
+                            <?php /* @noEscape */
+                            echo $role ?></td>
+                        <td
+                                data-th="<?php /* @noEscape */
+                                echo $block->escapeHtml(__('Status')) ?>">
+                            <?php /* @noEscape */
+                            echo ($status) ? 'Active' : 'Inactive' ?></td>
+                        <td
+                                data-th="<?php /* @noEscape */
+                                echo $block->escapeHtml(__('Action')) ?>"><a
+                                    href="<?php /* @noEscape */
+                                    echo $block->getUrl('b2bmage/contact/index_edit/id/' . $contactPerson['entity_id']) ?>"
+                                    class="action order"> <span><?php /* @noEscape */
+                                    echo __('Edit') ?></span>
+                            </a></td>
+                    </tr>
+                    <?php
+                } ?>
+                </tbody>
+            </table>
+        </div>
+        <?php if ($block->getPagerHtml()) {
+            ?>
+            <div class="order-products-toolbar toolbar bottom"><?php /* @noEscape */
+                echo $block->getPagerHtml(); ?></div>
+            <?php
+        } ?>
+        <?php
+    } else {
+        ?>
+        <div style="float: left">
+ <span><a class="action primary add"
+          href="<?php /* @noEscape */
+          echo $block->getContactPersonAddUrl() ?>">Add
+          Contact Person</a></span>
+        </div>
+        <?php
+    }
+} else
+{
+    ?>
+    <div class="message info empty">
+        <span><?php /* @noEscape */ echo __('No contact person available.'); ?></span></div>
+<?php
+}?>

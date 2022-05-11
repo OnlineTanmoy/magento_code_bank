@@ -1,0 +1,22 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block \Appseconnect\B2BMage\Block\Quotation\Quote\Info */ ?>
+<?php $_quote = $block->getQuote() ?>
+<div class="block block-order-details-view">
+    <div class="block-title">
+        <strong><?php /* @noEscape */ echo __('Quote Information') ?></strong>
+    </div>
+    <div class="block-content">
+    <?php if($defaultShippingId = $block->getDefaultShipping()):?>
+        <div class="box box-order-shipping-address">
+            <strong class="box-title"><span><?php /* @noEscape */ echo __('Default Shipping Address') ?></span></strong>
+            <div class="box-content">
+                <address><?php /* @noEscape */ echo $block->getAddressHtml($defaultShippingId) ?></address>
+            </div>
+        </div>
+        <?php endif; ?>
+    </div>
+</div>

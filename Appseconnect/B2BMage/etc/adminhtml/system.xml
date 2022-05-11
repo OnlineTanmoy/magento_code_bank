@@ -1,0 +1,315 @@
+<?xml version="1.0"?>
+<!-- /** * @author Amasty Team * @copyright Copyright (c) 2015 Amasty (http://www.amasty.com) * @package Amasty_HelloWorld */ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../../Magento/Config/etc/system_file.xsd">
+    <system>
+        <tab id="insync" translate="label" sortOrder="10">
+            <label>B2B Configuration</label>
+        </tab>
+        <section id="insync_account" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="0"
+                 showInStore="0">
+            <label>Account Create</label>
+            <tab>insync</tab>
+            <resource>Appseconnect_ContactPerson::config_salesorder</resource>
+            <group id="create" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                   showInStore="0">
+                <label>Account Creation From Frontend</label>
+                <field id="type" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+
+        <section id="insync_b2baccount" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="0"
+                 showInStore="0">
+            <label>B2B Customer Account Create</label>
+            <tab>insync</tab>
+            <resource>Appseconnect_B2BMage::customer_create</resource>
+            <group id="createb2b" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                   showInStore="0">
+                <label>Account Creation From Frontend</label>
+                <field id="types" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="enable_approval" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Automatic Approval</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <!--Automatic Approval For B2B Accounts-->
+                </field>
+            </group>
+        </section>
+
+        <section id="insync_category_visibility" translate="label" type="text" sortOrder="10" showInDefault="1"
+                 showInWebsite="0" showInStore="0">
+            <label>Visbility</label>
+            <tab>insync</tab>
+            <resource>Appseconnect_CategoryVisibility::config_categoryvisibility</resource>
+            <group id="select_visibility" translate="label" type="text" sortOrder="10" showInDefault="1"
+                   showInWebsite="0" showInStore="0">
+                <label>Select Category Visibility Type</label>
+                <field id="select_visibility_type" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Category Visibility Type</label>
+                    <source_model>Appseconnect\B2BMage\Model\Config\Source\CategoryVisibilityOptions</source_model>
+                </field>
+            </group>
+            <group id="select_product_visibility" translate="label" type="text" sortOrder="10" showInDefault="1"
+                   showInWebsite="0" showInStore="0">
+                <label>Guest Product Visibility</label>
+                <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+
+            <group id="select_checkout_visibility" translate="label" type="text" sortOrder="11" showInDefault="1"
+                   showInWebsite="0" showInStore="0">
+                <label>Guest Checkout Disabled</label>
+                <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Checkout Disabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+
+        <section id="payment" translate="label">
+            <group id="creditlimit" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Credit limit</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Title</label>
+                </field>
+                <field id="order_status" translate="label" type="select" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>New Order Status</label>
+                    <source_model>Magento\Sales\Model\Config\Source\Order\Status\NewStatus</source_model>
+                </field>
+
+                <field id="allowspecific" translate="label" type="allowspecific" sortOrder="40" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>Payment from Applicable Countries</label>
+                    <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                </field>
+                <field id="specificcountry" translate="label" type="multiselect" sortOrder="41" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>Payment from Specific Countries</label>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+                <field id="instructions" translate="label" type="textarea" sortOrder="62" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Instructions</label>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Sort Order</label>
+                </field>
+            </group>
+        </section>
+
+        <section id="insync_approver" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0"
+                 showInStore="0">
+            <label>Manage Approver</label>
+            <tab>insync</tab>
+            <resource>Appseconnect_SalesOrder::config_salesorder</resource>
+            <group id="email" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0"
+                   showInStore="0">
+                <label>Approver Mail</label>
+                <field id="type" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Approver Mail</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <!-- This model return all transactional email template list of magento -->
+                </field>
+                <field id="order_success" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Order Approval Success Mail</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <!-- This model return all transactional email template list of magento -->
+                </field>
+                <field id="order_cancel" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Order Approval Cancel Mail</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <!-- This model return all transactional email template list of magento -->
+                </field>
+            </group>
+            <group id="creditlimitmanagement" translate="label" type="text" sortOrder="10" showInDefault="1"
+                   showInWebsite="0" showInStore="0">
+                <label>Make Invoice Status As Pending</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+
+        <section id="insync_pricerule" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                 showInStore="0">
+            <label>Price Rule Configuration</label>
+            <tab>insync</tab>
+            <resource>Appseconnect_PriceRule::config_pricerule</resource>
+            <group id="setpriority" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1"
+                   showInStore="0">
+                <label>Price Rule Priority</label>
+
+
+                <field id="priority4" translate="label comment" type="select" sortOrder="5" showInDefault="1"
+                       showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Priority 4</label>
+                    <source_model>Appseconnect\B2BMage\Model\Config\Source\Pricerule</source_model>
+                    <comment>
+                        Select Price Rule Priority.
+                    </comment>
+                </field>
+                <field id="priority3" translate="label comment" type="select" sortOrder="4" showInDefault="1"
+                       showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Priority 3</label>
+                    <source_model>Appseconnect\B2BMage\Model\Config\Source\Pricerule</source_model>
+                    <comment>
+                        Select Price Rule Priority.
+                    </comment>
+                </field>
+                <field id="priority2" translate="label comment" type="select" sortOrder="3" showInDefault="1"
+                       showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Priority 2</label>
+                    <source_model>Appseconnect\B2BMage\Model\Config\Source\Pricerule</source_model>
+                    <comment>
+                        Select Price Rule Priority.
+                    </comment>
+                </field>
+                <field id="priority1" translate="label comment" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Priority 1</label>
+                    <source_model>Appseconnect\B2BMage\Model\Config\Source\Pricerule</source_model>
+                    <comment>
+                        Select Price Rule Priority.
+                    </comment>
+                </field>
+                <field id="enable" translate="label comment" type="select" sortOrder="1" showInDefault="1"
+                       showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        Apply Price Rule Priority.
+                    </comment>
+                </field>
+            </group>
+        </section>
+
+        <section id="insync_quotes" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <label>Quotation</label>
+            <tab>insync</tab>
+            <resource>Appseconnect_Quotation::config_quotation</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>General</label>
+                <field id="enable_quote" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enable Quotation?</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="lifetime" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Quotation lifetime</label>
+                    <comment>
+                        Enter the number of days the Approved quote to remain valid
+                    </comment>
+                </field>
+            </group>
+            <group id="email" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Quotation Mail</label>
+                <field id="new" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>New Quote Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <!-- This model return all transactional email template list of magento -->
+                </field>
+                <field id="approve" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Approve Quote Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <!-- This model return all transactional email template list of magento -->
+                </field>
+                <field id="hold" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Hold Quote Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <!-- This model return all transactional email template list of magento -->
+                </field>
+                <field id="unhold" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Unhold Quote Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <!-- This model return all transactional email template list of magento -->
+                </field>
+                <field id="cancel" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Cancel Quote Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <!-- This model return all transactional email template list of magento -->
+                </field>
+            </group>
+            <group id="comment" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Quotation Comment</label>
+                <field id="enabled" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Enable Comments?</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="template" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>New Comment</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <!-- This model return all transactional email template list of magento -->
+                </field>
+                <field id="identity" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1"
+                       showInStore="1" canRestore="1">
+                    <label>Quote Comment Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+            </group>
+
+
+        </section>
+
+        <!-- Comment for future use -->
+<!--        <section id="insync_mobile" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"-->
+<!--                 showInStore="1">-->
+<!--            <label>Mobile Theme</label>-->
+<!--            <tab>insync</tab>-->
+<!--            <resource>Appseconnect_Mobiletheme::config_mobiletheme</resource>-->
+<!--            <group id="theme" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"-->
+<!--                   showInStore="1">-->
+<!--                <label>Mobile Theme</label>-->
+<!--                <field id="api_url" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1"-->
+<!--                       showInStore="1">-->
+<!--                    <label>Api Url</label>-->
+<!--                </field>-->
+<!--                <field id="appid" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1"-->
+<!--                       showInStore="1">-->
+<!--                    <label>App Id</label>-->
+<!--                </field>-->
+<!--            </group>-->
+<!--        </section>-->
+
+
+    </system>
+</config>  

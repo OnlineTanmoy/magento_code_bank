@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!--Contact Person Reorder-->
+    <type name="Magento\Sales\Controller\AbstractController\Reorder">
+        <plugin name="contact_person_reorder"
+                type="Appseconnect\B2BMage\Plugin\Sales\Controller\AbstractController\Reorder"
+                sortOrder="1" />
+    </type>
+
+    <!-- Add to Quote Button -->
+    <type name="Magento\Framework\App\Action\AbstractAction">
+        <plugin name="customer-session-data-to-context" type="Appseconnect\B2BMage\Plugin\CustomerSessionContext" />
+    </type>
+
+    <!--Category Discount-->
+    <preference for="Appseconnect\B2BMage\Api\CategoryDiscount\CustomerCategoryDiscountRepositoryInterface"
+                type="Appseconnect\B2BMage\Model\CustomerCategoryDiscountRepository" />
+    <preference for="Appseconnect\B2BMage\Api\CategoryDiscount\Data\CategoryDiscountInterface" type="Appseconnect\B2BMage\Model\Data\CategoryDiscount" />
+    <preference for="Appseconnect\B2BMage\Api\CategoryDiscount\Data\CategoryDiscountDataInterface" type="Appseconnect\B2BMage\Model\Data\CategoryDiscountData" />
+
+    <!--Cache Issue-->
+    <type name="Magento\Framework\App\Action\AbstractAction">
+        <plugin name="customer-session-data-to-context" type="Appseconnect\B2BMage\Plugin\CustomerSessionContext"/>
+    </type>
+
+	<!--Pricelist-->
+	<type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="b2bmage_pricelist_listing_data_source" xsi:type="string">Appseconnect\B2BMage\Model\ResourceModel\Price\Grid\Collection</item>
+				<item name="b2bmage_tierprice_listing_data_source" xsi:type="string">Appseconnect\B2BMage\Model\ResourceModel\Product\Grid\Collection</item>
+				<item name="specialprice_special_listing_data_source" xsi:type="string">Appseconnect\B2BMage\Model\ResourceModel\Customer\Grid\Collection</item>
+				<item name="salesrepresentative_salesrep_listing_data_source" xsi:type="string">Appseconnect\B2BMage\Model\ResourceModel\Salesrepgrid\Grid\Collection</item>
+				<item name="sap_itemgroup_listing_data_source" xsi:type="string">Appseconnect\B2BMage\Model\ResourceModel\ItemGroup\Grid\Collection</item>
+				<item name="quote_listing_data_source" xsi:type="string">Appseconnect\B2BMage\Model\ResourceModel\Quote\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="PricelistPostGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Appseconnect\B2BMage\Model\ResourceModel\Price\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">PricelistPostGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PricelistPostGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+   <preference for="Appseconnect\B2BMage\Api\Pricelist\PricelistRepositoryInterface" type="Appseconnect\B2BMage\Model\PricelistRepository"/>
+   <preference for="Appseconnect\B2BMage\Api\Pricelist\Data\PricelistInterface" type="Appseconnect\B2BMage\Model\Data\Pricelist"/>
+   <preference for="Appseconnect\B2BMage\Api\Pricelist\Data\EntityInterface" type="Appseconnect\B2BMage\Model\Data\Entity"/>
+   <preference for="Appseconnect\B2BMage\Api\Pricelist\Data\PricelistAssignInterface" type="Appseconnect\B2BMage\Model\Data\PricelistAssign"/>
+   <preference for="Appseconnect\B2BMage\Api\Pricelist\Data\UpdatePricelistInterface" type="Appseconnect\B2BMage\Model\Data\UpdatePricelist"/>
+   <preference for="Appseconnect\B2BMage\Api\Pricelist\Data\ProductDataInterface" type="Appseconnect\B2BMage\Model\Data\PricelistProductData"/>
+   <preference for="Appseconnect\B2BMage\Api\Pricelist\Data\ProductAssignInterface" type="Appseconnect\B2BMage\Model\Data\ProductAssign"/>
+
+   <!-- Customer Tierprice -->
+    <type name="Appseconnect\B2BMage\Model\ResourceModel\Product\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">insync_customer_tierprice</argument>
+            <argument name="eventPrefix" xsi:type="string">insync_customertierprice_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">insync_customertierprice_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Appseconnect\B2BMage\Model\ResourceModel\Product</argument>
+        </arguments>
+    </type>
+    <virtualType name="TierPricePostGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Appseconnect\B2BMage\Model\ResourceModel\Product\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">TierpricePostGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="TierpricePostGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <preference for="Appseconnect\B2BMage\Api\CustomerTierPrice\CustomerTierpriceRepositoryInterface"
+                type="Appseconnect\B2BMage\Model\CustomerTierpriceRepository" />
+    <preference for="Appseconnect\B2BMage\Api\CustomerTierPrice\Data\CustomerTierpriceInterface" type="Appseconnect\B2BMage\Model\Data\CustomerTierprice" />
+    <preference for="Appseconnect\B2BMage\Api\CustomerTierPrice\Data\ProductDataInterface" type="Appseconnect\B2BMage\Model\Data\ProductData" />
+
+	<!-- Contact Person -->
+	<preference for="Magento\Customer\Ui\Component\DataProvider" type="Appseconnect\B2BMage\Ui\ContactPerson\Component\DataProvider"/>
+	<preference for="Magento\Customer\Controller\Account\LoginPost" type="Appseconnect\B2BMage\Controller\Contact\Account\LoginPost"/>
+	<preference for="Magento\Customer\Controller\Account\Logout" type="Appseconnect\B2BMage\Controller\Contact\Account\Logout"/>
+	<preference for="Appseconnect\B2BMage\Api\ContactPerson\ContactPersonRepositoryInterface" type="Appseconnect\B2BMage\Model\AccountManagement" />
+	<preference for="Appseconnect\B2BMage\Api\ContactPerson\Data\ContactPersonExtendInterface" type="Appseconnect\B2BMage\Model\ContactPersonExtend" />
+	<preference for="Appseconnect\B2BMage\Api\ContactPerson\Data\ContactPersonInterface" type="Appseconnect\B2BMage\Model\Data\ContactPerson" />
+	<preference for="Appseconnect\B2BMage\Api\ContactPerson\ContactPersonUpdateRepositoryInterface" type="Appseconnect\B2BMage\Model\AccountUpdateManagement" />
+	<preference for="Appseconnect\B2BMage\Api\ContactPerson\ContactPersonGetRepositoryInterface" type="Appseconnect\B2BMage\Model\ContactPersonGetRepository" />
+	<preference for="Magento\Customer\Block\Account\RegisterLink" type="Appseconnect\B2BMage\Block\ContactPerson\Account\RegisterLink" />
+	<preference for="Magento\Customer\Block\Form\Login\Info" type="Appseconnect\B2BMage\Block\ContactPerson\Form\Login\Info" />
+	<preference for="Magento\Customer\Block\Account\AuthorizationLink" type="Appseconnect\B2BMage\Block\ContactPerson\Account\AuthorizationLink" />
+	<preference for="Magento\Customer\Controller\Account\Create" type="Appseconnect\B2BMage\Controller\Contact\Account\Create" />
+
+    <!-- checkout address work-->
+	<type name="Magento\Checkout\Model\DefaultConfigProvider">
+		<plugin name="changingCustomerDataToParentCustomerData"
+			type="Appseconnect\B2BMage\Plugin\Checkout\Model\DefaultConfigProviderPlugin" />
+	</type>
+	<type name="Magento\Quote\Model\QuoteAddressValidator">
+		<plugin name="changingValidationAccessToParentCustomer"
+			type="Appseconnect\B2BMage\Plugin\Quote\Model\QuoteAddressValidatorPlugin" />
+	</type>
+    <preference for="Magento\Customer\Model\Address\Validator\Customer" type="Appseconnect\B2BMage\Model\Address\Validator\Customer"/>
+    <!-- checkout address work-->
+
+    <type name="Magento\Sales\Controller\AbstractController\OrderViewAuthorization">
+        <plugin name="alllowOrderViewForAdminContactPerson" type="Appseconnect\B2BMage\Plugin\Sales\Controller\AbstractController\OrderViewAuthorizationPlugin" sortOrder="1" />
+    </type>
+	<type name="Magento\Sales\Block\Order\History">
+        <plugin name="allowOrderHistoryForAdminContactPerson" type="Appseconnect\B2BMage\Plugin\Sales\Block\Order\History" sortOrder="1" />
+    </type>
+    <preference for="Magento\Sales\Block\Order\Recent" type="Appseconnect\B2BMage\Block\Sales\Order\Recent"/>
+
+    <type name="Magento\Customer\Block\Address\Book">
+        <plugin name="GetB2BCustomerAddressList" type="Appseconnect\B2BMage\Plugin\Customer\Block\Address\BookPlugin" sortOrder="1" />
+    </type>
+    <preference for="Magento\Customer\Controller\Address\FormPost" type="Appseconnect\B2BMage\Controller\Customer\Address\FormPost"/>
+    <preference for="Magento\Customer\Block\Address\Edit" type="Appseconnect\B2BMage\Block\Customer\Address\Edit"/>
+
+    <type name="Magento\Customer\Controller\Address\Index">
+        <plugin name="getB2BCustomerAddressInAccount" type="Appseconnect\B2BMage\Plugin\Customer\Controller\Address\IndexPlugin" sortOrder="1" />
+    </type>
+
+    <type name="Magento\Customer\Helper\Session\CurrentCustomerAddress">
+        <plugin name="getB2BDefaultBillingShipping" type="Appseconnect\B2BMage\Plugin\Customer\Helper\Session\CurrentCustomerAddressPlugin" sortOrder="1" />
+    </type>
+
+    <type name="Magento\Customer\Controller\Address\Delete">
+        <plugin name="deleteB2BAddress" type="Appseconnect\B2BMage\Plugin\Customer\Controller\Address\DeletePlugin" sortOrder="1" />
+    </type>
+
+    <type name="Magento\Quote\Model\Quote">
+        <plugin name="AddAddressToParentInCheckout"
+                type="Appseconnect\B2BMage\Plugin\Quote\Model\QuotePlugin" />
+    </type>
+
+	<!-- Customer Special Price -->
+    <type name="Appseconnect\B2BMage\Model\ResourceModel\Customer\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">insync_customer_specialprice</argument>
+            <argument name="eventPrefix" xsi:type="string">insync_customerspecialprice_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">insync_customerspecialprice_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Appseconnect\B2BMage\Model\ResourceModel\Customer</argument>
+        </arguments>
+    </type>
+    <virtualType name="SpecialPricePostGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Appseconnect\B2BMage\Model\ResourceModel\Customer\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">SpecialPricePostGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="SpecialPricePostGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+   <preference for="Appseconnect\B2BMage\Api\CustomerSpecialPrice\SpecialPriceRepositoryInterface" type="Appseconnect\B2BMage\Model\SpecialPriceRepository"/>
+
+   <preference for="Appseconnect\B2BMage\Api\CustomerSpecialPrice\Data\SpecialPriceInterface" type="Appseconnect\B2BMage\Model\Data\SpecialPrice"/>
+   <preference for="Appseconnect\B2BMage\Api\CustomerSpecialPrice\Data\SpecialPriceProductInterface" type="Appseconnect\B2BMage\Model\Data\SpecialPriceProduct"/>
+
+   <!-- Customer Specific Discount -->
+	<preference for="Magento\Sales\Block\Adminhtml\Order\Invoice\Totals" type="Appseconnect\B2BMage\Block\Adminhtml\Sales\Order\Invoice\Totals"/>
+	<preference for="Magento\Customer\Model\Layout\DepersonalizePlugin" type="Appseconnect\B2BMage\Model\Layout\DepersonalizePlugin"/>
+	<preference for="Magento\Checkout\Controller\Index\Index" type="Appseconnect\B2BMage\Controller\CustomerSpecificDiscount\Index\Cart"/>
+	<type name="Magento\Quote\Model\Quote\Address\Total\Grand">
+        <plugin name="SetAdditionalDiscount" type="Appseconnect\B2BMage\Plugin\Quote\Model\Quote\Address\Total\GrandPlugin" sortOrder="1" />
+    </type>
+    <preference for="Magento\Sales\Block\Order\Invoice\Totals" type="Appseconnect\B2BMage\Block\CustomerSpecificDiscount\Sales\Order\Invoice\CustomerDiscount"/>
+    <preference for="Magento\Sales\Model\Order\Creditmemo\Total\Discount" type="Appseconnect\B2BMage\Model\Sales\Order\Creditmemo\Totals\Discount"/>
+    <preference for="Magento\Sales\Block\Adminhtml\Order\Creditmemo\Totals" type="Appseconnect\B2BMage\Block\Adminhtml\Sales\Order\Creditmemo\Totals"/>
+
+    <!-- Salesrep  -->
+    <type name="Appseconnect\B2BMage\Model\ResourceModel\Salesrepgrid\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">insync_salesrep_grid</argument>
+            <argument name="eventPrefix" xsi:type="string">insync_salesrepresentative_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">insync_salesrepresentative_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Appseconnect\B2BMage\Model\ResourceModel\Salesrepgrid</argument>
+        </arguments>
+    </type>
+    <virtualType name="SalesrepPostGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Appseconnect\B2BMage\Model\Salesrepgrid\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">SalesrepresentativePostGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="SalesrepresentativePostGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <preference for="Magento\Theme\Block\Html\Header" type="Appseconnect\B2BMage\Block\Salesrep\Html\Header"/>
+    <preference for="Appseconnect\B2BMage\Api\Salesrep\SalesrepRepositoryInterface" type="Appseconnect\B2BMage\Model\ResourceModel\SalesrepRepository"/>
+    <preference for="Appseconnect\B2BMage\Api\Salesrep\Data\SalesrepCustomerAssignInterface" type="Appseconnect\B2BMage\Model\Data\SalesrepCustomerAssign"/>
+    <preference for="Magento\CatalogSearch\Block\SearchResult\ListProduct" type="Appseconnect\B2BMage\Block\Salesrep\SearchResult\ListProduct" />
+    <preference for="Magento\Wishlist\Block\Link" type="Appseconnect\B2BMage\Block\Wishlist\Link" />
+
+	<!-- Credit Limit -->
+	<preference for="Appseconnect\B2BMage\Api\CreditLimit\CreditLimitRepositoryInterface" type="Appseconnect\B2BMage\Model\CreditLimitRepository" />
+	<preference for="Appseconnect\B2BMage\Api\CreditLimit\Data\CreditLimitInterface" type="Appseconnect\B2BMage\Model\Data\CreditLimit" />
+
+
+
+
+	<!-- Sales -->
+	<preference for="Magento\Sales\Controller\Order\View" type="Appseconnect\B2BMage\Controller\Sales\Approve\View"/>
+	<preference for="Appseconnect\B2BMage\Api\Sales\Data\OrderDataInterface" type="Appseconnect\B2BMage\Model\Data\OrderData"/>
+	<preference for="Appseconnect\B2BMage\Api\Sales\Data\ProductDataInterface" type="Appseconnect\B2BMage\Model\Data\SalesProductData"/>
+	<preference for="Appseconnect\B2BMage\Api\Sales\Data\AddressDataInterface" type="Appseconnect\B2BMage\Model\Data\AddressData"/>
+	<preference for="Appseconnect\B2BMage\Api\Sales\Data\OrderResultInterface" type="Appseconnect\B2BMage\Model\Data\OrderResult"/>
+	<type name="Magento\Sales\Controller\AbstractController\OrderLoader">
+		<plugin name="ModifyOrderLoader" type="Appseconnect\B2BMage\Plugin\Sales\Controller\AbstractController\OrderLoaderPlugin" />
+	</type>
+    <type name="Magento\Sales\Model\OrderRepository">
+        <plugin name="appseconnect_salesorder_order_repository"
+                type="Appseconnect\B2BMage\Plugin\Sales\Model\OrderRepository" />
+    </type>
+
+
+	<!-- ErpDocs -->
+	<preference for="Appseconnect\B2BMage\Api\ErpDocs\InvoicePdfUploadInterface" type="Appseconnect\B2BMage\Model\InvoicePdfUpload" />
+    <preference for="Appseconnect\B2BMage\Api\ErpDocs\Data\PdfInterface" type="Appseconnect\B2BMage\Model\Data\Pdf" />
+
+	<!-- Price Rule -->
+	<!-- <preference for="Appseconnect\B2BMage\Api\PriceRule\ProductPriceRuleRepositoryInterface" type="Appseconnect\B2BMage\Model\ProductPriceRule\ProductPriceRuleRepository"/>
+    <preference for="Appseconnect\B2BMage\Api\PriceRule\Data\ProductPriceRuleDataInterface" type="Appseconnect\B2BMage\Model\Data\ProductPriceRuleData"/> -->
+
+	<!-- Quotes -->
+	<preference for="Appseconnect\B2BMage\Api\Quotation\Data\QuoteInterface" type="Appseconnect\B2BMage\Model\Quote"/>
+	<preference for="Appseconnect\B2BMage\Api\Quotation\Data\QuoteProductInterface" type="Appseconnect\B2BMage\Model\QuoteProduct"/>
+	<preference for="Appseconnect\B2BMage\Api\Quotation\Data\QuoteStatusInterface" type="Appseconnect\B2BMage\Model\QuoteStatus"/>
+	<preference for="Appseconnect\B2BMage\Api\Quotation\QuotationServiceInterface" type="Appseconnect\B2BMage\Model\Service\QuotationService"/>
+	<preference for="Appseconnect\B2BMage\Api\Quotation\QuotationRepositoryInterface" type="Appseconnect\B2BMage\Model\QuotationRepository"/>
+	<preference for="Appseconnect\B2BMage\Api\Quotation\QuotationItemRepositoryInterface" type="Appseconnect\B2BMage\Model\Quote\Product\Repository"/>
+	<preference for="Appseconnect\B2BMage\Model\ResourceModel\Quote\CollectionFactoryInterface" type="Appseconnect\B2BMage\Model\ResourceModel\Quote\CollectionFactory"/>
+	<preference for="Appseconnect\B2BMage\Api\Quotation\Data\QuoteSearchResultsInterface"
+                type="Magento\Framework\Api\SearchResults" />
+	<preference for="Appseconnect\B2BMage\Api\Quotation\Data\QuoteStatusHistoryInterface" type="Appseconnect\B2BMage\Model\QuoteHistory"/>
+
+    <type name="Appseconnect\B2BMage\Model\ResourceModel\Quote\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">insync_customer_quote</argument>
+            <argument name="eventPrefix" xsi:type="string">insync_quotation_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">insync_quotation_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Appseconnect\B2BMage\Model\ResourceModel\Quote</argument>
+        </arguments>
+    </type>
+    <virtualType name="AppseconnectQuotationPostGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Appseconnect\B2BMage\Model\ResourceModel\Quote\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">AppseconnectQuotationPostGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AppseconnectQuotationPostGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+
+	<virtualType name="quotationMetadata" type="Appseconnect\B2BMage\Model\ResourceModel\Metadata">
+        <arguments>
+            <argument name="resourceClassName" xsi:type="string">Appseconnect\B2BMage\Model\ResourceModel\Quote</argument>
+            <argument name="modelClassName" xsi:type="string">Appseconnect\B2BMage\Model\Quote</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Appseconnect\B2BMage\Model\QuotationRepository">
+        <arguments>
+            <argument name="metadata" xsi:type="object">quotationMetadata</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="QuotationRelationsComposite" type="Magento\Framework\Model\ResourceModel\Db\VersionControl\RelationComposite">
+        <arguments>
+            <argument name="relationProcessors" xsi:type="array">
+                <item name="default" xsi:type="object">Appseconnect\B2BMage\Model\Quote\Relation</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Appseconnect\B2BMage\Model\ResourceModel\Quote">
+        <arguments>
+            <argument name="entityRelationComposite" xsi:type="object">QuotationRelationsComposite</argument>
+        </arguments>
+    </type>
+
+    <!--Category Visiblity-->
+    <preference for="Magento\Catalog\Model\Category\DataProvider" type="Appseconnect\B2BMage\Model\Category\DataProvider"/>
+    <preference for="Magento\Catalog\Controller\Adminhtml\Category\Save" type="Appseconnect\B2BMage\Controller\Adminhtml\Category\Save"/>
+    <!--Category Visiblity-->
+
+    <preference for="Appseconnect\B2BMage\Api\Company\CompanyRepositoryInterface"
+                type="Appseconnect\B2BMage\Model\ResourceModel\CompanyRepository" />
+
+    <preference for="Appseconnect\B2BMage\Api\ContactPerson\CartRepositoryInterface"
+                type="Appseconnect\B2BMage\Model\CartRepository" />
+
+    <preference for="Magento\Quote\Model\ChangeQuoteControl" type="Appseconnect\B2BMage\Model\Quote\ChangeQuoteControl" />
+    <preference for="Magento\Quote\Model\QuoteRepository\Plugin\Authorization" type="Appseconnect\B2BMage\Model\Quote\QuoteRepository\Plugin\Authorization" />
+
+    <type name="Magento\Quote\Model\QuoteRepository">
+        <plugin name="appseconnect_cart_item_repository"
+                type="Appseconnect\B2BMage\Plugin\Quote\Model\QuoteRepository" />
+    </type>
+
+    <preference for="Magento\Catalog\Model\Category\Tree" type="Appseconnect\B2BMage\Model\Catalog\Category\Tree" />
+    <preference for="Magento\Catalog\Model\Category" type="Appseconnect\B2BMage\Model\Catalog\Category" />
+    <preference for="Appseconnect\B2BMage\Api\Catalog\Data\CustomTreeInterface" type="Appseconnect\B2BMage\Model\Catalog\Category" />
+
+    <preference for="Appseconnect\B2BMage\Api\Catalog\Data\ProductTierPriceInterface" type="Appseconnect\B2BMage\Model\ProductTierPrice" />
+    <type name="Magento\Framework\EntityManager\Operation\ExtensionPool">
+        <arguments>
+            <argument name="extensionActions" xsi:type="array">
+                <item name="Magento\Catalog\Api\Data\ProductInterface" xsi:type="array">
+                    <item name="read" xsi:type="array">
+                        <item name="stock_item" xsi:type="string">Appseconnect\B2BMage\Model\ReadHandler</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <preference for="Magento\Sales\Model\ResourceModel\Order\Plugin\Authorization" type="Appseconnect\B2BMage\Model\Sales\ResourceModel\Order\Plugin\Authorization" />
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="b2bmage_mobile_theme_listing_data_source" xsi:type="string">Appseconnect\B2BMage\Model\ResourceModel\Mobiletheme\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Appseconnect\B2BMage\Model\ResourceModel\Mobiletheme\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">insync_mobile_theme</argument>
+            <argument name="resourceModel" xsi:type="string">Appseconnect\B2BMage\Model\ResourceModel\Mobiletheme</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Customer\Model\ResourceModel\CustomerRepository">
+        <plugin name="appseconnect_customer_id_update"
+                type="Appseconnect\B2BMage\Plugin\Customer\Model\ResourceModel\CustomerRepository" />
+    </type>
+
+    <preference for="Magento\Catalog\Pricing\Render" type="Appseconnect\B2BMage\Model\Catalog\Pricing\Render" />
+
+    <preference for="Magento\Catalog\Pricing\Price\RegularPrice" type="Appseconnect\B2BMage\Pricing\Price\RegularPrice" />
+
+
+    <preference for="Magento\Catalog\Pricing\Render\FinalPriceBox" type="Appseconnect\B2BMage\Pricing\Render\FinalPriceBox" />
+
+    <type name="Magento\Checkout\Model\Cart">
+        <plugin name="b2bPluginAddProductToCart" type="Appseconnect\B2BMage\Plugin\Cart\CartPlugin" sortOrder="20"
+                disabled="false"/>
+    </type>
+
+    <preference for="Magento\Customer\Model\Customer" type="Appseconnect\B2BMage\Model\Customer\Customer" />
+
+
+<!--customer_account_loggedin -->
+    <preference for="Magento\Customer\Block\Account\Customer" type="Appseconnect\B2BMage\Block\Account\Customer" />
+
+    <!-- Tier Price Display Start -->
+    <type name="Magento\Catalog\Pricing\Price\MinimalTierPriceCalculator">
+        <plugin name="appseconnect_tier_price_info"
+                type="Appseconnect\B2BMage\Plugin\Catalog\Pricing\Price\MinimalTierPriceCalculator"
+                sortOrder="999"
+                disabled="false"  />
+    </type>
+
+    <type name="Magento\Catalog\Pricing\Price\FinalPrice">
+        <plugin name="appseconnect_after_final_price_info"
+                type="Appseconnect\B2BMage\Plugin\Catalog\Pricing\Price\ChangeTierPriceInfo"
+                sortOrder="999"
+                disabled="false"  />
+    </type>
+    <!-- Tier Price Display End -->
+
+</config>

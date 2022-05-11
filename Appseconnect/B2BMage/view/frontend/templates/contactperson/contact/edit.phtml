@@ -1,0 +1,121 @@
+<?php
+$contactPersonId = $this->getRequest()->getParam('id');
+$customerDetail = $block->getContactPerson($contactPersonId);
+$status=$customerDetail->getCustomerStatus();
+$role=$customerDetail->getContactpersonRole();
+$firstName=$customerDetail->getFirstname();
+$lastName=$customerDetail->getLastname();
+$email=$customerDetail->getEmail();
+
+// @codingStandardsIgnoreFile
+
+/** @var \Magento\Customer\Block\Form\Edit $block */
+?>
+<form class="form form-edit-account" action="<?php /* @noEscape */ echo $this->getUrl('b2bmage/contact/index_editPost') ?>" method="post" id="form-validate" enctype="multipart/form-data" data-hasrequired="<?php /* @noEscape */ echo __('* Required Fields') ?>" autocomplete="off">
+    <fieldset class="fieldset info">
+   	 	<input type="hidden" value="<?php /* @noEscape */ echo $contactPersonId?>" name="contactperson_id" id="contactperson_id" />
+    	<?php /* @noEscape */ echo $block->getBlockHtml('formkey')?>
+        <legend class="legend"><span><?php /* @noEscape */ echo __('Account Information') ?></span></legend><br>
+        
+        <div class="field field-name-status required">
+            <label class="label"  for="status">
+                <span>Status</span>
+            </label>
+
+            <div class="control">
+                       
+                       <select class="required-entry select" name="status" id="status">
+                                <option value="1" <?php /* @noEscape */ echo ($status==1)?'selected':'' ?>>Active</option>
+                                <option value="0" <?php /* @noEscape */ echo ($status==0)?'selected':'' ?>>Inactive</option>
+                            </select>
+            </div>
+        </div>
+        <div class="field field-name-role required">
+            <label class="label"  for="role">
+                <span>Role</span>
+            </label>
+
+            <div class="control">
+                       
+                       <select class="required-entry select" name="role" id="role">
+                                <option value="1" <?php /* @noEscape */ echo ($role==1)?'selected':'' ?>>Administrator</option>
+                                <option value="2" <?php /* @noEscape */ echo ($role==2)?'selected':'' ?>>Standard</option>
+                            </select>
+            </div>
+        </div>
+        
+        <div class="field field-name-firstname required">
+            <label class="label" for="firstname">
+                <span>First Name</span>
+            </label>
+
+            <div class="control">
+                <input type="text" id="firstname"
+                       name="firstname"
+                       value="<?php /* @noEscape */ echo $firstName?>"
+                       title="First Name"
+                       class="input-text required-entry"   data-validate="{required:true}">
+            </div>
+        </div>
+            <div class="field field-name-lastname required">
+            <label class="label"  for="lastname">
+                <span>Last Name</span>
+            </label>
+
+            <div class="control">
+                <input type="text" id="lastname"
+                       name="lastname"
+                       value="<?php /* @noEscape */ echo $lastName?>"
+                       title="Last Name"
+                       class="input-text required-entry"   data-validate="{required:true}">
+            </div>
+        </div>
+        <div class="field choice">
+            <input type="checkbox" name="change_email" id="change-email" data-role="change-email" value="1" title="<?php /* @noEscape */ echo __('Change Email') ?>" class="checkbox" />
+            <label class="label" for="change-email"><span><?php /* @noEscape */ echo __('Change Email') ?></span></label>
+        </div>
+    </fieldset>
+
+    <fieldset class="fieldset password" data-container="change-email-password">
+        <legend class="legend"><span data-title="change-email-password"><?php /* @noEscape */ echo __('Change Email and Password') ?></span></legend><br>
+        <div class="field email required" data-container="change-email">
+            <label class="label" for="email"><span><?php /* @noEscape */ echo __('Email') ?></span></label>
+            <div class="control">
+                <input type="email" name="email" id="email" autocomplete="email" data-input="change-email" value="<?php /* @noEscape */ echo $email?>" title="<?php /* @noEscape */ echo __('Email') ?>" class="input-text" data-validate="{required:true, 'validate-email':true}" />
+            </div>
+        </div>
+   
+        <?php /* @noEscape */ echo $block->getChildHtml('form_additional_info'); ?>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action save primary" title="<?php /* @noEscape */ echo __('Save') ?>"><span><?php /* @noEscape */ echo __('Save') ?></span></button>
+        </div>
+    </div>
+</form>
+
+<script>
+    require([
+        "jquery",
+        "mage/mage"
+    ], function($){
+        var dataForm = $('#form-validate');
+        
+        dataForm.mage('validation', {
+        });
+
+    });
+</script>
+
+
+<script type="text/x-magento-init">
+    {
+        "[data-role=change-email], [data-role=change-password]": {
+            "changeEmailPassword": {
+                "titleChangeEmail": "<?php /* @noEscape */ echo __('Change Email') ?>",
+                "titleChangePassword": "<?php /* @noEscape */ echo __('Change Password') ?>",
+                "titleChangeEmailAndPassword": "<?php /* @noEscape */ echo __('Change Email and Password') ?>"
+            }
+        }
+    }
+</script>

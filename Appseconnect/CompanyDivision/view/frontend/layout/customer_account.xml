@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+
+        <referenceBlock name="customer_account_navigation">
+            <block class="Appseconnect\CompanyDivision\Block\Division\Link\Current" after="customer-account-navigation-customer-division-listing" name="customer-account-navigation-division-listing">
+                <arguments>
+                    <argument name="path" xsi:type="string">division/division/index_listing</argument>
+                    <argument name="label" xsi:type="string" translate="true">Select Division</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        
+    </body>
+</page>

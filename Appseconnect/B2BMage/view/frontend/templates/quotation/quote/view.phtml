@@ -1,0 +1,23 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var  $block \Appseconnect\B2BMage\Block\Quotation\Quote\View*/?>
+<div class="order-details-items ordered">
+    <?php $_quote = $block->getQuote() ?>
+
+    <div class="order-title">
+        <strong><?php /* @noEscape */ echo __('Items Quoted') ?></strong>
+    </div>
+
+    <?php /* @noEscape */ echo $block->getChildHtml('quote_items') ?>
+
+    <div class="actions-toolbar">
+        <div class="secondary">
+            <a class="action back" href="<?php /* @noEscape */ echo $block->getBackUrl() ?>">
+                <span><?php /* @noEscape */ echo $block->getBackTitle() ?></span>
+            </a>
+        </div>
+    </div>
+</div>

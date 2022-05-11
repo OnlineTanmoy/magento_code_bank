@@ -1,0 +1,126 @@
+<?php
+
+/** @var $block \Appseconnect\ShippingMethod\Block\Adminhtml\ShippingMethod\Edit\Tab\ShippingMethod */
+
+$allShipping = $block->getAllShippingMethods();
+$shippingMethodData = $block->getShippingMethodData($block->getCustomerId());
+unset($allShipping[0]);
+foreach ($allShipping as $code => $shipping) {
+    if ($code == "freeshipping") {
+        ?>
+        <div class="accordion">
+            <div class="section-config active">
+                <div class="entry-edit-head admin__collapsible-block">
+                <span id="catalog_fields_masks-link"
+                      class="entry-edit-head-link">
+                </span>
+                    <a id="catalog_fields_masks-head" href="#catalog_fields_masks-link"
+                       onclick="Fieldset.toggleCollapse('catalog_fields_masks'); return false;"
+                       class="open"><?php /* @escapeNotVerified */
+                        echo __($shipping['label']) ?></a></div>
+
+                <input id="catalog_fields_masks-state" name="config_state[catalog_fields_masks]" type="hidden"
+                       value="1">
+                <fieldset class="config admin__collapsible-block" id="catalog_fields_masks" style="">
+                    <form name="shipping_method_data" method="post" id="shipping_method_data" class="form"
+                          action="<?php echo $this->getFormAction(); ?>">
+                        <input name="form_key" type="hidden" value="<?php /* @escapeNotVerified */
+                        echo $block->getFormKey(); ?>"/>
+                        <input type="hidden" name="shipping_type" value="<?php echo $code; ?>">
+                        <input type="hidden" name="customer_id" value="<?php echo $block->getCustomerId(); ?>">
+
+                        <table cellspacing="0" class="form-list">
+
+                            <?php
+                            if ($shippingMethodData) {
+                                foreach ($shippingMethodData as $shippingMethodVal) {
+                                    ?>
+                                    <input type="hidden" name="table_id"
+                                           value="<?php echo $shippingMethodVal['id']; ?>">
+                                    <tr id="row_carriers_flatrate_active">
+                                        <td class="label">
+                                            <label for="carriers_flatrate_active"><span><?php /* @escapeNotVerified */
+                                                    echo __('Enabled') ?></span></label>
+                                        </td>
+                                        <td class="value">
+                                            <select name="status" id="status">
+                                                <option <?php /* @noEscape */
+                                                echo ($shippingMethodVal['status'] == 1) ? 'selected="selected"' : ''; ?>
+                                                        value="1">Yes
+                                                </option>
+                                                <option <?php /* @noEscape */
+                                                echo ($shippingMethodVal['status'] == 0) ? 'selected="selected"' : ''; ?>
+                                                        value="0">No
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td class="use-default">&nbsp;</td>
+                                    </tr>
+                                    <tr id="row_carriers_flatrate_active">
+                                        <td class="label">
+                                            <label for="carriers_flatrate_active"><span><?php /* @escapeNotVerified */
+                                                    echo __('Minimum Order Amount') ?></span></label>
+                                        </td>
+                                        <td class="value">
+                                            <input type="text" name="minimum_order_value" id="minimum_order_value"
+                                                   value="<?php /* @noEscape */
+                                                   echo $shippingMethodVal['minimum_order_value']; ?>">
+                                        </td>
+                                        <td class="use-default">&nbsp;</td>
+                                    </tr>
+                                    <?php
+                                }
+                            } else {
+                                ?>
+                                <tr id="row_carriers_flatrate_active">
+                                    <td class="label">
+                                        <label for="carriers_flatrate_active"><span><?php /* @escapeNotVerified */
+                                                echo __('Enabled') ?></span></label>
+                                    </td>
+                                    <td class="value">
+                                        <select name="status" id="status">
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </td>
+                                    <td class="use-default">&nbsp;</td>
+                                </tr>
+                                <tr id="row_carriers_flatrate_active">
+                                    <td class="label">
+                                        <label for="carriers_flatrate_active"><span><?php /* @escapeNotVerified */
+                                                echo __('Minimum Order Amount') ?></span></label>
+                                    </td>
+                                    <td class="value">
+                                        <input type="text" name="minimum_order_value" id="minimum_order_value">
+                                    </td>
+                                    <td class="use-default">&nbsp;</td>
+                                </tr>
+                                <?php
+                            }
+                            ?>
+                            <tr id="row_carriers_flatrate_active">
+                                <td class="label">
+                                    &nbsp;
+                                </td>
+                                <td class="value">
+                                    <button type="submit" class="action submit primary" title="Save"><span><?= $block->
+                                            escapeHtmlAttr(__('Save')) ?></span></button>
+                                </td>
+                                <td class="use-default">&nbsp;</td>
+                            </tr>
+                        </table>
+
+                    </form>
+                </fieldset>
+
+                <script type="text/javascript">//<![CDATA[
+                    require(['prototype'], function () {
+                        Fieldset.applyCollapse('catalog_fields_masks');
+                    });
+                    //]]></script>
+            </div>
+        </div>
+        <?php
+    }
+}
+?>

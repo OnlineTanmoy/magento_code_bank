@@ -1,0 +1,136 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+<?php $_product = $block->getProduct(); ?>
+<?php $buttonTitle = __('Add to Cart'); ?>
+<?php $quoteButtonTitle = __('Add to Quote'); ?>
+<?php if ($_product->isSaleable()): ?>
+    <?php
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $isQuotationEnabled = $this->helper('Appseconnect\B2BMage\Helper\Quotation\Data')->isQuotationEnabled();
+    $salesRepHelper = $this->helper('Appseconnect\B2BMage\Helper\Salesrep\Data');
+    $salesrepId = $salesRepHelper->getSalesrepIdFromSession();
+
+    $blockObj = $block->getLayout()->createBlock('Appseconnect\B2BMage\Block\Customer\CustomerSessionDetails');
+    $customerData = $blockObj->getCustomerData();
+    $isLogIn = $blockObj->getLogin();
+
+    $isQuotationEnabledForCustomer = $this->helper('Appseconnect\B2BMage\Helper\Quotation\Data')->getEnableQuoteValue();
+
+    $customerType = $blockObj->getCustomerType();
+    $customerId = $this->helper('Appseconnect\B2BMage\Helper\ContactPerson\Data')->getCustomerIdForMinimal();
+    $isAdministrator = $this->helper('Appseconnect\B2BMage\Helper\ContactPerson\Data')->isAdministrator($customerId);
+
+    $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
+    $scopeConfig = $objectManager->get('\Magento\Framework\App\Config\ScopeConfigInterface');
+    $guestCartDisabled = $scopeConfig->getValue('insync_category_visibility/select_checkout_visibility/active',
+        $storeScope);
+    $availabletopromiseHelper = $this->helper('Appseconnect\AvailableToPromise\Helper\DeliveryDate\Data')->getDeliveryDate($_product->getId());
+    $getProductType = $this->helper('Appseconnect\AvailableToPromise\Helper\DeliveryDate\Data')->getProductType($_product->getId());
+    ?>
+    <div class="box-tocart">
+        <div class="fieldset">
+            <?php if ($block->shouldRenderQuantity()): ?>
+                <?php if ($availabletopromiseHelper): ?>
+                    <div style="float: right;">
+                        <label class="label" for="deliverydate"><strong><?php /* @noEscape */
+                                echo __('Delivery Date:') ?> </strong></label>
+                        <div class="control" name="deliverydate">
+                            <?php echo date('F j, Y', strtotime($availabletopromiseHelper)) ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+                <div class="field qty">
+                    <label class="label" for="qty"><span><?php /* @noEscape */
+                            echo __('Qty') ?></span></label>
+                    <div class="control">
+                        <input type="number" name="qty" id="qty" maxlength="12"
+                               value="<?php /* @noEscape */
+                               echo $block->getProductDefaultQty() * 1 ?>"
+                               title="<?php /* @noEscape */
+                               echo __('Qty') ?>"
+                               class="input-text qty"
+                               data-validate="<?php /* @noEscape */
+                               echo $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"/>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <div class="actions">
+                <?php if ((($customerData->getCustomerType() == 2 || ($guestCartDisabled && !$isLogIn))) || ($getProductType == 'simple' && empty($availabletopromiseHelper))): ?>
+                    <button disabled type="submit"
+                            title="<?php /* @noEscape */
+                            echo $buttonTitle ?>"
+                            class="action primary tocart disabled" id="product-addtocart-button">
+                        <span><?php /* @noEscape */
+                            echo $buttonTitle ?></span>
+                    </button>
+                    <br>
+                <?php elseif ($isAdministrator == 3): ?>
+
+                <?php else : ?>
+                    <button type="submit"
+                            title="<?php /* @noEscape */
+                            echo $buttonTitle ?>"
+                            class="action primary tocart" id="product-addtocart-button">
+                        <span><?php /* @noEscape */
+                            echo $buttonTitle ?></span>
+                    </button>
+                    <?php if (!$salesrepId && $customerType == 3 && $isQuotationEnabled && $isAdministrator != 3 && $isQuotationEnabledForCustomer == 1): ?>
+                        <button type="button"
+                                title="<?php /* @noEscape */
+                                echo $quoteButtonTitle ?>"
+                                class="action primary tocart toquote" id="product-addtoquote-button">
+                            <span><?php /* @noEscape */
+                                echo $quoteButtonTitle ?></span>
+                        </button>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <?php /* @noEscape */
+                echo $block->getChildHtml('', true) ?>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/product/view/validation": {
+                "radioCheckboxClosest": ".nested"
+            }
+        }
+    }
+
+
+</script>
+<?php if (!$block->isRedirectToCartEnabled()) : ?>
+    <script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "catalogAddToCart": {
+                "bindSubmit": false
+            }
+        }
+    }
+
+
+    </script>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "catalogAddToQuote": {
+                "actionUrl" : "<?php /* @noEscape */
+    echo $this->getUrl('b2bmage/quotation/index_add'); ?>"
+            }
+        }
+    }
+
+
+</script>

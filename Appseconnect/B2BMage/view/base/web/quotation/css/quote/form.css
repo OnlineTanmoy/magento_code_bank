@@ -1,0 +1,23 @@
+.select2-container{
+    margin-left : -10px;
+    margin-top : 3px;
+}
+.col.sku{
+    padding-left : 0px;
+}
+#body{
+    width : 70%;
+}
+.quote.info{
+    height : 120px;
+}
+.box.box-address-billing{
+    width : 50%;
+    float : left;
+}
+.col.product.qty{
+    width : 1px;
+}
+.box.box-address-shipping{
+    float : left;
+}

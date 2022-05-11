@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="availabletopromise_productinstock_data_source" xsi:type="string">
+                    Appseconnect\AvailableToPromise\Model\ResourceModel\ProductInStock\Grid\Collection
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="AvailableToPromiseProductInStockGridDataProvider"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">
+                Appseconnect\AvailableToPromise\Model\ResourceModel\ProductInStock\Collection
+            </argument>
+            <argument name="filterPool" xsi:type="object" shared="false">
+                AvailableToPromiseProductInStockGridDataProvider
+            </argument>
+        </arguments>
+    </virtualType>
+    <preference for="Appseconnect\AvailableToPromise\Api\ProductInStock\ProductInStockRepositoryInterface"
+                type="Appseconnect\AvailableToPromise\Model\ProductInStockRepository"/>
+    <preference for="Appseconnect\AvailableToPromise\Api\ProductInStock\Data\ProductInStockInterface"
+                type="Appseconnect\AvailableToPromise\Model\ProductInStock"/>
+    <preference for="Appseconnect\AvailableToPromise\Api\ProductInStock\Data\ProductInStockSearchResultsInterface"
+                type="Magento\Framework\Api\SearchResultsInterface"/>
+</config>

@@ -1,0 +1,52 @@
+<?php
+/**
+ * Namespace
+ *
+ * @category Controller
+ * @package  Appseconnect
+ * @author   Insync Magento Team <contact@insync.co.in>
+ * @license  Insync https://insync.co.in
+ * @link     https://www.appseconnect.com/
+ */
+namespace Appseconnect\B2BMage\Controller\Adminhtml\Quotation\Index;
+
+/**
+ * Class Delete
+ *
+ * @category Controller
+ * @package  Appseconnect
+ * @author   Insync Magento Team <contact@insync.co.in>
+ * @license  Insync https://insync.co.in
+ * @link     https://www.appseconnect.com/
+ */
+class Delete extends \Appseconnect\B2BMage\Controller\Adminhtml\Quotation\Quote
+{
+
+    /**
+     * Delete quote item action
+     *
+     * @return \Magento\Framework\Controller\Result\Redirect
+     */
+    public function execute()
+    {
+        if (! $this->_formKeyValidator->validate($this->getRequest())) {
+            return $this->resultRedirectFactory->create()->setPath('*/*/');
+        }
+        
+        $itemId = (int) $this->getRequest()->getParam('item_id');
+        $quote = $this->initQuote();
+        
+        if ($quote && $itemId) {
+            try {
+                $quoteModel = $this->helperQuotation->removeItem($quote, $itemId);
+                $this->quotationRepository->save($quoteModel);
+                $this->messageManager->addSuccess(__('Item has been successfully removed.'));
+            } catch (\Exception $e) {
+                $this->messageManager->addError(__('We can\'t remove the item.'));
+                $this->logger->critical($e);
+            }
+        }
+        $defaultUrl = $this->url->getUrl('*/*');
+        return $this->resultRedirectFactory->create()->setUrl($this->_redirect->getRedirectUrl($defaultUrl));
+    }
+}

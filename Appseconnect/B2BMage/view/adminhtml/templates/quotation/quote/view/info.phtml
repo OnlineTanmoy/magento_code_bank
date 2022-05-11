@@ -1,0 +1,106 @@
+<?php
+/**
+ * @var \Appseconnect\B2BMage\Block\Adminhtml\Quotation\Quote\View\Info $block
+ */
+
+// @codingStandardsIgnoreFile
+
+$quote = $block->getQuote();
+
+$quoteAdminDate = $block->formatDate(
+    $block->getQuoteAdminDate($quote->getCreatedAt()),
+    \IntlDateFormatter::MEDIUM,
+    true
+);
+
+$quoteStoreDate = $block->formatDate(
+    $quote->getCreatedAt(),
+    \IntlDateFormatter::MEDIUM,
+    true,
+    $block->getTimezoneForStore($block->getStore($quote->getStoreId()))
+);
+?>
+
+<section class="admin__page-section order-view-account-information">
+    <div class="admin__page-section-title">
+        <span class="title"><?php /* @noEscape */ echo $block->escapeHtml(__('Quote & Account Information')) ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item order-information">
+            <?php /* Quote Information */ ?>
+            <?php $confirmationEmailStatusMessage = $quote->getEmailSent() ? __('The quote confirmation email was sent') : __('The quote confirmation email is not sent'); ?>
+            <div class="admin__page-section-item-title">
+                <span class="title">
+                        <?php /* @noEscape */ echo $block->escapeHtml(__('Quote # %1', $quote->getId())) ?> (<span><?php /* @noEscape */ echo $block->escapeHtml($confirmationEmailStatusMessage) ?></span>)
+                </span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <table class="admin__table-secondary order-information-table">
+                <tr>
+                    <th><?php /* @noEscape */ echo $block->escapeHtml(__('Quote Date')) ?></th>
+                    <td><?php /* @noEscape */ echo $block->escapeHtml($quoteAdminDate) ?></td>
+                </tr>
+                <?php if ($quoteAdminDate != $quoteStoreDate):?>
+                    <tr>
+                        <th><?php /* @noEscape */ echo $block->escapeHtml(__('Quote Date (%1)', $block->getTimezoneForStore($block->getStore($quote->getStoreId())))) ?></th>
+                        <td><?php /* @noEscape */ echo $block->escapeHtml($quoteStoreDate) ?></td>
+                    </tr>
+                <?php endif;?>
+                <tr>
+                    <th><?php /* @noEscape */ echo $block->escapeHtml(__('Quote Status')) ?></th>
+                    <td><span id="quote_status"><?php /* @noEscape */ echo $block->escapeHtml($quote->getStatusLabel()) ?></span></td>
+                </tr>
+                <?php /* @noEscape */ echo $block->getChildHtml() ?>
+                <?php if ($block->isSingleStoreMode() == false):?>
+                    <tr>
+                        <th><?php /* @noEscape */ echo $block->escapeHtml(__('Quotation Point')) ?></th>
+                        <td><?php /* @noEscape */ echo $block->escapeHtml($block->getQuoteStoreName(), ['br']) ?></td>
+                    </tr>
+                <?php endif; ?>
+            </table>
+            </div>
+        </div>
+
+        <div class="admin__page-section-item order-account-information">
+            <?php /* Account Information */ ?>
+            <div class="admin__page-section-item-title">
+                <span class="title"><?php /* @noEscape */ echo $block->escapeHtml(__('Account Information')) ?></span>
+                <div class="actions">
+                    <?php if ($customerUrl = $block->getCustomerViewUrl()) : ?>
+                        <a href="<?php /* @noEscape */ echo $block->getCustomerViewUrl() ?>" target="_blank">
+                            <?php /* @noEscape */ echo $block->escapeHtml(__('Edit Customer')) ?>
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="admin__page-section-item-content">
+                <table class="admin__table-secondary order-account-information-table">
+                    <tr>
+                        <th><?php /* @noEscape */ echo $block->escapeHtml(__('Customer Name')) ?></th>
+                        <td>
+                            <?php if ($customerUrl = $block->getCustomerViewUrl()): ?>
+                                <a href="<?php /* @noEscape */ echo $block->escapeUrl($customerUrl) ?>" target="_blank">
+                                    <span><?php /* @noEscape */ echo $block->escapeHtml($quote->getCustomerName()) ?></span>
+                                </a>
+                            <?php else: ?>
+                                <?php /* @noEscape */ echo $block->escapeHtml($quote->getCustomerName()) ?>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @noEscape */ echo $block->escapeHtml(__('Email')) ?></th>
+                        <td><a href="mailto:<?php /* @noEscape */ echo $block->escapeHtml($quote->getCustomerEmail()) ?>"><?php /* @noEscape */ echo $block->escapeHtml($quote->getCustomerEmail()) ?></a></td>
+                    </tr>
+                    <?php if ($groupName = $block->getCustomerGroupName()) : ?>
+                        <tr>
+                            <th><?php /* @noEscape */ echo $block->escapeHtml(__('Customer Group')) ?></th>
+                            <td><?php /* @noEscape */ echo $block->escapeHtml($groupName) ?></td>
+                        </tr>
+                    <?php endif; ?>
+                    <?php /* @noEscape */ echo $block->getChildHtml('extra_customer_info') ?>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="sale.reorder.sidebar">
+                <action method="setTemplate">
+                    <argument name="reorder_sidebar" xsi:type="string">Appseconnect_B2BMage::salesrep/reorder/sidebar.phtml</argument>
+                </action>
+        </referenceBlock>
+        <referenceBlock name="wishlist_sidebar">
+                <action method="setTemplate">
+                    <argument name="template" xsi:type="string">Appseconnect_B2BMage::wishlist/sidebar.phtml</argument>
+                </action>
+        </referenceBlock>
+        <referenceBlock name="catalog.compare.link">
+                <action method="setTemplate">
+                    <argument name="template" xsi:type="string">Appseconnect_B2BMage::product/compare/link.phtml</argument>
+                </action>
+        </referenceBlock>
+        <referenceBlock name="catalog.compare.sidebar">
+                <action method="setTemplate">
+                    <argument name="template" xsi:type="string">Appseconnect_B2BMage::product/compare/sidebar.phtml</argument>
+                </action>
+        </referenceBlock>
+        <referenceBlock name="header.links">
+            <block class="Appseconnect\B2BMage\Block\Customer\Link\Current" name="add-new-header-link"
+                   ifconfig="insync_b2baccount/createb2b/types">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Create B2B Customer</argument>
+                    <argument name="path" xsi:type="string" translate="true">b2bmage/customer/register</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+<!--        <referenceBlock name="footer">-->
+<!--            <block class="Magento\Framework\View\Element\Template" name="mobile_theme" as="mobile_theme" after="-" cacheable="false" template="Appseconnect_B2BMage::mobiletheme/footer-link.phtml">-->
+<!--            </block>-->
+<!--        </referenceBlock>-->
+        <referenceBlock name="top.links">
+            <block class="Magento\Theme\Block\Html\Header" name="header" as="header" before="-" cacheable="false">
+                <arguments>
+                    <argument name="show_part" xsi:type="string">welcome</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

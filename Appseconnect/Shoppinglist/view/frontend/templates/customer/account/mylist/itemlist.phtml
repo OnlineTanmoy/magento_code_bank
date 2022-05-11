@@ -1,0 +1,84 @@
+<?php
+$_gridrecords = $block->getCollection();
+$postData = $this->getRequest()->getParams();
+$listId = $postData['id'];
+$isQuotationEnabled = $this->helper('Appseconnect\B2BMage\Helper\Quotation\Data')->isQuotationEnabled();
+$customerQuoteConfigurationValue = $this->helper('Appseconnect\Shoppinglist\Helper\Mylist\Data')->getCustomerQuoteConfigurationValue();
+if ($_gridrecords && $_gridrecords->getSize()): ?>
+    <div class="table-wrapper mylist">
+        <table class="data table table-list-items history" id="my-list-table">
+            <caption class="table-caption"><?php echo __('Grid Record') ?></caption>
+            <thead>
+            <tr>
+                <th scope="col" class="col name"></th>
+                <th scope="col" class="col name"><?php echo __('Name') ?></th>
+                <th scope="col" class="col sku"><?php echo __('SKU') ?></th>
+                <th scope="col" class="col share"><?php echo __('Quantity') ?></th>
+                <th scope="col" class="col print"><?php echo __('Action') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            $count = 0;
+            foreach ($_gridrecords as $_gridrecord): ?>
+                <tr <?php if ($count % 2 == 0) {
+                    echo 'class="even"';
+                } else {
+                    echo 'class="odd"';
+                } ?>>
+                    <td class="col id">
+                        <a href="<?php echo $block->getProductUrl($_gridrecord->getProductId()); ?>" target="_blank">
+                            <img src="<?php echo $block->getProductImageUrl($_gridrecord->getProductId()); ?>"/>
+                        </a>
+                    </td>
+                    <td class="col id">
+                        <?php echo $block->getProductName($_gridrecord->getProductSku()); ?>
+                    </td>
+                    <td class="col id">
+                        <?php echo $_gridrecord->getProductSku(); ?>
+                        <?php echo $block->getProductOption($_gridrecord->getId()); ?>
+                    </td>
+                    <td class="col status"><input name="qty[<?php echo $_gridrecord->getId() ?>]"
+                                                  id="qty<?php echo $_gridrecord->getId(); ?>"
+                                                  value="<?php echo $_gridrecord->getQty(); ?>" class="qty-cls"/></td>
+                    <td data-th="Actions" class="col actions">
+                        <a class="action remove" onclick="return confirm('Are you sure to remove ?')"
+                           href="<?php echo $this->getUrl('shoppinglist/customer/mylist_deleteitem',
+                               array('id' => $_gridrecord->getId())); ?>"> Remove </a>
+                        <a class="action cart"
+                           href="<?php echo $this->getUrl('shoppinglist/customer/mylist_addtocart', array(
+                               'product_id' => $_gridrecord->getProductId(),
+                               'qty' => $_gridrecord->getQty(),
+                               'list_id' => $listId,
+                               'product_type' => $_gridrecord->getProductType(),
+                               'product_addtocart_data' => $_gridrecord->getProductAddtocartData()
+                           )); ?>"> Add to Cart </a>
+
+                        <?php
+                        if ($isQuotationEnabled && $customerQuoteConfigurationValue) {
+                            ?>
+                            <a class="action quote"
+                               href="<?php echo $this->getUrl('shoppinglist/customer/mylist_addtoquote', array(
+                                   'product_id' => $_gridrecord->getProductId(),
+                                   'qty' => $_gridrecord->getQty(),
+                                   'list_id' => $listId
+                               )); ?>"> Add to Quote </a>
+                            <?php
+                        }
+                        ?>
+                        &nbsp;
+                    </td>
+                </tr>
+                <?php $count++; ?>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($block->getPagerHtml()): ?>
+        <div class="order-products-toolbar toolbar bottom"><?php echo $block->getPagerHtml(); // for display pager block which we create in block file.   ?></div>
+    <?php endif ?>
+<?php else: ?>
+    <div class="message info empty"><span><?php echo __('List records not available.'); ?></span></div>
+<?php endif ?>
+
+
